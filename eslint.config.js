@@ -4,10 +4,10 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import eslintPluginPrettier from 'eslint-plugin-prettier'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import airnb from 'eslint-config-airbnb'
+import eslintSimpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginReact from 'eslint-plugin-react'
 import eslintPluginImport from 'eslint-plugin-import'
+import airnb from 'eslint-config-airbnb'
 
 export default tseslint.config(
     { ignores: ['/.git', 'node_modules', './github', 'dist'] },
@@ -15,9 +15,11 @@ export default tseslint.config(
         extends: [
             js.configs.recommended,
             ...tseslint.configs.recommended,
-            eslintPluginPrettier.recommended,
             eslintPluginReact.recommended,
             airnb.recommended,
+            eslintPluginImport.recommended,
+            eslintSimpleImportSort.recommended,
+            eslintPluginPrettier.recommended,
         ],
         files: ['**/*.{ts,tsx}'],
         languageOptions: {
@@ -27,15 +29,17 @@ export default tseslint.config(
         plugins: {
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
-            'simple-import-sort': simpleImportSort,
-            prettier: eslintPluginPrettier,
-            airnb: airnb,
+            react: eslintPluginReact,
             import: eslintPluginImport,
+            airnb: airnb,
+            'simple-import-sort': eslintSimpleImportSort,
+            prettier: eslintPluginPrettier,
         },
         rules: {
             ...reactHooks.configs.recommended.rules,
             'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
             'prettier/prettier': 'error',
+            '@typescript-eslint/no-unused-vars': 'off',
             'import/order': [
                 'error',
                 {
@@ -54,6 +58,19 @@ export default tseslint.config(
                     },
                 },
             ],
+            'prefer-arrow-callback': ['error', { allowNamedFunctions: false }],
+            'react/function-component-definition': [
+                'error',
+                {
+                    namedComponents: 'arrow-function',
+                    unnamedComponents: 'arrow-function',
+                },
+            ],
+        },
+        settings: {
+            react: {
+                version: 'detect',
+            },
         },
     }
 )
