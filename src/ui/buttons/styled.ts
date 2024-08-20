@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
 import { ButtonTypes } from '@/constants/buttonTypes'
+import { MEDIA } from '@/constants/media'
 
 export const StyledButton = styled.button<{ maxWidth?: number | undefined; type: ButtonTypes }>`
     padding: ${({ theme }) => `${theme.space.sp10} ${theme.space.sp40}`};
-    font-size: ${({ theme }) => theme.space.fs20};
+    font-size: ${({ theme }) => theme.fontSize.fs20};
     font-weight: ${({ theme }) => theme.fontWeight.medium};
     background-color: ${({ theme }) => theme.backgroundColor};
     ${({ theme }) => `border: ${theme.borderSize.bs1} solid ${theme.borderGray};`}
@@ -52,4 +53,8 @@ export const StyledButton = styled.button<{ maxWidth?: number | undefined; type:
                 border: none;
             }
     `}
+
+    @media ${MEDIA.PHONE} {
+        font-size: ${({ theme }) => theme.fontSize.fs16};
+    }
 `

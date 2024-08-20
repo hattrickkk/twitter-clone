@@ -1,17 +1,23 @@
+const colors = {
+    black: '#000000',
+    blackText: 'rgba(0, 0, 0, 0.7)',
+    white: '#FFFFFF',
+    blue: '#1E97E1',
+    darkBlue: '#1972E6',
+    backBlue: '#0d161f',
+    gray: '#e4eaed',
+    buttonGray: '#2B3948',
+    buttonDarkGray: '#1C2732',
+}
+
 export const common = {
     color: {
-        black: '#000000',
-        white: '#FFFFFF',
-        blue: '#1E97E1',
-        darkBlue: '#1972E6',
-        backBlue: '#0d161f',
-        gray: '#e4eaed',
-        buttonGray: '#2B3948',
-        buttonDarkGray: '#1C2732',
+        ...colors,
     },
 
     lineHeight: {
         lh20: '20px',
+        lh24: '24px',
         lh32: '32px',
     },
 
@@ -60,14 +66,23 @@ export const common = {
         sp40: '40px',
         sp45: '45px',
         sp55: '55px',
+        sp70: '70px',
+        sp75: '75px',
+        sp95: '95px',
         sp100: '100px',
     },
 
     width: {
         w1: '1px',
+        w3: '3px',
+        w10: '10px',
+        w15: '15px',
         w28: '28px',
         w32: '32px',
+        w130: '130px',
+        w200: '200px',
         w400: '400px',
+        w670: '670px',
         w1000: '1000px',
     },
 
@@ -77,12 +92,17 @@ export const common = {
     },
 
     borderRadius: {
+        br2: '2px',
         br6: '6px',
+        br10: '10px',
         br42: '42px',
         br76: '76px',
     },
 
     containerWidth: '1430px',
+    opacity: 0.6,
+    inputColor: colors.white,
+    dropdownItemColor: colors.gray,
 }
 
 const enum ThemeMode {
@@ -99,6 +119,7 @@ export const lightTheme = {
     borderGray: common.color.gray,
     secondaryButtonColor: common.color.backBlue,
     hoverSecondaryButtonColor: common.color.buttonGray,
+    dropdownIconColor: '#9D9EA0',
 }
 
 export const darkTheme = {
@@ -110,4 +131,5 @@ export const darkTheme = {
     borderGray: 'rgba(255, 255, 255, 0.2)',
     secondaryButtonColor: common.color.buttonGray,
     hoverSecondaryButtonColor: common.color.buttonDarkGray,
+    dropdownIconColor: common.color.buttonDarkGray,
 }

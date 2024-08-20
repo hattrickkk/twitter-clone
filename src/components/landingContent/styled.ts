@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { MEDIA } from '@/constants/media'
 
-export const LandingContainer = styled.div`
+export const LandingContainer = styled.main`
     max-width: ${({ theme }) => theme.containerWidth};
     margin: 0 auto;
     flex: 1 1 auto;

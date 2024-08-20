@@ -8,6 +8,7 @@ import eslintSimpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginReact from 'eslint-plugin-react'
 import eslintPluginImport from 'eslint-plugin-import'
 import airnb from 'eslint-config-airbnb'
+import { fixupPluginRules } from '@eslint/compat'
 
 export default tseslint.config(
     { ignores: ['/.git', 'node_modules', './github', 'dist'] },
@@ -27,7 +28,7 @@ export default tseslint.config(
             globals: globals.browser,
         },
         plugins: {
-            'react-hooks': reactHooks,
+            'react-hooks': fixupPluginRules(reactHooks),
             'react-refresh': reactRefresh,
             react: eslintPluginReact,
             import: eslintPluginImport,
@@ -40,6 +41,8 @@ export default tseslint.config(
             'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
             'prettier/prettier': 'error',
             '@typescript-eslint/no-unused-vars': 'off',
+            '@typescript-eslint/no-unused-expressions': 'off',
+            'react-hooks/exhaustive-deps': 'off',
             'import/order': [
                 'error',
                 {
