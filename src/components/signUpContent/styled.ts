@@ -8,6 +8,7 @@ export const SignUp = styled.main`
     margin: 0 auto;
     a {
         color: ${({ theme }) => theme.color.blue};
+        font-size: ${({ theme }) => theme.fontSize.fs18};
     }
 
     @media ${MEDIA.TABLET} {
