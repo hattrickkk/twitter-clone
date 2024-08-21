@@ -6,13 +6,14 @@ import { withButtonType } from '@/utils/withButtonType'
 
 type Props = {
     children: ReactNode
+    onClick?: VoidFunction
     maxWidth?: number
     type?: ButtonTypes
 }
 
-export const Button = ({ children, maxWidth, type = ButtonTypes.DEFAULT }: Props) => {
+export const Button = ({ children, onClick, maxWidth, type = ButtonTypes.DEFAULT }: Props) => {
     return (
-        <StyledButton maxWidth={maxWidth} type={type}>
+        <StyledButton maxWidth={maxWidth} type={type} onClick={onClick}>
             {children}
         </StyledButton>
     )
