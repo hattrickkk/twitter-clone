@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { ButtonWrapper, DropdownsWrapper, InputsWrapper, Logo, LogoImg, SignUp, Subtitle, Text, Title } from './styled'
 import twitterLogo from '@/assets/twitter-logo.svg'
@@ -9,7 +9,7 @@ import { DropdownTypes } from '@/constants/dropdownTypes'
 import { INIT_DROPDOWNS_VALUES } from '@/constants/initValues'
 import { InputsNames } from '@/constants/inputsNames'
 import { MONTHS } from '@/constants/month'
-import { LOG_IN } from '@/constants/paths'
+import { HOME, LOG_IN } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import type { SignUpFormData } from '@/customTypes/auth'
 import { Container, ErrorMessage } from '@/styles/common'
@@ -26,6 +26,8 @@ export const SignUpContent = () => {
     const [dropdownsValues, setDropdownValues] = useState(INIT_DROPDOWNS_VALUES)
     const [dropdownError, setDropdownError] = useState('')
     const [responseError, setResponseError] = useState('')
+
+    const navigate = useNavigate()
 
     const years: number[] = useMemo(() => getYears(), [])
     const days: number[] = useMemo(
@@ -56,6 +58,7 @@ export const SignUpContent = () => {
                 birthDate: `${day.value}/${MONTHS.indexOf(month.value as string) + 1}/${year.value}`,
             })
             if (response.status === Status.SUCCESS) {
+                navigate(HOME)
                 setDropdownError('')
                 setResponseError('')
                 reset()

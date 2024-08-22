@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import {
@@ -16,14 +17,24 @@ import {
 import twitterBack from '@/assets/auth/back-twitter.png'
 import googleIcon from '@/assets/auth/google-icon.svg'
 import twitterLogo from '@/assets/twitter-logo.svg'
-import { LOG_IN, SIGN_UP } from '@/constants/paths'
+import { HOME, LOG_IN, SIGN_UP } from '@/constants/paths'
+import { Status } from '@/constants/responseStatus'
 import { Flex } from '@/styles/flexStyles'
 import { Button } from '@/ui/buttons'
 import { signInWithGoogle } from '@/utils/auth/auth'
 
 export const LandingContent = () => {
     const navigate = useNavigate()
-    const handleNavigaionToSignUp = () => navigate(SIGN_UP)
+    const handleNavigaionToSignUp = useCallback(() => navigate(SIGN_UP), [])
+    const handleSignInWithGoogle = useCallback(async () => {
+        const response = await signInWithGoogle()
+        if (response.status === Status.SUCCESS) {
+            navigate(HOME)
+        } else {
+            console.error(response.error as string)
+        }
+    }, [])
+
     return (
         <LandingContainer>
             <Flex $gap={20}>
@@ -38,7 +49,7 @@ export const LandingContent = () => {
                     <SubTitle>Join Twitter today</SubTitle>
                     <Wrapper>
                         <Flex $flexdirection='column' $gap={20}>
-                            <Button onClick={signInWithGoogle}>
+                            <Button onClick={handleSignInWithGoogle}>
                                 <GoogleImg src={googleIcon} alt='google-icon' />
                                 Sign up with Google
                             </Button>
