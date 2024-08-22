@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import { ButtonTypes } from '@/constants/buttonTypes'
 import { MEDIA } from '@/constants/media'
 
-export const StyledButton = styled.button<{ maxWidth?: number | undefined; type: ButtonTypes }>`
+type Props = { maxWidth?: number | undefined; category: ButtonTypes; disable?: boolean }
+
+export const StyledButton = styled.button<Props>`
     padding: ${({ theme }) => `${theme.space.sp10} ${theme.space.sp40}`};
     font-size: ${({ theme }) => theme.fontSize.fs20};
     font-weight: ${({ theme }) => theme.fontWeight.medium};
@@ -20,8 +22,8 @@ export const StyledButton = styled.button<{ maxWidth?: number | undefined; type:
         ${({ theme }) => `border: ${theme.borderSize.bs1} solid ${theme.hoverGray};`}
     }
 
-    ${({ type, theme }) =>
-        type === ButtonTypes.PRIMARY &&
+    ${({ category, theme, disable }) =>
+        category === ButtonTypes.PRIMARY &&
         `
             background-color: ${theme.color.blue};
             font-family:  ${theme.fontFamily.robotoSerif};
@@ -35,10 +37,17 @@ export const StyledButton = styled.button<{ maxWidth?: number | undefined; type:
                 background-color: ${theme.color.darkBlue};
                 border: none;
             }
+
+            ${
+                disable &&
+                `pointer-events: none;
+                background-color: ${theme.color.disableBlue};`
+            }
+        }
     `}
 
-    ${({ type, theme }) =>
-        type === ButtonTypes.SECONDARY &&
+    ${({ category, theme }) =>
+        category === ButtonTypes.SECONDARY &&
         `
             background-color: ${theme.secondaryButtonColor};
             font-family:  ${theme.fontFamily.robotoSerif};

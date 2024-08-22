@@ -40,7 +40,16 @@ export const Title = styled.h2`
     }
 `
 export const InputsWrapper = styled.div`
-    & > * {
-        margin-bottom: ${({ theme }) => theme.space.sp30};
+    & > input:not(:first-child) {
+        margin-top: ${({ theme }) => theme.space.sp25};
+    }
+    margin-bottom: ${({ theme }) => theme.space.sp25};
+`
+export const ButtonWrapper = styled.div`
+    margin-top: ${({ theme }) => theme.space.sp40};
+
+    p {
+        padding-top: ${({ theme }) => theme.space.sp20};
+        text-align: center;
     }
 `

@@ -2,18 +2,27 @@ import { ReactNode } from 'react'
 
 import { StyledButton } from './styled'
 import { ButtonTypes } from '@/constants/buttonTypes'
-import { withButtonType } from '@/utils/withButtonType'
+import { withButtonType } from '@/utils/hocs/withButtonType'
 
 type Props = {
     children: ReactNode
     onClick?: VoidFunction
     maxWidth?: number
-    type?: ButtonTypes
+    category?: ButtonTypes
+    type?: 'button' | 'submit'
+    disable?: boolean
 }
 
-export const Button = ({ children, onClick, maxWidth, type = ButtonTypes.DEFAULT }: Props) => {
+export const Button = ({
+    children,
+    onClick,
+    maxWidth,
+    category = ButtonTypes.DEFAULT,
+    type = 'button',
+    disable = false,
+}: Props) => {
     return (
-        <StyledButton maxWidth={maxWidth} type={type} onClick={onClick}>
+        <StyledButton maxWidth={maxWidth} category={category} onClick={onClick} type={type} disable={disable}>
             {children}
         </StyledButton>
     )

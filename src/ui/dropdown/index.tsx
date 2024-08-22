@@ -2,17 +2,17 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import { Content, ContentWrapper, Field, Item, StyledDropdown } from './styled'
 import { DropdownTypes } from '@/constants/magicValues'
+import { DropdownsValues } from '@/customTypes/auth'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 
 type Props = {
     placeholder: string
     items: (string | number)[]
-    setSelectedMonth?: React.Dispatch<React.SetStateAction<string>>
-    setSelectedYear?: React.Dispatch<React.SetStateAction<number>>
+    setDropdownValues: React.Dispatch<React.SetStateAction<DropdownsValues>>
 }
 
-export const Dropdown = memo(({ placeholder, items, setSelectedMonth, setSelectedYear }: Props) => {
+export const Dropdown = memo(({ placeholder, items, setDropdownValues }: Props) => {
     const [value, setValue] = useState(placeholder)
     const [isOpen, close, open] = useOpenState()
 
@@ -22,8 +22,15 @@ export const Dropdown = memo(({ placeholder, items, setSelectedMonth, setSelecte
         const text = e.currentTarget.textContent as string
         setValue(text)
         close()
-        placeholder === DropdownTypes.MONTH && setSelectedMonth && setSelectedMonth(text)
-        placeholder === DropdownTypes.YEAR && setSelectedYear && setSelectedYear(+text)
+        setDropdownValues(prevValues => {
+            return {
+                ...prevValues,
+                [placeholder.toLowerCase()]: {
+                    isSelected: true,
+                    value: placeholder === DropdownTypes.MONTH ? text : +text,
+                },
+            }
+        })
     }, [])
 
     useEffect(() => {

@@ -31,9 +31,10 @@ export const Title = styled.h2`
 `
 
 export const InputsWrapper = styled.div`
-    & > * {
-        margin-bottom: ${({ theme }) => theme.space.sp25};
+    & > input:not(:first-child) {
+        margin-top: ${({ theme }) => theme.space.sp25};
     }
+    margin-bottom: ${({ theme }) => theme.space.sp25};
 `
 export const Subtitle = styled.h3`
     font-size: ${({ theme }) => theme.fontSize.fs18};
@@ -53,7 +54,6 @@ export const DropdownsWrapper = styled.div`
     display: flex;
     flex-direction: row;
     gap: ${({ theme }) => theme.space.sp20};
-    margin-bottom: ${({ theme }) => theme.space.sp40};
 
     & > *:nth-child(1) {
         flex: 4 4 auto;
@@ -70,5 +70,14 @@ export const DropdownsWrapper = styled.div`
         & > *:nth-child(3) {
             flex: 1 1 auto;
         }
+    }
+`
+
+export const ButtonWrapper = styled.div`
+    margin-top: ${({ theme }) => theme.space.sp40};
+
+    p {
+        padding-top: ${({ theme }) => theme.space.sp20};
+        text-align: center;
     }
 `

@@ -8,6 +8,8 @@ const colors = {
     gray: '#e4eaed',
     buttonGray: '#2B3948',
     buttonDarkGray: '#1C2732',
+    red: '#EF1C5C',
+    disableBlue: '#9DCBE6',
 }
 
 export const common = {
