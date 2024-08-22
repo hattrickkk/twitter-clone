@@ -20,7 +20,7 @@
         "isolatedModules": true,
         "jsx": "react-jsx",
         "sourceMap": true,
-        "rootDir": "src",
+        "rootDir": "src"
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "build"]

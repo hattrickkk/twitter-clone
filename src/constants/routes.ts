@@ -2,7 +2,7 @@ import { lazy } from 'react'
 
 import { AUTH, LOG_IN, SIGN_UP } from './paths'
 
-const landingPage = lazy(() => import('@/pages/landingPage'))
+const landingPage = lazy(() => import('@/pages/landinPage'))
 const signUpPage = lazy(() => import('@/pages/signUpPage'))
 const logInPage = lazy(() => import('@/pages/logInPage'))
 
