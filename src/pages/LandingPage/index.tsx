@@ -2,7 +2,7 @@ import { PageWrapper } from './styled'
 import { Footer } from '@/components/footer'
 import { LandingContent } from '@/components/landingContent'
 
-export const LandingPage = () => {
+const LandingPage = () => {
     return (
         <PageWrapper>
             <LandingContent />
@@ -10,3 +10,4 @@ export const LandingPage = () => {
         </PageWrapper>
     )
 }
+export default LandingPage

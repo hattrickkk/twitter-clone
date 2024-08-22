@@ -1,5 +1,6 @@
 import { LogInContent } from '@/components/logInContent'
 
-export const LogInPage = () => {
+const LogInPage = () => {
     return <LogInContent />
 }
+export default LogInPage
