@@ -1,5 +1,5 @@
 import { MONTHS } from './month'
-import { DropdownsValues } from '@/customTypes/auth'
+import type { DropdownsValues } from '@/customTypes/auth'
 
 export const INIT_DROPDOWNS_VALUES: DropdownsValues = {
     day: {

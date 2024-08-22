@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { memo, ReactNode } from 'react'
 
 import { StyledButton } from './styled'
 import { ButtonTypes } from '@/constants/buttonTypes'
@@ -13,21 +13,15 @@ type Props = {
     disable?: boolean
 }
 
-export const Button = ({
-    children,
-    onClick,
-    maxWidth,
-    category = ButtonTypes.DEFAULT,
-    type = 'button',
-    disable = false,
-}: Props) => {
-    return (
-        <StyledButton maxWidth={maxWidth} category={category} onClick={onClick} type={type} disable={disable}>
-            {children}
-        </StyledButton>
-    )
-}
+export const Button = memo(
+    ({ children, onClick, maxWidth, category = ButtonTypes.DEFAULT, type = 'button', disable = false }: Props) => {
+        return (
+            <StyledButton $maxWidth={maxWidth} $category={category} onClick={onClick} type={type} $disable={disable}>
+                {children}
+            </StyledButton>
+        )
+    }
+)
+export const PrimaryButton = memo(withButtonType(Button, ButtonTypes.PRIMARY))
 
-export const PrimaryButton = withButtonType(Button, ButtonTypes.PRIMARY)
-
-export const SecondaryButton = withButtonType(Button, ButtonTypes.SECONDARY)
+export const SecondaryButton = memo(withButtonType(Button, ButtonTypes.SECONDARY))

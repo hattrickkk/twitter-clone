@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ButtonTypes } from '@/constants/buttonTypes'
 import { MEDIA } from '@/constants/media'
 
-type Props = { maxWidth?: number | undefined; category: ButtonTypes; disable?: boolean }
+type Props = { $maxWidth?: number | undefined; $category: ButtonTypes; $disable?: boolean }
 
 export const StyledButton = styled.button<Props>`
     padding: ${({ theme }) => `${theme.space.sp10} ${theme.space.sp40}`};
@@ -16,14 +16,14 @@ export const StyledButton = styled.button<Props>`
     margin: 0 auto;
     line-height: ${({ theme }) => theme.lineHeight.lh32};
     width: 100%;
-    ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}px;`}
+    ${({ $maxWidth }) => $maxWidth && `max-width: ${$maxWidth}px;`}
 
     &:hover {
         ${({ theme }) => `border: ${theme.borderSize.bs1} solid ${theme.hoverGray};`}
     }
 
-    ${({ category, theme, disable }) =>
-        category === ButtonTypes.PRIMARY &&
+    ${({ $category, theme, $disable }) =>
+        $category === ButtonTypes.PRIMARY &&
         `
             background-color: ${theme.color.blue};
             font-family:  ${theme.fontFamily.robotoSerif};
@@ -39,15 +39,15 @@ export const StyledButton = styled.button<Props>`
             }
 
             ${
-                disable &&
+                $disable &&
                 `pointer-events: none;
                 background-color: ${theme.color.disableBlue};`
             }
         }
     `}
 
-    ${({ category, theme }) =>
-        category === ButtonTypes.SECONDARY &&
+    ${({ $category, theme }) =>
+        $category === ButtonTypes.SECONDARY &&
         `
             background-color: ${theme.secondaryButtonColor};
             font-family:  ${theme.fontFamily.robotoSerif};

@@ -1,5 +1,4 @@
-import { InputsNames } from '@/constants/inputsNames'
-import { DropdownTypes } from '@/constants/magicValues'
+import { DropdownTypes } from '@/constants/dropdownTypes'
 
 export type SignUpFormData = {
     displayName: string

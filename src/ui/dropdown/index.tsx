@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import { Content, ContentWrapper, Field, Item, StyledDropdown } from './styled'
-import { DropdownTypes } from '@/constants/magicValues'
-import { DropdownsValues } from '@/customTypes/auth'
+import { DropdownTypes } from '@/constants/dropdownTypes'
+import type { DropdownsValues } from '@/customTypes/auth'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 

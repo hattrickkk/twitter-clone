@@ -10,7 +10,7 @@ import { Collections } from '@/constants/fireStoreCollections'
 import { InputsNames } from '@/constants/inputsNames'
 import { EMAIL_REGEX, PHONE_NUMBER_REGEX } from '@/constants/magicValues'
 import { Status } from '@/constants/responseStatus'
-import { UserProfile } from '@/customTypes/user'
+import type { UserProfile } from '@/customTypes/user'
 import { auth, db, provider } from '@/firebase'
 
 export const setUserToFireStore = async (uid: string, userData: UserProfile) => {
