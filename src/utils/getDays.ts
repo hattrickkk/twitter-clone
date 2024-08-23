@@ -1,4 +1,4 @@
-import { dateHelper } from './hooks/dateHepler'
+import { dateHelper } from './dateHepler'
 import { MONTHS } from '@/constants/month'
 
 export const getDays = (month: string, year: number) => {

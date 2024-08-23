@@ -10,6 +10,7 @@ const colors = {
     buttonDarkGray: '#1C2732',
     red: '#EF1C5C',
     disableBlue: '#9DCBE6',
+    green: 'green',
 }
 
 export const common = {

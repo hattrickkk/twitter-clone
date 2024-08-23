@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ButtonTypes } from '@/constants/buttonTypes'
 import { MEDIA } from '@/constants/media'
 
-type Props = { $maxWidth?: number | undefined; $category: ButtonTypes; $disable?: boolean }
+type Props = { $maxWidth?: number | undefined; $category: ButtonTypes; $disable?: boolean; $isProcessing: boolean }
 
 export const StyledButton = styled.button<Props>`
     padding: ${({ theme }) => `${theme.space.sp10} ${theme.space.sp40}`};
@@ -22,7 +22,7 @@ export const StyledButton = styled.button<Props>`
         ${({ theme }) => `border: ${theme.borderSize.bs1} solid ${theme.hoverGray};`}
     }
 
-    ${({ $category, theme, $disable }) =>
+    ${({ $category, theme, $disable, $isProcessing }) =>
         $category === ButtonTypes.PRIMARY &&
         `
             background-color: ${theme.color.blue};
@@ -42,6 +42,15 @@ export const StyledButton = styled.button<Props>`
                 $disable &&
                 `pointer-events: none;
                 background-color: ${theme.color.disableBlue};`
+            }
+
+
+            ${
+                $isProcessing &&
+                `cursor: wait;
+                &:hover {
+                    cursor: wait;
+                }`
             }
         }
     `}

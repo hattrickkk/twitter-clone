@@ -11,12 +11,28 @@ type Props = {
     category?: ButtonTypes
     type?: 'button' | 'submit'
     disable?: boolean
+    isProcessing?: boolean
 }
 
 export const Button = memo(
-    ({ children, onClick, maxWidth, category = ButtonTypes.DEFAULT, type = 'button', disable = false }: Props) => {
+    ({
+        children,
+        onClick,
+        maxWidth,
+        category = ButtonTypes.DEFAULT,
+        type = 'button',
+        disable = false,
+        isProcessing = false,
+    }: Props) => {
         return (
-            <StyledButton $maxWidth={maxWidth} $category={category} onClick={onClick} type={type} $disable={disable}>
+            <StyledButton
+                $maxWidth={maxWidth}
+                $category={category}
+                onClick={onClick}
+                type={type}
+                $disable={disable}
+                $isProcessing={isProcessing}
+            >
                 {children}
             </StyledButton>
         )

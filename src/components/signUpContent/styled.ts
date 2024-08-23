@@ -75,9 +75,4 @@ export const DropdownsWrapper = styled.div`
 
 export const ButtonWrapper = styled.div`
     margin-top: ${({ theme }) => theme.space.sp40};
-
-    p {
-        padding-top: ${({ theme }) => theme.space.sp20};
-        text-align: center;
-    }
 `

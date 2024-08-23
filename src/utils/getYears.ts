@@ -1,4 +1,4 @@
-import { dateHelper } from './hooks/dateHepler'
+import { dateHelper } from './dateHepler'
 import { MIN_YEAR } from '@/constants/magicValues'
 
 export const getYears = () => {

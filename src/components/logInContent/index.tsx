@@ -3,21 +3,23 @@ import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { ButtonWrapper, InputsWrapper, LogIn, Logo, LogoImg, Title } from './styled'
+import { InputsWrapper, LogIn, Logo, LogoImg, Title } from './styled'
 import twitterLogo from '@/assets/twitter-logo.svg'
+import { InputWithError } from '@/components/InputWithError'
 import { InputsNames } from '@/constants/inputsNames'
+import { Messages } from '@/constants/messages'
 import { HOME, SIGN_UP } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import type { LogInFormData } from '@/customTypes/auth'
-import { Container, ErrorMessage, Form } from '@/styles/common'
+import { Container, Form } from '@/styles/common'
 import { PrimaryButton } from '@/ui/buttons'
-import { Input } from '@/ui/input'
+import { Notification } from '@/ui/notification'
 import { logIn } from '@/utils/auth/auth'
 import { useValidateInput } from '@/utils/hooks/useValidateInput'
+import { setNotification } from '@/utils/setNotification'
 import { logInsignSchema } from '@/utils/validationAuthSchemas'
 
 export const LogInContent = () => {
-    const [responseError, setResponseError] = useState('')
     const navigate = useNavigate()
 
     const {
@@ -33,41 +35,61 @@ export const LogInContent = () => {
     const [emailOrPhoneField, emailOrPhoneFieldError] = useValidateInput(InputsNames.EMAIL_OR_PHONE, control)
     const [passwordField, passwordError] = useValidateInput(InputsNames.PASSWORD, control)
 
+    const [isSubmitting, setIsSubmiting] = useState(false)
+
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+    const [notificationMessage, setnNotificationMessage] = useState('')
+    const [notificationStatus, setnNotificationStatus] = useState(Status.SUCCESS)
+
     const onSubmitHandler = useCallback(async ({ emailOrPhone, password }: LogInFormData) => {
+        setIsSubmiting(true)
         const response = await logIn(emailOrPhone, password)
         if (response.status === Status.SUCCESS) {
-            navigate(HOME)
-            setResponseError('')
+            setNotification(Messages.LOG_IN, Status.SUCCESS)
+            navigate(HOME, { replace: true })
             reset()
         } else {
-            setResponseError(response.error as string)
+            setnNotificationMessage(response.error as string)
+            setnNotificationStatus(Status.FAIL)
+            setIsNotificationOpen(true)
+            setTimeout(() => {
+                setIsNotificationOpen(false)
+            }, 3000)
         }
+        setIsSubmiting(false)
     }, [])
 
     return (
-        <Container>
-            <LogIn>
-                <Logo>
-                    <LogoImg src={twitterLogo} alt='twitter-logo' />
-                </Logo>
-                <Form onSubmit={handleSubmit(onSubmitHandler)}>
-                    <Title>Log in to Twitter</Title>
-                    <InputsWrapper>
-                        <Input {...emailOrPhoneField} placeholder='Phone number, email address' />
-                        {emailOrPhoneFieldError && <ErrorMessage>{emailOrPhoneFieldError.message}</ErrorMessage>}
-                        <Input {...passwordField} placeholder='Password' />
-                        {passwordError && <ErrorMessage>{passwordError.message}</ErrorMessage>}
-                    </InputsWrapper>
-                    <ButtonWrapper>
-                        <PrimaryButton type='submit' disable={!isValid}>
+        <>
+            <Notification message={notificationMessage} status={notificationStatus} visibility={isNotificationOpen} />
+            <Container>
+                <LogIn>
+                    <Logo>
+                        <LogoImg src={twitterLogo} alt='twitter-logo' />
+                    </Logo>
+                    <Form onSubmit={handleSubmit(onSubmitHandler)}>
+                        <Title>Log in to Twitter</Title>
+                        <InputsWrapper>
+                            <InputWithError
+                                placeholder='Phone number, email address'
+                                error={emailOrPhoneFieldError}
+                                controllerProps={emailOrPhoneField}
+                            />
+                            <InputWithError
+                                placeholder='Password'
+                                error={passwordError}
+                                controllerProps={passwordField}
+                            />
+                        </InputsWrapper>
+
+                        <PrimaryButton type='submit' disable={!isValid} isProcessing={isSubmitting}>
                             Log In
                         </PrimaryButton>
-                        {<ErrorMessage>{responseError}</ErrorMessage>}
-                    </ButtonWrapper>
 
-                    <Link to={SIGN_UP}>Sign up to Twitter</Link>
-                </Form>
-            </LogIn>
-        </Container>
+                        <Link to={SIGN_UP}>Sign up to Twitter</Link>
+                    </Form>
+                </LogIn>
+            </Container>
+        </>
     )
 }
