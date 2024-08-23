@@ -8,17 +8,19 @@ import twitterLogo from '@/assets/twitter-logo.svg'
 import { DropdownTypes } from '@/constants/dropdownTypes'
 import { INIT_DROPDOWNS_VALUES } from '@/constants/initValues'
 import { InputsNames } from '@/constants/inputsNames'
+import { Messages } from '@/constants/messages'
 import { MONTHS } from '@/constants/month'
 import { HOME, LOG_IN } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import type { SignUpFormData } from '@/customTypes/auth'
-import { Container, ErrorMessage } from '@/styles/common'
+import { Container, ErrorMessage, Form } from '@/styles/common'
 import { PrimaryButton } from '@/ui/buttons'
 import { Dropdown } from '@/ui/dropdown'
 import { Input } from '@/ui/input'
 import { signUp } from '@/utils/auth/auth'
 import { getDays } from '@/utils/getDays'
 import { getYears } from '@/utils/getYears'
+import { dateHelper } from '@/utils/hooks/dateHepler'
 import { useValidateInput } from '@/utils/hooks/useValidateInput'
 import { signUpSchema } from '@/utils/validationAuthSchemas'
 
@@ -73,12 +75,18 @@ export const SignUpContent = () => {
         async (formData: SignUpFormData) => {
             const { day, month, year } = dropdownsValues
             if (!day.isSelected || !month.isSelected || !year.isSelected) {
-                setDropdownError('Month, Day and Year are required')
+                setDropdownError(Messages.DATE_REQUIRED)
                 return
             }
-            const selectedDate = new Date(+year.value, MONTHS.indexOf(month.value as string), +day.value)
-            if (selectedDate > new Date()) {
-                setDropdownError('Selected date must not be greater than the current date')
+
+            const selectedDate = dateHelper.getDate({
+                year: +year.value,
+                month: MONTHS.indexOf(month.value as string),
+                day: +day.value,
+            })
+
+            if (selectedDate > dateHelper.getCurrentDate()) {
+                setDropdownError(Messages.GREATER_DATE)
                 return
             }
             await registerUser(formData)
@@ -99,7 +107,7 @@ export const SignUpContent = () => {
                 <Logo>
                     <LogoImg src={twitterLogo} alt='twitter-logo' />
                 </Logo>
-                <form onSubmit={handleSubmit(onSubmitHandler)}>
+                <Form onSubmit={handleSubmit(onSubmitHandler)}>
                     <Title>Create an account</Title>
                     <InputsWrapper>
                         <Input {...nameField} placeholder='Name' />
@@ -138,7 +146,7 @@ export const SignUpContent = () => {
                         </PrimaryButton>
                         {<ErrorMessage>{responseError}</ErrorMessage>}
                     </ButtonWrapper>
-                </form>
+                </Form>
             </SignUp>
         </Container>
     )

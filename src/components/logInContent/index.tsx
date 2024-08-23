@@ -9,7 +9,7 @@ import { InputsNames } from '@/constants/inputsNames'
 import { HOME, SIGN_UP } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import type { LogInFormData } from '@/customTypes/auth'
-import { Container, ErrorMessage } from '@/styles/common'
+import { Container, ErrorMessage, Form } from '@/styles/common'
 import { PrimaryButton } from '@/ui/buttons'
 import { Input } from '@/ui/input'
 import { logIn } from '@/utils/auth/auth'
@@ -50,7 +50,7 @@ export const LogInContent = () => {
                 <Logo>
                     <LogoImg src={twitterLogo} alt='twitter-logo' />
                 </Logo>
-                <form onSubmit={handleSubmit(onSubmitHandler)}>
+                <Form onSubmit={handleSubmit(onSubmitHandler)}>
                     <Title>Log in to Twitter</Title>
                     <InputsWrapper>
                         <Input {...emailOrPhoneField} placeholder='Phone number, email address' />
@@ -66,7 +66,7 @@ export const LogInContent = () => {
                     </ButtonWrapper>
 
                     <Link to={SIGN_UP}>Sign up to Twitter</Link>
-                </form>
+                </Form>
             </LogIn>
         </Container>
     )

@@ -1,8 +1,9 @@
+import { dateHelper } from './hooks/dateHepler'
 import { MIN_YEAR } from '@/constants/magicValues'
 
 export const getYears = () => {
     const years = []
-    const currentYear = new Date().getFullYear()
+    const currentYear = dateHelper.getCurrentYear()
     for (let i = MIN_YEAR; i <= currentYear; i++) {
         years.push(i)
     }

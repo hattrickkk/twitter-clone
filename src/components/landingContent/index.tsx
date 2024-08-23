@@ -25,7 +25,7 @@ import { signInWithGoogle } from '@/utils/auth/auth'
 
 export const LandingContent = () => {
     const navigate = useNavigate()
-    const handleNavigaionToSignUp = useCallback(() => navigate(SIGN_UP), [])
+    const handleNavigationToSignUp = useCallback(() => navigate(SIGN_UP), [])
     const handleSignInWithGoogle = useCallback(async () => {
         const response = await signInWithGoogle()
         if (response.status === Status.SUCCESS) {
@@ -53,7 +53,7 @@ export const LandingContent = () => {
                                 <GoogleImg src={googleIcon} alt='google-icon' />
                                 Sign up with Google
                             </Button>
-                            <Button onClick={handleNavigaionToSignUp}> Sign up with email</Button>
+                            <Button onClick={handleNavigationToSignUp}> Sign up with email</Button>
                         </Flex>
 
                         <Text>

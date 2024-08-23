@@ -1,5 +1,6 @@
 import { MONTHS } from './month'
 import type { DropdownsValues } from '@/customTypes/auth'
+import { dateHelper } from '@/utils/hooks/dateHepler'
 
 export const INIT_DROPDOWNS_VALUES: DropdownsValues = {
     day: {
@@ -12,6 +13,6 @@ export const INIT_DROPDOWNS_VALUES: DropdownsValues = {
     },
     year: {
         isSelected: false,
-        value: new Date().getFullYear(),
+        value: dateHelper.getCurrentYear(),
     },
 }

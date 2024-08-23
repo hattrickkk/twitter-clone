@@ -6,12 +6,13 @@ import { ROUTES } from '@/constants/routes'
 const AppRoutes = () => {
     return (
         <Routes>
-            {ROUTES.map(el => (
+            {ROUTES.map(({ path, component: Component }) => (
                 <Route
-                    path={el.path}
+                    key={path}
+                    path={path}
                     element={
                         <Suspense>
-                            <el.component />
+                            <Component />
                         </Suspense>
                     }
                 />

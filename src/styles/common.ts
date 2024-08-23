@@ -9,3 +9,4 @@ export const ErrorMessage = styled.p`
     color: ${({ theme }) => theme.color.red};
     padding-top: ${({ theme }) => theme.space.sp10};
 `
+export const Form = styled.form``
