@@ -32,7 +32,7 @@ export const LandingContent = () => {
         const response = await signInWithGoogle()
         if (response.status === Status.SUCCESS) {
             setNotification(Messages.LOG_IN_VIA_GOOGLE, Status.SUCCESS)
-            navigate(HOME)
+            navigate(`/${HOME}`)
         } else {
             console.error(response.error as string)
         }

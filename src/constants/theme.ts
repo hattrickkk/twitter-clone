@@ -11,6 +11,8 @@ const colors = {
     red: '#EF1C5C',
     disableBlue: '#9DCBE6',
     green: 'green',
+    blueGray: '#536471',
+    lightGray: '#F7F9F9',
 }
 
 export const common = {
@@ -69,7 +71,9 @@ export const common = {
         sp35: '35px',
         sp40: '40px',
         sp45: '45px',
+        sp50: '50px',
         sp55: '55px',
+        sp65: '65px',
         sp70: '70px',
         sp75: '75px',
         sp95: '95px',
@@ -83,8 +87,14 @@ export const common = {
         w15: '15px',
         w28: '28px',
         w32: '32px',
+        w40: '40px',
+        w50: '50px',
         w130: '130px',
+        w150: '150px',
+        w185: '185px',
         w200: '200px',
+        w230: '230px',
+        w370: '370px',
         w400: '400px',
         w450: '450px',
         w670: '670px',
@@ -108,9 +118,11 @@ export const common = {
     opacity: 0.6,
     inputColor: colors.white,
     dropdownItemColor: colors.gray,
+    secondaryButtonColor: colors.backBlue,
+    hoverSecondaryButtonColor: colors.buttonGray,
 }
 
-const enum ThemeMode {
+export const enum ThemeMode {
     light = 'LIGHT',
     dark = 'DARK',
 }
@@ -122,9 +134,12 @@ export const lightTheme = {
     textColor: common.color.black,
     hoverGray: 'rgba(0, 0, 0, 0.2)',
     borderGray: common.color.gray,
-    secondaryButtonColor: common.color.backBlue,
-    hoverSecondaryButtonColor: common.color.buttonGray,
     dropdownIconColor: '#9D9EA0',
+    boxShadowForContextMenu: '0 0px 8px rgba(0, 0, 0, 0.2)',
+    textShadow: '0 4px 4px rgba(0, 0, 0, 0.25)',
+    scrollBarThemeColor: common.color.gray,
+    copyrightColor: common.color.backBlue,
+    usersSectionColor: common.color.lightGray,
 }
 
 export const darkTheme = {
@@ -134,7 +149,10 @@ export const darkTheme = {
     textColor: common.color.white,
     hoverGray: common.color.gray,
     borderGray: 'rgba(255, 255, 255, 0.2)',
-    secondaryButtonColor: common.color.buttonGray,
-    hoverSecondaryButtonColor: common.color.buttonDarkGray,
     dropdownIconColor: common.color.buttonDarkGray,
+    boxShadowForContextMenu: '0px 0px 10px rgba(255, 255, 255, 0.1)',
+    textShadow: '0 4px 4px rgba(255, 255, 255, 0.25)',
+    scrollBarThemeColor: common.color.buttonDarkGray,
+    copyrightColor: common.color.gray,
+    usersSectionColor: common.color.buttonDarkGray,
 }

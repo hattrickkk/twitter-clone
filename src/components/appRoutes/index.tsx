@@ -1,9 +1,11 @@
 import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { ROUTES } from '@/constants/routes'
+import { Layout } from '@/components/layout'
+import { PRIVATE_ROUTES, ROUTES } from '@/constants/routes'
 
 const AppRoutes = () => {
+    const isAuth = true
     return (
         <Routes>
             {ROUTES.map(({ path, component: Component }) => (
@@ -17,6 +19,13 @@ const AppRoutes = () => {
                     }
                 />
             ))}
+            {isAuth && (
+                <Route path='/' element={<Layout />}>
+                    {PRIVATE_ROUTES.map(({ path, component: Component }) => (
+                        <Route key={path} path={path} element={<Component />} />
+                    ))}
+                </Route>
+            )}
         </Routes>
     )
 }

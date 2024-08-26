@@ -68,7 +68,7 @@ export const SignUpContent = () => {
                 birthDate: `${day.value}/${MONTHS.indexOf(month.value as string) + 1}/${year.value}`,
             })
             if (response.status === Status.SUCCESS) {
-                navigate(HOME, { replace: true })
+                navigate(`/${HOME}`, { replace: true })
                 setNotification(Messages.SIGN_UP, Status.SUCCESS)
                 setDropdownError('')
                 reset()

@@ -63,7 +63,7 @@ export const StyledButton = styled.button<Props>`
             color:${theme.color.white};
             font-size:${theme.fontSize.fs18};
             font-weight:${theme.fontWeight.bold};
-            padding: ${theme.space.sp5} ${theme.space.sp10};
+            padding: 0 ${theme.space.sp10};
             border: none;
 
             &:hover {
