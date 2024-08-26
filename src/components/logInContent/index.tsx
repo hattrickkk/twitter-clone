@@ -46,7 +46,7 @@ export const LogInContent = () => {
         const response = await logIn(emailOrPhone, password)
         if (response.status === Status.SUCCESS) {
             setNotification(Messages.LOG_IN, Status.SUCCESS)
-            navigate(HOME, { replace: true })
+            navigate(`/${HOME}`, { replace: true })
             reset()
         } else {
             setnNotificationMessage(response.error as string)

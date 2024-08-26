@@ -1,3 +1,5 @@
+import { COPYRIGHT } from './magicValues'
+
 export const FOOTER_LINKS = [
     { title: 'About', path: '/about' },
     { title: 'Help Center', path: '/help-center' },
@@ -15,5 +17,8 @@ export const FOOTER_LINKS = [
     { title: 'Developers', path: '/developers' },
     { title: 'Directory', path: '/directory' },
     { title: 'Settings', path: '/settings' },
-    { title: '© 2024 Twitter, Inc.' },
+    { title: COPYRIGHT },
 ]
+
+export const SOME_FOOTER_LINKS = FOOTER_LINKS.slice(0, 4)
+export const REST_FOOTER_LINKS = FOOTER_LINKS.slice(4, -1)

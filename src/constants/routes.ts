@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 
-import { AUTH, HOME, LOG_IN, SIGN_UP } from './paths'
+import * as path from './paths'
 
 const landingPage = lazy(() => import('@/pages/landinPage'))
 const signUpPage = lazy(() => import('@/pages/signUpPage'))
@@ -13,19 +13,50 @@ export const ROUTES = [
         component: landingPage,
     },
     {
-        path: AUTH,
+        path: path.AUTH,
         component: landingPage,
     },
     {
-        path: SIGN_UP,
+        path: path.SIGN_UP,
         component: signUpPage,
     },
     {
-        path: LOG_IN,
+        path: path.LOG_IN,
         component: logInPage,
     },
+]
+
+export const PRIVATE_ROUTES = [
     {
-        path: HOME,
+        path: '/',
+        component: homePage,
+    },
+    {
+        path: path.HOME,
+        component: homePage,
+    },
+    {
+        path: path.EXPLORE,
+        component: homePage,
+    },
+    {
+        path: path.NOTIFICATIONS,
+        component: homePage,
+    },
+    {
+        path: path.MESSAGES,
+        component: homePage,
+    },
+    {
+        path: path.BOOKMARKS,
+        component: homePage,
+    },
+    {
+        path: path.LISTS,
+        component: homePage,
+    },
+    {
+        path: path.PROFILE,
         component: homePage,
     },
 ]
