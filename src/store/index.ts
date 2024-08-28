@@ -2,17 +2,20 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
+import notificationSlice from './slices/notificationSlice'
 import themeSlice from './slices/themeSlice'
 import userSlice from './slices/userSlice'
 
 const persistConfig = {
     key: 'root',
     storage,
+    blacklist: ['notification'],
 }
 
 const rootReducer = combineReducers({
     theme: themeSlice,
     user: userSlice,
+    notification: notificationSlice,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -3,11 +3,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { string } from 'yup'
 
 import { ButtonWrapper, DropdownsWrapper, InputsWrapper, Logo, LogoImg, SignUp, Subtitle, Text, Title } from './styled'
-import { InputWithError } from '../InputWithError'
 import twitterLogo from '@/assets/twitter-logo.svg'
+import { InputWithError } from '@/components/InputWithError'
 import { DropdownTypes } from '@/constants/dropdownTypes'
 import { INIT_DROPDOWNS_VALUES } from '@/constants/initValues'
 import { InputsNames } from '@/constants/inputsNames'
@@ -17,17 +16,16 @@ import { HOME, LOG_IN } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import type { SignUpFormData } from '@/customTypes/auth'
 import type { RequiredUser } from '@/customTypes/user'
+import { setNotification } from '@/store/slices/notificationSlice'
 import { setUser } from '@/store/slices/userSlice'
 import { Container, ErrorMessage, Form } from '@/styles/common'
 import { PrimaryButton } from '@/ui/buttons'
 import { Dropdown } from '@/ui/dropdown'
-import { Notification } from '@/ui/notification'
-import { signUp } from '@/utils/auth/auth'
 import { dateHelper } from '@/utils/dateHepler'
+import { signUp } from '@/utils/firebase/auth'
 import { getDays } from '@/utils/getDays'
 import { getYears } from '@/utils/getYears'
 import { useValidateInput } from '@/utils/hooks/useValidateInput'
-import { setNotification } from '@/utils/setNotification'
 import { signUpSchema } from '@/utils/validationAuthSchemas'
 
 export const SignUpContent = () => {
@@ -57,10 +55,6 @@ export const SignUpContent = () => {
 
     const [isSubmitting, setIsSubmiting] = useState(false)
 
-    const [isNotificationOpen, setIsNotificationOpen] = useState(false)
-    const [notificationMessage, setnNotificationMessage] = useState('')
-    const [notificationStatus, setnNotificationStatus] = useState(Status.SUCCESS)
-
     const registerUser = useCallback(
         async ({ email, displayName, phoneNumber, password }: SignUpFormData) => {
             const { day, month, year } = dropdownsValues
@@ -75,16 +69,11 @@ export const SignUpContent = () => {
             if (status === Status.SUCCESS) {
                 navigate(`/${HOME}`, { replace: true })
                 dispatch(setUser({ ...(user as RequiredUser), accessToken: accessToken as string }))
-                setNotification(Messages.SIGN_UP, Status.SUCCESS)
+                dispatch(setNotification({ message: Messages.SIGN_UP, status: Status.SUCCESS }))
                 setDropdownError('')
                 reset()
             } else {
-                setnNotificationMessage(error as string)
-                setnNotificationStatus(Status.FAIL)
-                setIsNotificationOpen(true)
-                setTimeout(() => {
-                    setIsNotificationOpen(false)
-                }, 3000)
+                dispatch(setNotification({ message: error as string, status: Status.FAIL }))
             }
             setIsSubmiting(false)
         },
@@ -106,7 +95,7 @@ export const SignUpContent = () => {
             })
 
             if (selectedDate > dateHelper.getCurrentDate()) {
-                setDropdownError(Messages.GREATER_DATE)
+                dispatch(setNotification({ message: Messages.GREATER_DATE, status: Status.FAIL }))
                 return
             }
             await registerUser(formData)
@@ -122,67 +111,51 @@ export const SignUpContent = () => {
     }, [dropdownsValues])
 
     return (
-        <>
-            <Notification message={notificationMessage} status={notificationStatus} visibility={isNotificationOpen} />
-            <Container>
-                <SignUp>
-                    <Logo>
-                        <LogoImg src={twitterLogo} alt='twitter-logo' />
-                    </Logo>
-                    <Form onSubmit={handleSubmit(onSubmitHandler)}>
-                        <Title>Create an account</Title>
-                        <InputsWrapper>
-                            <InputWithError placeholder='Name' error={nameError} controllerProps={nameField} />
-                            <InputWithError
-                                placeholder='Phone Number'
-                                error={phoneNumberError}
-                                controllerProps={phoneNumberField}
-                            />
-                            <InputWithError placeholder='Email' error={emailError} controllerProps={emailField} />
-                            <InputWithError
-                                placeholder='Password'
-                                error={passwordError}
-                                controllerProps={passwordField}
-                            />
-                        </InputsWrapper>
-                        <Link to={LOG_IN}>Use email</Link>
-                        <Subtitle>Date of birth</Subtitle>
-                        <Text>
-                            Facilisi sem pulvinar velit nunc, gravida scelerisque amet nibh sit. Quis bibendum ante
-                            phasellus metus, magna lacinia sed augue. Odio enim nascetur leo mauris vel eget. Pretium id
-                            ullamcorper blandit viverra dignissim eget tellus. Nibh mi massa in molestie a sit. Elit
-                            congue.
-                        </Text>
-                        <DropdownsWrapper>
-                            <Dropdown
-                                placeholder={DropdownTypes.MONTH}
-                                items={MONTHS}
-                                setDropdownValues={setDropdownValues}
-                            />
-                            <Dropdown
-                                placeholder={DropdownTypes.DAY}
-                                items={days}
-                                setDropdownValues={setDropdownValues}
-                            />
-                            <Dropdown
-                                placeholder={DropdownTypes.YEAR}
-                                items={years}
-                                setDropdownValues={setDropdownValues}
-                            />
-                        </DropdownsWrapper>
-                        {dropdownError && <ErrorMessage>{dropdownError}</ErrorMessage>}
-                        <ButtonWrapper>
-                            <PrimaryButton
-                                type='submit'
-                                disable={!isValid || !!dropdownError}
-                                isProcessing={isSubmitting}
-                            >
-                                Next
-                            </PrimaryButton>
-                        </ButtonWrapper>
-                    </Form>
-                </SignUp>
-            </Container>
-        </>
+        <Container>
+            <SignUp>
+                <Logo>
+                    <LogoImg src={twitterLogo} alt='twitter-logo' />
+                </Logo>
+                <Form onSubmit={handleSubmit(onSubmitHandler)}>
+                    <Title>Create an account</Title>
+                    <InputsWrapper>
+                        <InputWithError placeholder='Name' error={nameError} controllerProps={nameField} />
+                        <InputWithError
+                            placeholder='Phone Number'
+                            error={phoneNumberError}
+                            controllerProps={phoneNumberField}
+                        />
+                        <InputWithError placeholder='Email' error={emailError} controllerProps={emailField} />
+                        <InputWithError placeholder='Password' error={passwordError} controllerProps={passwordField} />
+                    </InputsWrapper>
+                    <Link to={LOG_IN}>Use email</Link>
+                    <Subtitle>Date of birth</Subtitle>
+                    <Text>
+                        Facilisi sem pulvinar velit nunc, gravida scelerisque amet nibh sit. Quis bibendum ante
+                        phasellus metus, magna lacinia sed augue. Odio enim nascetur leo mauris vel eget. Pretium id
+                        ullamcorper blandit viverra dignissim eget tellus. Nibh mi massa in molestie a sit. Elit congue.
+                    </Text>
+                    <DropdownsWrapper>
+                        <Dropdown
+                            placeholder={DropdownTypes.MONTH}
+                            items={MONTHS}
+                            setDropdownValues={setDropdownValues}
+                        />
+                        <Dropdown placeholder={DropdownTypes.DAY} items={days} setDropdownValues={setDropdownValues} />
+                        <Dropdown
+                            placeholder={DropdownTypes.YEAR}
+                            items={years}
+                            setDropdownValues={setDropdownValues}
+                        />
+                    </DropdownsWrapper>
+                    {dropdownError && <ErrorMessage>{dropdownError}</ErrorMessage>}
+                    <ButtonWrapper>
+                        <PrimaryButton type='submit' disable={!isValid || !!dropdownError} isProcessing={isSubmitting}>
+                            Next
+                        </PrimaryButton>
+                    </ButtonWrapper>
+                </Form>
+            </SignUp>
+        </Container>
     )
 }
