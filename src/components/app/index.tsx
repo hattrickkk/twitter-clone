@@ -6,6 +6,7 @@ import { darkTheme, lightTheme, ThemeMode } from '@/constants/theme'
 import { selectTheme } from '@/store/selectors'
 import { GlobalStyles } from '@/styles/global'
 import { NullStyles } from '@/styles/nullStyles'
+import { Notification } from '@/ui/notification'
 
 export const App = () => {
     const theme = useSelector(selectTheme)
@@ -15,6 +16,7 @@ export const App = () => {
             <NullStyles />
             <GlobalStyles />
             <AppRoutes />
+            <Notification />
         </ThemeProvider>
     )
 }
