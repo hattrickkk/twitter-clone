@@ -37,5 +37,4 @@ export const UserName = styled.p`
 export const ButtonWrapper = styled.div`
     align-self: center;
     width: ${({ theme }) => theme.width.w150};
-    max-height: 32px;
 `
