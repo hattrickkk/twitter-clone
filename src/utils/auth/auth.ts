@@ -18,6 +18,7 @@ export const setUserToFireStore = async (uid: string, userData: UserProfile) => 
     const docRef = doc(db, Collections.USERS, uid)
     await setDoc(docRef, {
         ...userData,
+        uid,
         lastLogin: dateHelper.getCurrentDate(),
     })
 }
@@ -28,22 +29,27 @@ export const signInWithGoogle = async () => {
         const { phoneNumber, displayName, email, photoURL, uid } = user
         await setUserToFireStore(uid, { phoneNumber, displayName, email, photoURL })
         const accessToken = await user.getIdToken()
-        return { status: Status.SUCCESS, accessToken }
+        return { status: Status.SUCCESS, accessToken, user: { displayName, photoURL, uid } }
     } catch (error) {
         return { status: Status.FAIL, error: (error as Error).message }
     }
 }
 
-export const signUp = async ({ email, password, phoneNumber, ...otherData }: UserProfile) => {
+export const signUp = async ({ email, password, phoneNumber, displayName, ...otherData }: UserProfile) => {
     try {
         const q = query(collection(db, Collections.USERS), where(InputsNames.PHONE_NUMBER, '==', phoneNumber))
         const querySnapshot = await getDocs(q)
         if (!querySnapshot.empty) throw new Error('Phone number is already in use')
 
         const { user } = await createUserWithEmailAndPassword(auth, email as string, password as string)
-        await setUserToFireStore(user.uid, { email, phoneNumber, ...otherData })
+        const { uid } = user
+        await setUserToFireStore(uid, { email, phoneNumber, displayName, ...otherData })
         const accessToken = await user.getIdToken()
-        return { status: Status.SUCCESS, accessToken }
+        return {
+            status: Status.SUCCESS,
+            accessToken,
+            user: { displayName, photoURL: null, uid },
+        }
     } catch (error) {
         return { status: Status.FAIL, error: (error as Error).message }
     }
@@ -61,8 +67,13 @@ export const logIn = async (emailOrPhone: string, password: string) => {
             email = querySnapshot.docs[0].data().email
         }
         const { user } = await signInWithEmailAndPassword(auth, email, password)
+        const { uid, photoURL, displayName } = user
         const accessToken = await user.getIdToken()
-        return { status: Status.SUCCESS, accessToken }
+        return {
+            status: Status.SUCCESS,
+            accessToken,
+            user: { displayName, photoURL, uid },
+        }
     } catch (error) {
         return { status: Status.FAIL, error: (error as Error).message }
     }

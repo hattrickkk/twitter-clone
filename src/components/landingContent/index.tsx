@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
 import {
@@ -20,6 +21,8 @@ import twitterLogo from '@/assets/twitter-logo.svg'
 import { Messages } from '@/constants/messages'
 import { HOME, LOG_IN, SIGN_UP } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
+import type { RequiredUser } from '@/customTypes/user'
+import { setUser } from '@/store/slices/userSlice'
 import { Flex } from '@/styles/flexStyles'
 import { Button } from '@/ui/buttons'
 import { signInWithGoogle } from '@/utils/auth/auth'
@@ -27,14 +30,16 @@ import { setNotification } from '@/utils/setNotification'
 
 export const LandingContent = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const handleNavigationToSignUp = useCallback(() => navigate(SIGN_UP), [])
     const handleSignInWithGoogle = useCallback(async () => {
-        const response = await signInWithGoogle()
-        if (response.status === Status.SUCCESS) {
+        const { user, status, error, accessToken } = await signInWithGoogle()
+        if (status === Status.SUCCESS) {
             setNotification(Messages.LOG_IN_VIA_GOOGLE, Status.SUCCESS)
-            navigate(`/${HOME}`)
+            dispatch(setUser({ ...(user as RequiredUser), accessToken: accessToken as string }))
+            navigate(`/${HOME}`, { replace: true })
         } else {
-            console.error(response.error as string)
+            console.error(error as string)
         }
     }, [])
 

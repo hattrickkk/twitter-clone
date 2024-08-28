@@ -5,4 +5,7 @@ export type UserProfile = {
     birthDate?: string | null
     phoneNumber?: string | null
     photoURL?: string | null
+    uid?: string | null
 }
+
+export type RequiredUser = Required<Pick<UserProfile, 'uid' | 'photoURL' | 'displayName'>>

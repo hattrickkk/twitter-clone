@@ -1,7 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { string } from 'yup'
 
 import { ButtonWrapper, DropdownsWrapper, InputsWrapper, Logo, LogoImg, SignUp, Subtitle, Text, Title } from './styled'
 import { InputWithError } from '../InputWithError'
@@ -14,6 +16,8 @@ import { MONTHS } from '@/constants/month'
 import { HOME, LOG_IN } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import type { SignUpFormData } from '@/customTypes/auth'
+import type { RequiredUser } from '@/customTypes/user'
+import { setUser } from '@/store/slices/userSlice'
 import { Container, ErrorMessage, Form } from '@/styles/common'
 import { PrimaryButton } from '@/ui/buttons'
 import { Dropdown } from '@/ui/dropdown'
@@ -31,6 +35,7 @@ export const SignUpContent = () => {
     const [dropdownError, setDropdownError] = useState('')
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const years: number[] = useMemo(() => getYears(), [])
     const days: number[] = useMemo(
@@ -60,20 +65,21 @@ export const SignUpContent = () => {
         async ({ email, displayName, phoneNumber, password }: SignUpFormData) => {
             const { day, month, year } = dropdownsValues
             setIsSubmiting(true)
-            const response = await signUp({
+            const { status, accessToken, error, user } = await signUp({
                 email,
                 displayName,
                 phoneNumber,
                 password,
                 birthDate: `${day.value}/${MONTHS.indexOf(month.value as string) + 1}/${year.value}`,
             })
-            if (response.status === Status.SUCCESS) {
+            if (status === Status.SUCCESS) {
                 navigate(`/${HOME}`, { replace: true })
+                dispatch(setUser({ ...(user as RequiredUser), accessToken: accessToken as string }))
                 setNotification(Messages.SIGN_UP, Status.SUCCESS)
                 setDropdownError('')
                 reset()
             } else {
-                setnNotificationMessage(response.error as string)
+                setnNotificationMessage(error as string)
                 setnNotificationStatus(Status.FAIL)
                 setIsNotificationOpen(true)
                 setTimeout(() => {
