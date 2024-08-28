@@ -1,12 +1,11 @@
-import { Notification } from '@/ui/notification'
-import { useNotification } from '@/utils/hooks/useNotification'
+import { Header } from '@/components/header'
+import { WhatsHappening } from '@/components/whatsHappening'
 
 const Home = () => {
-    const { isNotificationOpen, notificationMessage, notificationStatus } = useNotification()
     return (
         <div>
-            <Notification message={notificationMessage} status={notificationStatus} visibility={isNotificationOpen} />
-            Home
+            <Header />
+            <WhatsHappening />
         </div>
     )
 }

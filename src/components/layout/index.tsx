@@ -2,8 +2,8 @@ import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import { Main, Wrapper } from './styled'
-import { NavPanel } from '../navPanel'
-import { SideBar } from '../sideBar'
+import { NavPanel } from '@/components/navPanel'
+import { SideBar } from '@/components/sideBar'
 import { Container } from '@/styles/common'
 import { Flex } from '@/styles/flexStyles'
 
