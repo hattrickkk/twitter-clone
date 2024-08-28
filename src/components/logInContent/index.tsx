@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { InputsWrapper, LogIn, Logo, LogoImg, Title } from './styled'
@@ -11,6 +12,8 @@ import { Messages } from '@/constants/messages'
 import { HOME, SIGN_UP } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import type { LogInFormData } from '@/customTypes/auth'
+import type { RequiredUser } from '@/customTypes/user'
+import { setUser } from '@/store/slices/userSlice'
 import { Container, Form } from '@/styles/common'
 import { PrimaryButton } from '@/ui/buttons'
 import { Notification } from '@/ui/notification'
@@ -21,6 +24,7 @@ import { logInsignSchema } from '@/utils/validationAuthSchemas'
 
 export const LogInContent = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const {
         control,
@@ -43,13 +47,14 @@ export const LogInContent = () => {
 
     const onSubmitHandler = useCallback(async ({ emailOrPhone, password }: LogInFormData) => {
         setIsSubmiting(true)
-        const response = await logIn(emailOrPhone, password)
-        if (response.status === Status.SUCCESS) {
+        const { status, user, error, accessToken } = await logIn(emailOrPhone, password)
+        if (status === Status.SUCCESS) {
             setNotification(Messages.LOG_IN, Status.SUCCESS)
+            dispatch(setUser({ ...(user as RequiredUser), accessToken: accessToken as string }))
             navigate(`/${HOME}`, { replace: true })
             reset()
         } else {
-            setnNotificationMessage(response.error as string)
+            setnNotificationMessage(error as string)
             setnNotificationStatus(Status.FAIL)
             setIsNotificationOpen(true)
             setTimeout(() => {
