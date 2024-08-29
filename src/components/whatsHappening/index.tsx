@@ -39,6 +39,7 @@ type ImageState = {
 export const WhatsHappening = memo(() => {
     const [value, setValue] = useState('')
     const [images, setImages] = useState<ImageState[]>([])
+    const [isSubmitting, setIsSubmiting] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const currentUser = useSelector(selectUser)
@@ -55,6 +56,7 @@ export const WhatsHappening = memo(() => {
     )
 
     const handleTwitClick = useCallback(async () => {
+        setIsSubmiting(true)
         const tweetPictures = await uploadPicture(
             images.map(img => img.file),
             Folders.TWEETS
@@ -74,6 +76,7 @@ export const WhatsHappening = memo(() => {
                 setImages([])
             }
         }
+        setIsSubmiting(false)
     }, [images, value])
 
     const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -147,6 +150,7 @@ export const WhatsHappening = memo(() => {
                                 <PrimaryButton
                                     onClick={handleTwitClick}
                                     disable={value.trim().length === 0 && images.length === 0}
+                                    isProcessing={isSubmitting}
                                 >
                                     Tweet
                                 </PrimaryButton>

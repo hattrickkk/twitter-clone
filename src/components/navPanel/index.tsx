@@ -1,21 +1,36 @@
 import { memo, useRef } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 
-import { Menu, Nav, Item, Text, ImageLogo, Logo, SideBarContainer, ContextMenuWrapper } from './styled'
+import { Menu, Nav, Item, Text, ImageLogo, Logo, SideBarContainer, ContextMenuWrapper, ProfileInfo } from './styled'
 import twitterLogo from '@/assets/twitter-logo.svg'
 import { NAV_LINKS, REST_NAV_LINKS } from '@/constants/navLinks'
-import { PrimaryButton } from '@/ui/buttons'
+import { PROFILE } from '@/constants/paths'
+import { selectUser } from '@/store/selectors'
+import { logOut } from '@/store/slices/userSlice'
+import { PrimaryButton, SecondaryButton } from '@/ui/buttons'
 import { ContextMenu } from '@/ui/contextMenu'
+import { UserCard } from '@/ui/userCard'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 
 export const NavPanel = memo(() => {
-    const CurrentPath = useLocation().pathname
+    const currentPath = useLocation().pathname
     const [isOpen, close, open] = useOpenState()
-    const contextMenuRef = useRef(null)
-    useOutsideClick(contextMenuRef, close)
+
+    const currentUser = useSelector(selectUser)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const log = () => {
+        dispatch(logOut())
+        navigate('/', { replace: true })
+    }
 
     const handleViewMoreClick = () => open()
+
+    const contextMenuRef = useRef(null)
+    useOutsideClick(contextMenuRef, close)
 
     return (
         <SideBarContainer>
@@ -26,7 +41,7 @@ export const NavPanel = memo(() => {
                 <Menu>
                     {NAV_LINKS.map(({ title, path, Icon, ActiveIcon }) => (
                         <Item key={title}>
-                            {CurrentPath === `/${path}` && ActiveIcon ? <ActiveIcon /> : <Icon />}
+                            {currentPath === `/${path}` && ActiveIcon ? <ActiveIcon /> : <Icon />}
                             {title !== 'More' ? (
                                 <NavLink to={`/${path}`}>{title}</NavLink>
                             ) : (
@@ -40,6 +55,18 @@ export const NavPanel = memo(() => {
                 </ContextMenuWrapper>
             </Nav>
             <PrimaryButton>Tweet</PrimaryButton>
+
+            <ProfileInfo>
+                {currentUser && (
+                    <UserCard
+                        userName={currentUser.uid as string}
+                        name={currentUser.displayName as string}
+                        photoURL={currentUser.photoURL as string}
+                        hasFollowButton={false}
+                    />
+                )}
+                {currentPath.includes(PROFILE) && <SecondaryButton onClick={log}>LogOut</SecondaryButton>}
+            </ProfileInfo>
         </SideBarContainer>
     )
 })

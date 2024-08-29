@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { Layout } from '@/components/layout'
-import { AUTH, HOME } from '@/constants/paths'
+import { HOME } from '@/constants/paths'
 import { PRIVATE_ROUTES, ROUTES } from '@/constants/routes'
 import { selectUser } from '@/store/selectors'
 
@@ -12,7 +12,7 @@ export const AppRoutes = () => {
     return (
         <Routes>
             {ROUTES.map(({ path, component: Component }) =>
-                (path === AUTH || path === '/') && currentUser ? (
+                path === '/' && currentUser ? (
                     <Route key={path} path={path} element={<Navigate to={HOME} replace />} />
                 ) : (
                     <Route

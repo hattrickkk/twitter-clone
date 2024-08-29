@@ -12,3 +12,5 @@ export const MONTHS = [
     'November',
     'December',
 ]
+
+export const SHORT_MOHTN = MONTHS.map(month => month.toLowerCase().slice(0, 3))

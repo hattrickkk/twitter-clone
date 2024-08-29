@@ -19,6 +19,8 @@ export const setUserToFireStore = async (uid: string, userData: UserProfile) => 
     const docRef = doc(db, Collections.USERS, uid)
     await setDoc(docRef, {
         ...userData,
+        tweets: [],
+        likedTweets: [],
         uid,
     })
 }

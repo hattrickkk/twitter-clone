@@ -9,3 +9,17 @@ export type UserProfile = {
 }
 
 export type RequiredUser = Required<Pick<UserProfile, 'uid' | 'photoURL' | 'displayName'>>
+
+export type UserInfo = {
+    displayName: string
+    userName: string
+    photoURL: string | null
+}
+
+export type UserInfoDoc = UserInfo & {
+    uid: string
+    tweets: string[]
+    likedTweets: string[]
+    phoneNumber: string
+    birthDate: string
+}

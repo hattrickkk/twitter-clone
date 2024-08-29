@@ -1,5 +1,5 @@
 import { bindActionCreators } from '@reduxjs/toolkit'
-import { useCallback, useContext } from 'react'
+import { memo, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Input, Label, SwitcherBody, SwitcherButton } from './styled'
@@ -7,7 +7,7 @@ import { ThemeMode } from '@/constants/theme'
 import { selectTheme } from '@/store/selectors'
 import { setDarkTheme, setLightTheme } from '@/store/slices/themeSlice'
 
-export const ThemeSwitcher = () => {
+export const ThemeSwitcher = memo(() => {
     const dispatch = useDispatch()
     const theme = useSelector(selectTheme)
     const actions = bindActionCreators({ setDarkTheme, setLightTheme }, dispatch)
@@ -17,17 +17,15 @@ export const ThemeSwitcher = () => {
     }, [theme])
 
     return (
-        <>
-            <Label htmlFor='themeSwitcher' id='themeLabel'>
-                <Input
-                    onClick={switcherClickHandler}
-                    type='checkbox'
-                    id='themeSwitcher'
-                    defaultChecked={theme === ThemeMode.dark}
-                />
-                <SwitcherBody />
-                <SwitcherButton />
-            </Label>
-        </>
+        <Label htmlFor='themeSwitcher' id='themeLabel'>
+            <Input
+                onClick={switcherClickHandler}
+                type='checkbox'
+                id='themeSwitcher'
+                defaultChecked={theme === ThemeMode.dark}
+            />
+            <SwitcherBody />
+            <SwitcherButton />
+        </Label>
     )
-}
+})
