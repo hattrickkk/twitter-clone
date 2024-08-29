@@ -20,8 +20,7 @@
         "isolatedModules": true,
         "jsx": "react-jsx",
         "sourceMap": true,
-        "rootDir": "src",
-        "types": ["jest", "@testing-library/jest-dom"]
+        "rootDir": "src"
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "build"]
