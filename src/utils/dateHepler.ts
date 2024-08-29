@@ -9,6 +9,10 @@ class DateHelper {
         return new Date()
     }
 
+    getMilliseconds() {
+        return Date.now()
+    }
+
     getCurrentYear() {
         return new Date().getFullYear()
     }
@@ -19,6 +23,10 @@ class DateHelper {
 
     getCountOfDaysInMonth({ month, year }: DateType) {
         return new Date(year, month + 1, 0).getDate()
+    }
+
+    getDateByString(date: string) {
+        return new Date(date)
     }
 }
 

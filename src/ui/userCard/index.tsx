@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 import { Image, ImageWrapper, UserName, Name, Wrapper, Info, ButtonWrapper } from './styled'
 import { SecondaryButton } from '../buttons'
 import avatar from '@/assets/avatar.svg'
@@ -7,9 +9,10 @@ type Props = {
     photoURL?: string
     userName: string
     name: string
+    hasFollowButton?: boolean
 }
 
-export const UserCard = ({ photoURL = undefined, userName, name }: Props) => {
+export const UserCard = memo(({ photoURL = undefined, userName, name, hasFollowButton = true }: Props) => {
     return (
         <Wrapper>
             <Flex>
@@ -22,10 +25,12 @@ export const UserCard = ({ photoURL = undefined, userName, name }: Props) => {
                         <UserName>{`@${userName}`}</UserName>
                     </Flex>
                 </Info>
-                <ButtonWrapper>
-                    <SecondaryButton>Follow</SecondaryButton>
-                </ButtonWrapper>
+                {hasFollowButton && (
+                    <ButtonWrapper>
+                        <SecondaryButton>Follow</SecondaryButton>
+                    </ButtonWrapper>
+                )}
             </Flex>
         </Wrapper>
     )
-}
+})

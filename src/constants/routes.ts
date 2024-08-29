@@ -13,10 +13,6 @@ export const ROUTES = [
         component: landingPage,
     },
     {
-        path: path.AUTH,
-        component: landingPage,
-    },
-    {
         path: path.SIGN_UP,
         component: signUpPage,
     },

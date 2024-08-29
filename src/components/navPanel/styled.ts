@@ -64,3 +64,16 @@ export const ContextMenuWrapper = styled.div<{ $isOpen: boolean }>`
     opacity: ${({ $isOpen }) => ($isOpen ? '100%' : '0')};
     width: 100%;
 `
+
+export const ProfileInfo = styled.div`
+    margin-top: ${({ theme }) => theme.space.sp50};
+
+    button {
+        padding: ${({ theme }) => theme.space.sp10};
+        background-color: ${({ theme }) => theme.color.buttonDarkGray};
+    }
+
+    & > *:not(:last-child) {
+        margin-bottom: ${({ theme }) => theme.space.sp25};
+    }
+`

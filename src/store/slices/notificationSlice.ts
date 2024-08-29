@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { Status } from '@/constants/responseStatus'
+import { dateHelper } from '@/utils/dateHepler'
 
 type NotificationState = {
     message: string
@@ -21,7 +22,7 @@ const notificationSlice = createSlice({
         setNotification(state: NotificationState, { payload }: PayloadAction<NotificationState>) {
             state.message = payload.message
             state.status = payload.status
-            state.created = Date.now()
+            state.created = dateHelper.getMilliseconds()
         },
     },
 })
