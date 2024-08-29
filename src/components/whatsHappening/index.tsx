@@ -1,4 +1,5 @@
-import { ChangeEvent, useCallback, useRef, useState } from 'react'
+import { fileTypeFromBuffer } from 'file-type'
+import { ChangeEvent, memo, useCallback, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -19,6 +20,7 @@ import {
 import avatar from '@/assets/avatar.svg'
 import { Folders } from '@/constants/fireStoreCollections'
 import { MAX_TWEET_TEXT_LENGTH } from '@/constants/magicValues'
+import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
 import { selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
@@ -34,7 +36,7 @@ type ImageState = {
     file: File
 }
 
-export const WhatsHappening = () => {
+export const WhatsHappening = memo(() => {
     const [value, setValue] = useState('')
     const [images, setImages] = useState<ImageState[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -74,18 +76,25 @@ export const WhatsHappening = () => {
         }
     }, [images, value])
 
-    const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
-        if (file && file.type.startsWith('image/')) {
-            const imageUrl = URL.createObjectURL(file)
-            setImages(prevImages => [
-                ...prevImages,
-                {
-                    path: imageUrl,
-                    file,
-                },
-            ])
+        if (file) {
+            const buffer = await file.arrayBuffer()
+            const type = await fileTypeFromBuffer(buffer)
+            if (type && file.type.startsWith('image/')) {
+                const imageUrl = URL.createObjectURL(file)
+                setImages(prevImages => [
+                    ...prevImages,
+                    {
+                        path: imageUrl,
+                        file,
+                    },
+                ])
+            } else {
+                dispatch(setNotification({ status: Status.FAIL, message: Messages.INVALID_FILE_TYPE }))
+            }
         }
+        e.target.value = ''
     }, [])
 
     const handleAddFileClick = useCallback(() => {
@@ -113,7 +122,6 @@ export const WhatsHappening = () => {
                     <TextAreaWrapper>
                         <Textarea placeholder='What&#39;s happening' onChange={onTextAreaChange} value={value} />
                     </TextAreaWrapper>
-
                     {images.length > 0 && (
                         <Pictures>
                             {images.map(({ path }, i) => (
@@ -124,7 +132,6 @@ export const WhatsHappening = () => {
                             ))}
                         </Pictures>
                     )}
-
                     <TweetContentFooter>
                         <Flex $alignitems='center' $gap={15}>
                             <AddPictureIcon
@@ -139,7 +146,7 @@ export const WhatsHappening = () => {
                             <ButtonWrapper>
                                 <PrimaryButton
                                     onClick={handleTwitClick}
-                                    disable={value.length === 0 && images.length === 0}
+                                    disable={value.trim().length === 0 && images.length === 0}
                                 >
                                     Tweet
                                 </PrimaryButton>
@@ -150,4 +157,4 @@ export const WhatsHappening = () => {
             </Flex>
         </Wrapper>
     )
-}
+})
