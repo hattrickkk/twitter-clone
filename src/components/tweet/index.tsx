@@ -1,18 +1,17 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 
 import defaultAvatar from '@/assets/avatar.svg'
 import { Messages } from '@/constants/messages'
-import { PROFILE } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import type { TweetDoc } from '@/customTypes/tweet'
 import { selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
+import { updateTweets } from '@/store/slices/tweetsSlice'
 import { Flex } from '@/styles/flexStyles'
 import { Like } from '@/ui/like'
 import { MoreIcon } from '@/ui/moreIcon'
-import { updateTweetLikes } from '@/utils/firebase/tweet'
+import { deleteTweetDoc, updateTweetLikes } from '@/utils/firebase/tweet'
 import { hasLikedByUser, updateUserLikedTweetsList } from '@/utils/firebase/user'
 import { getTweetTime } from '@/utils/getTweetTime'
 import { useOpenState } from '@/utils/hooks/useOpenState'
@@ -22,7 +21,6 @@ import { useTweetInfo } from '@/utils/hooks/useTweetInfo'
 import {
     AvatarImage,
     AvatarWrapper,
-    Button,
     ContextMenuWrapper,
     Footer,
     Header,
@@ -33,6 +31,7 @@ import {
     Picture,
     Pictures,
     PictureWrapper,
+    StyledButton,
     SubTitle,
     Text,
     TweetContent,
@@ -47,32 +46,45 @@ export const Tweet = memo(({ tweet: { images, userId, text, likes, tweetId, crea
     const { userInfo, tweetPictures } = useTweetInfo(userId, images)
     const currentUser = useSelector(selectUser)
     const dispatch = useDispatch()
-    const currentPath = useLocation().pathname
 
     const [isOpen, close, open] = useOpenState()
     const [isLiked, setIsLiked] = useState(false)
-    const [likesCount, setLikesCount] = useState(likes)
+    const [isSubmitting, setIsSubmiting] = useState(false)
+    const [likesCount, setLikesCount] = useState(likes.length)
     const tweetTime = getTweetTime(created)
 
     const handleLikeClick = useCallback(async () => {
         setIsLiked(prev => !prev)
         setLikesCount(isLiked ? likesCount - 1 : likesCount + 1)
-        if (currentUser) await updateUserLikedTweetsList(currentUser.uid as string, tweetId)
-        await updateTweetLikes(tweetId, isLiked ? likesCount - 1 : likesCount + 1)
-    }, [likesCount, isLiked])
+        if (currentUser) {
+            await updateUserLikedTweetsList(currentUser.uid as string, tweetId)
+            await updateTweetLikes(tweetId, currentUser?.uid as string, isLiked)
+        }
+    }, [likesCount, isLiked, likes])
 
-    const handleCopyLink = useCallback(() => {
-        const tweetURL = `${window.location.origin}/tweet/${tweetId}`
-        navigator.clipboard
-            .writeText(tweetURL)
-            .then(() => {
-                dispatch(setNotification({ status: Status.SUCCESS, message: Messages.COPY_LINK_SUCCESS }))
-            })
-            .catch(() => {
-                dispatch(setNotification({ status: Status.FAIL, message: Messages.COPY_LINK_FAIL }))
-            })
+    const handleCopyLink = useCallback(async () => {
+        try {
+            const tweetURL = `${window.location.origin}/tweet/${tweetId}`
+            await navigator.clipboard.writeText(tweetURL)
+            dispatch(setNotification({ status: Status.SUCCESS, message: Messages.COPY_LINK_SUCCESS }))
+        } catch (error) {
+            dispatch(setNotification({ status: Status.FAIL, message: Messages.COPY_LINK_FAIL }))
+        } finally {
+            close()
+        }
+    }, [])
 
+    const handleDeleteTweetClick = useCallback(async () => {
+        setIsSubmiting(true)
+        const response = await deleteTweetDoc(tweetId)
+        if (response.status === Status.SUCCESS) {
+            dispatch(setNotification({ status: Status.SUCCESS, message: Messages.DELETE_SUCCESS }))
+            dispatch(updateTweets())
+        } else {
+            dispatch(setNotification({ status: Status.FAIL, message: Messages.DELETE_FAIL }))
+        }
         close()
+        setIsSubmiting(false)
     }, [])
 
     const contextMenuRef = useRef(null)
@@ -101,8 +113,12 @@ export const Tweet = memo(({ tweet: { images, userId, text, likes, tweetId, crea
 
                     <ContextMenuWrapper ref={contextMenuRef} $isOpen={isOpen}>
                         <Menu>
-                            <Button onClick={handleCopyLink}>Copy Link</Button>
-                            {currentPath.includes(PROFILE) && <Button>Delete Tweet</Button>}
+                            <StyledButton onClick={handleCopyLink}>Copy Link</StyledButton>
+                            {currentUser?.uid === userId && (
+                                <StyledButton onClick={handleDeleteTweetClick} $isSubmiting={isSubmitting}>
+                                    Delete Tweet
+                                </StyledButton>
+                            )}
                         </Menu>
                     </ContextMenuWrapper>
                 </Header>

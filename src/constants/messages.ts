@@ -11,4 +11,7 @@ export const enum Messages {
     COPY_LINK_SUCCESS = 'Link copied to clipboard!',
     COPY_LINK_FAIL = 'Failed to copy the link',
     INVALID_FILE_TYPE = 'File is not an image',
+    DELETE_CONFIRMATION = 'This action cannot be undone and the post will be permanently removed from your profile, all your followers feeds, and search results.',
+    DELETE_SUCCESS = 'The tweet was deleted',
+    DELETE_FAIL = 'Something went wrong, the tweet was not deleted',
 }

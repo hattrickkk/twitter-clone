@@ -5,7 +5,6 @@ export type Tweet = {
 }
 export type TweetDoc = Tweet & {
     created: string
-    likes: number
-    retweets?: number
+    likes: string[]
     tweetId: string
 }

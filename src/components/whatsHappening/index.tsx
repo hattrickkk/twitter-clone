@@ -9,6 +9,7 @@ import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
 import { selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
+import { updateTweets } from '@/store/slices/tweetsSlice'
 import { Flex } from '@/styles/flexStyles'
 import { AddPictureIcon } from '@/ui/addPictureIcon'
 import { PrimaryButton } from '@/ui/buttons'
@@ -78,6 +79,7 @@ export const WhatsHappening = memo(() => {
             }
         }
         setIsSubmiting(false)
+        dispatch(updateTweets())
     }, [images, value])
 
     const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {

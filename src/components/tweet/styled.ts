@@ -126,7 +126,7 @@ export const Menu = styled.div`
     box-shadow: ${({ theme }) => theme.boxShadowForContextMenu};
 `
 
-export const Button = styled.button`
+export const StyledButton = styled.button<{ $isSubmiting?: boolean }>`
     padding: ${({ theme }) => theme.space.sp10};
     transition: ${({ theme }) => theme.transition.standart};
     background-color: ${({ theme }) => theme.backgroundColor};
@@ -137,4 +137,11 @@ export const Button = styled.button`
     &:hover {
         background-color: ${({ theme }) => theme.scrollBarThemeColor};
     }
+
+    ${({ $isSubmiting }) =>
+        $isSubmiting &&
+        `cursor: wait;
+        &:hover {
+            cursor: wait;
+        }`};
 `

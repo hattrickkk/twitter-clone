@@ -21,9 +21,13 @@ export const updateUserTweetsList = async (uid: string, tweetId: string) => {
         const userData = await getUser(uid)
         if (userData) {
             const docRef = doc(db, Collections.USERS, uid)
+            if (userData.tweets.indexOf(tweetId) !== -1) {
+                userData.tweets = userData.tweets.filter(id => id !== tweetId)
+            } else {
+                userData.tweets.push(tweetId)
+            }
             await updateDoc(docRef, {
                 ...userData,
-                tweets: [...userData.tweets, tweetId],
             })
             return { status: Status.SUCCESS, message: Messages.TWEET_CREATION_SUCCESS }
         } else {
@@ -46,6 +50,25 @@ export const updateUserLikedTweetsList = async (uid: string, tweetId: string) =>
             }
             await updateDoc(docRef, {
                 ...userData,
+            })
+            return { status: Status.SUCCESS }
+        } else {
+            throw new Error()
+        }
+    } catch (error) {
+        return { status: Status.FAIL }
+    }
+}
+
+export const removeTweetFromLikedTweets = async (uid: string, tweetId: string) => {
+    try {
+        const userData = await getUser(uid)
+        if (userData) {
+            const docRef = doc(db, Collections.USERS, uid)
+            const likes = (userData.likedTweets = userData.likedTweets.filter(id => id !== tweetId))
+            await updateDoc(docRef, {
+                ...userData,
+                likedTweets: likes,
             })
             return { status: Status.SUCCESS }
         } else {
