@@ -1,9 +1,10 @@
 import { memo } from 'react'
 
-import { Image, ImageWrapper, UserName, Name, Wrapper, Info, ButtonWrapper } from './styled'
-import { SecondaryButton } from '../buttons'
 import avatar from '@/assets/avatar.svg'
 import { Flex } from '@/styles/flexStyles'
+
+import { Image, ImageWrapper, UserName, Name, Wrapper, Info, ButtonWrapper } from './styled'
+import { SecondaryButton } from '../buttons'
 
 type Props = {
     photoURL?: string

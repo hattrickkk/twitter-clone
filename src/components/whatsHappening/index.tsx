@@ -2,6 +2,20 @@ import { fileTypeFromBuffer } from 'file-type'
 import { ChangeEvent, memo, useCallback, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import avatar from '@/assets/avatar.svg'
+import { Folders } from '@/constants/fireStoreCollections'
+import { MAX_TWEET_TEXT_LENGTH } from '@/constants/magicValues'
+import { Messages } from '@/constants/messages'
+import { Status } from '@/constants/responseStatus'
+import { selectUser } from '@/store/selectors'
+import { setNotification } from '@/store/slices/notificationSlice'
+import { Flex } from '@/styles/flexStyles'
+import { AddPictureIcon } from '@/ui/addPictureIcon'
+import { PrimaryButton } from '@/ui/buttons'
+import { uploadPicture } from '@/utils/firebase/pictures'
+import { setTweetToFireStore } from '@/utils/firebase/tweet'
+import { updateUserTweetsList } from '@/utils/firebase/user'
+
 import {
     TweetContent,
     Textarea,
@@ -17,19 +31,6 @@ import {
     PictureWrapper,
     Delete,
 } from './styled'
-import avatar from '@/assets/avatar.svg'
-import { Folders } from '@/constants/fireStoreCollections'
-import { MAX_TWEET_TEXT_LENGTH } from '@/constants/magicValues'
-import { Messages } from '@/constants/messages'
-import { Status } from '@/constants/responseStatus'
-import { selectUser } from '@/store/selectors'
-import { setNotification } from '@/store/slices/notificationSlice'
-import { Flex } from '@/styles/flexStyles'
-import { AddPictureIcon } from '@/ui/addPictureIcon'
-import { PrimaryButton } from '@/ui/buttons'
-import { uploadPicture } from '@/utils/firebase/pictures'
-import { setTweetToFireStore } from '@/utils/firebase/tweet'
-import { updateUserTweetsList } from '@/utils/firebase/user'
 
 type ImageState = {
     path: string

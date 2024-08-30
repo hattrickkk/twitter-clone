@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useSelector } from 'react-redux'
 
-import { Icon, StyledNotification, Message } from './styled'
 import { Status } from '@/constants/responseStatus'
 import { selectNotification } from '@/store/selectors'
 import { Flex } from '@/styles/flexStyles'
+
+import { Icon, StyledNotification, Message } from './styled'
 
 export const Notification = () => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false)

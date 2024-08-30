@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 
-import { getPictureURL } from '../firebase/pictures'
-import { getUser } from '../firebase/user'
 import { INIT_USER_INFO } from '@/constants/initValues'
 import type { UserInfo } from '@/customTypes/user'
+
+import { getPictureURL } from '../firebase/pictures'
+import { getUser } from '../firebase/user'
 
 export const useTweetInfo = (userId: string, images: string[]) => {
     const [userInfo, setUserInfo] = useState<UserInfo>(INIT_USER_INFO)

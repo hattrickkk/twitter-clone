@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { ButtonWrapper, DropdownsWrapper, InputsWrapper, Logo, LogoImg, SignUp, Subtitle, Text, Title } from './styled'
 import twitterLogo from '@/assets/twitter-logo.svg'
 import { InputWithError } from '@/components/InputWithError'
 import { DropdownTypes } from '@/constants/dropdownTypes'
@@ -27,6 +26,8 @@ import { getDays } from '@/utils/getDays'
 import { getYears } from '@/utils/getYears'
 import { useValidateInput } from '@/utils/hooks/useValidateInput'
 import { signUpSchema } from '@/utils/validationAuthSchemas'
+
+import { ButtonWrapper, DropdownsWrapper, InputsWrapper, Logo, LogoImg, SignUp, Subtitle, Text, Title } from './styled'
 
 export const SignUpContent = () => {
     const [dropdownsValues, setDropdownValues] = useState(INIT_DROPDOWNS_VALUES)

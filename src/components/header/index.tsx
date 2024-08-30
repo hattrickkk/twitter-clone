@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 
-import { StyledHeader, Title } from './styled'
 import { HOME } from '@/constants/paths'
 import { Flex } from '@/styles/flexStyles'
 import { ThemeSwitcher } from '@/ui/themeSwitcher'
+
+import { StyledHeader, Title } from './styled'
 
 export const Header = () => {
     const currentPath = useLocation().pathname

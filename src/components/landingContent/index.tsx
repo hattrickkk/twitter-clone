@@ -2,6 +2,19 @@ import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
+import twitterBack from '@/assets/auth/back-twitter.png'
+import googleIcon from '@/assets/auth/google-icon.svg'
+import twitterLogo from '@/assets/twitter-logo.svg'
+import { Messages } from '@/constants/messages'
+import { HOME, LOG_IN, SIGN_UP } from '@/constants/paths'
+import { Status } from '@/constants/responseStatus'
+import type { RequiredUser } from '@/customTypes/user'
+import { setNotification } from '@/store/slices/notificationSlice'
+import { setUser } from '@/store/slices/userSlice'
+import { Flex } from '@/styles/flexStyles'
+import { Button } from '@/ui/buttons'
+import { signInWithGoogle } from '@/utils/firebase/auth'
+
 import {
     Info,
     Logo,
@@ -15,18 +28,6 @@ import {
     LandingContainer,
     LogoImg,
 } from './styled'
-import twitterBack from '@/assets/auth/back-twitter.png'
-import googleIcon from '@/assets/auth/google-icon.svg'
-import twitterLogo from '@/assets/twitter-logo.svg'
-import { Messages } from '@/constants/messages'
-import { HOME, LOG_IN, SIGN_UP } from '@/constants/paths'
-import { Status } from '@/constants/responseStatus'
-import type { RequiredUser } from '@/customTypes/user'
-import { setNotification } from '@/store/slices/notificationSlice'
-import { setUser } from '@/store/slices/userSlice'
-import { Flex } from '@/styles/flexStyles'
-import { Button } from '@/ui/buttons'
-import { signInWithGoogle } from '@/utils/firebase/auth'
 
 export const LandingContent = () => {
     const navigate = useNavigate()

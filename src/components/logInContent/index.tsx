@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { InputsWrapper, LogIn, Logo, LogoImg, Title } from './styled'
 import twitterLogo from '@/assets/twitter-logo.svg'
 import { InputWithError } from '@/components/InputWithError'
 import { InputsNames } from '@/constants/inputsNames'
@@ -20,6 +19,8 @@ import { PrimaryButton } from '@/ui/buttons'
 import { logIn } from '@/utils/firebase/auth'
 import { useValidateInput } from '@/utils/hooks/useValidateInput'
 import { logInsignSchema } from '@/utils/validationAuthSchemas'
+
+import { InputsWrapper, LogIn, Logo, LogoImg, Title } from './styled'
 
 export const LogInContent = () => {
     const navigate = useNavigate()

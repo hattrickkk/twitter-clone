@@ -2,10 +2,11 @@ import { bindActionCreators } from '@reduxjs/toolkit'
 import { memo, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Input, Label, SwitcherBody, SwitcherButton } from './styled'
 import { ThemeMode } from '@/constants/theme'
 import { selectTheme } from '@/store/selectors'
 import { setDarkTheme, setLightTheme } from '@/store/slices/themeSlice'
+
+import { Input, Label, SwitcherBody, SwitcherButton } from './styled'
 
 export const ThemeSwitcher = memo(() => {
     const dispatch = useDispatch()

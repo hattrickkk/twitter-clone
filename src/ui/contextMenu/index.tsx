@@ -1,8 +1,9 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Item, Menu, Text } from './styled'
 import * as paths from '@/constants/paths'
+
+import { Item, Menu, Text } from './styled'
 
 type Item = {
     title: string

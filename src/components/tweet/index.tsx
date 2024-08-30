@@ -2,6 +2,23 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
+import defaultAvatar from '@/assets/avatar.svg'
+import { Messages } from '@/constants/messages'
+import { PROFILE } from '@/constants/paths'
+import { Status } from '@/constants/responseStatus'
+import type { TweetDoc } from '@/customTypes/tweet'
+import { selectUser } from '@/store/selectors'
+import { setNotification } from '@/store/slices/notificationSlice'
+import { Flex } from '@/styles/flexStyles'
+import { Like } from '@/ui/like'
+import { MoreIcon } from '@/ui/moreIcon'
+import { updateTweetLikes } from '@/utils/firebase/tweet'
+import { hasLikedByUser, updateUserLikedTweetsList } from '@/utils/firebase/user'
+import { getTweetTime } from '@/utils/getTweetTime'
+import { useOpenState } from '@/utils/hooks/useOpenState'
+import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
+import { useTweetInfo } from '@/utils/hooks/useTweetInfo'
+
 import {
     AvatarImage,
     AvatarWrapper,
@@ -21,22 +38,6 @@ import {
     TweetContent,
     Wrapper,
 } from './styled'
-import defaultAvatar from '@/assets/avatar.svg'
-import { Messages } from '@/constants/messages'
-import { PROFILE } from '@/constants/paths'
-import { Status } from '@/constants/responseStatus'
-import type { TweetDoc } from '@/customTypes/tweet'
-import { selectUser } from '@/store/selectors'
-import { setNotification } from '@/store/slices/notificationSlice'
-import { Flex } from '@/styles/flexStyles'
-import { Like } from '@/ui/like'
-import { MoreIcon } from '@/ui/moreIcon'
-import { updateTweetLikes } from '@/utils/firebase/tweet'
-import { hasLikedByUser, updateUserLikedTweetsList } from '@/utils/firebase/user'
-import { getTweetTime } from '@/utils/getTweetTime'
-import { useOpenState } from '@/utils/hooks/useOpenState'
-import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
-import { useTweetInfo } from '@/utils/hooks/useTweetInfo'
 
 type Props = {
     tweet: TweetDoc

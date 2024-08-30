@@ -1,14 +1,15 @@
 import { memo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
-import { FooterLinks, ContextMenuWrapper, Copyright } from './styled'
-import { SideBarContainer, Text } from './styled'
-import { UsersSection } from '../usersSection'
 import { REST_FOOTER_LINKS, SOME_FOOTER_LINKS } from '@/constants/footerLinks'
 import { COPYRIGHT } from '@/constants/magicValues'
 import { ContextMenu } from '@/ui/contextMenu'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
+
+import { SideBarContainer, Text } from './styled'
+import { FooterLinks, ContextMenuWrapper, Copyright } from './styled'
+import { UsersSection } from '../usersSection'
 
 export const SideBar = memo(() => {
     const [isOpen, close, open] = useOpenState()

@@ -6,7 +6,6 @@ import {
 } from 'firebase/auth'
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
 
-import { getUser } from './user'
 import { Collections } from '@/constants/fireStoreCollections'
 import { InputsNames } from '@/constants/inputsNames'
 import { EMAIL_REGEX, PHONE_NUMBER_REGEX } from '@/constants/magicValues'
@@ -14,6 +13,8 @@ import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
 import type { UserProfile } from '@/customTypes/user'
 import { auth, db, provider } from '@/firebase'
+
+import { getUser } from './user'
 
 export const setUserToFireStore = async (uid: string, userData: UserProfile) => {
     const docRef = doc(db, Collections.USERS, uid)

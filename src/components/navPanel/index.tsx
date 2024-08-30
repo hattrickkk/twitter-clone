@@ -2,7 +2,6 @@ import { memo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 
-import { Menu, Nav, Item, Text, ImageLogo, Logo, SideBarContainer, ContextMenuWrapper, ProfileInfo } from './styled'
 import twitterLogo from '@/assets/twitter-logo.svg'
 import { NAV_LINKS, REST_NAV_LINKS } from '@/constants/navLinks'
 import { PROFILE } from '@/constants/paths'
@@ -13,6 +12,8 @@ import { ContextMenu } from '@/ui/contextMenu'
 import { UserCard } from '@/ui/userCard'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
+
+import { Menu, Nav, Item, Text, ImageLogo, Logo, SideBarContainer, ContextMenuWrapper, ProfileInfo } from './styled'
 
 export const NavPanel = memo(() => {
     const currentPath = useLocation().pathname

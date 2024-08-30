@@ -1,9 +1,10 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
-import { StyledSection, Title } from './styled'
 import { FEW_USERS } from '@/mockData/users'
 import { UserCard } from '@/ui/userCard'
+
+import { StyledSection, Title } from './styled'
 
 export const UsersSection = memo(() => {
     return (
