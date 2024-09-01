@@ -6,6 +6,7 @@ import { Layout } from '@/components/layout'
 import { HOME } from '@/constants/paths'
 import { PRIVATE_ROUTES, ROUTES } from '@/constants/routes'
 import { selectUser } from '@/store/selectors'
+import { Spinner } from '@/ui/spinner'
 
 export const AppRoutes = () => {
     const currentUser = useSelector(selectUser)
@@ -19,7 +20,7 @@ export const AppRoutes = () => {
                         key={path}
                         path={path}
                         element={
-                            <Suspense>
+                            <Suspense fallback={<Spinner />}>
                                 <Component />
                             </Suspense>
                         }

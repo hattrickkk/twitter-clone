@@ -1,32 +1,21 @@
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-
 import { Header } from '@/components/header'
 import { Tweet } from '@/components/tweet'
 import { WhatsHappening } from '@/components/whatsHappening'
-import type { TweetDoc } from '@/customTypes/tweet'
-import { selectTweets } from '@/store/selectors'
-import { getAllTweets } from '@/utils/firebase/tweet'
+import { Spinner } from '@/ui/spinner'
+import { useLoadTweets } from '@/utils/hooks/useLoadTweets'
 
 const Home = () => {
-    const [tweets, setTweets] = useState<TweetDoc[]>([])
-    const tweetsUpdating = useSelector(selectTweets).updates
-
-    useEffect(() => {
-        getAllTweets().then(tweets => {
-            setTweets(tweets)
-        })
-    }, [tweetsUpdating])
-
+    const { tweets, loading, lastTweetRef } = useLoadTweets()
     return (
         <div>
             <Header />
             <WhatsHappening />
             <>
-                {tweets.map(tweet => (
-                    <Tweet key={tweet.tweetId} tweet={tweet} />
+                {tweets.map((tweet, i) => (
+                    <Tweet key={tweet.tweetId} tweet={tweet} ref={i === tweets.length - 1 ? lastTweetRef : null} />
                 ))}
             </>
+            {loading && <Spinner />}
         </div>
     )
 }

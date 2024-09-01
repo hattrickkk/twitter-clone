@@ -1,4 +1,18 @@
-import { collection, deleteDoc, doc, getDocs, orderBy, query, setDoc, updateDoc, where } from 'firebase/firestore'
+import {
+    collection,
+    deleteDoc,
+    doc,
+    DocumentData,
+    getDocs,
+    limit,
+    orderBy,
+    query,
+    QueryDocumentSnapshot,
+    setDoc,
+    startAfter,
+    updateDoc,
+    where,
+} from 'firebase/firestore'
 
 import { Collections } from '@/constants/fireStoreCollections'
 import { Messages } from '@/constants/messages'
@@ -7,7 +21,7 @@ import type { Tweet, TweetDoc } from '@/customTypes/tweet'
 import { db } from '@/firebase'
 import { generateHash } from '@/utils/generateHash'
 
-import { getUser, removeTweetFromLikedTweets, updateUserLikedTweetsList, updateUserTweetsList } from './user'
+import { getUser, removeTweetFromLikedTweets, updateUserTweetsList } from './user'
 
 export const setTweetToFireStore = async (tweet: Tweet) => {
     const created = new Date().toISOString()
@@ -27,16 +41,22 @@ export const getTweet = async (tweetId: string) => {
     }
 }
 
-export const getAllTweets = async () => {
+export const getTweets = async (lastTweet: QueryDocumentSnapshot<DocumentData, DocumentData> | null) => {
     const tweets: TweetDoc[] = []
-    const collectionRef = query(collection(db, Collections.TWEETS), orderBy('created', 'desc'))
+    const collectionRef = query(
+        collection(db, Collections.TWEETS),
+        orderBy('created', 'desc'),
+        ...(lastTweet ? [startAfter(lastTweet)] : []),
+        limit(5)
+    )
 
     const querySnapshot = await getDocs(collectionRef)
 
     querySnapshot.forEach(doc => {
         tweets.push(doc.data() as TweetDoc)
     })
-    return tweets
+
+    return { tweets, last: querySnapshot.docs[querySnapshot.docs.length - 1] }
 }
 
 export const updateTweetLikes = async (tweetId: string, uid: string, isLiked: boolean) => {
