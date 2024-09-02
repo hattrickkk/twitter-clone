@@ -22,6 +22,10 @@ export const setUserToFireStore = async (uid: string, userData: UserProfile) => 
         ...userData,
         tweets: [],
         likedTweets: [],
+        followind: [],
+        followers: [],
+        banner: null,
+        description: '',
         uid,
     })
 }

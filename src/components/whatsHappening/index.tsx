@@ -7,8 +7,10 @@ import { Folders } from '@/constants/fireStoreCollections'
 import { MAX_TWEET_TEXT_LENGTH } from '@/constants/magicValues'
 import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
+import { UsersTweetsTypes } from '@/constants/tweets'
 import { selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
+import { addTweet } from '@/store/slices/tweetsSlice'
 import { Flex } from '@/styles/flexStyles'
 import { AddPictureIcon } from '@/ui/addPictureIcon'
 import { PrimaryButton } from '@/ui/buttons'
@@ -65,16 +67,17 @@ export const WhatsHappening = memo(() => {
 
         if (currentUser && tweetPictures) {
             const { uid } = currentUser
-            const tweetId = await setTweetToFireStore({
+            const tweet = await setTweetToFireStore({
                 text: value,
                 images: tweetPictures,
                 userId: uid as string,
             })
-            const { message, status } = await updateUserTweetsList({ uid: uid as string, tweetId })
+            const { message, status } = await updateUserTweetsList({ uid: uid as string, tweetId: tweet.tweetId })
             dispatch(setNotification({ message, status }))
             if (status === Status.SUCCESS) {
                 setValue('')
                 setImages([])
+                dispatch(addTweet({ data: tweet, type: UsersTweetsTypes.OWN }))
             }
         }
         setIsSubmiting(false)
