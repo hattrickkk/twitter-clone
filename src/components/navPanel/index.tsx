@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react'
+import { memo, useCallback, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 
@@ -6,7 +6,7 @@ import twitterLogo from '@/assets/twitter-logo.svg'
 import { NAV_LINKS, REST_NAV_LINKS } from '@/constants/navLinks'
 import { PROFILE } from '@/constants/paths'
 import { selectUser } from '@/store/selectors'
-import { logOut } from '@/store/slices/userSlice'
+import { setUser } from '@/store/slices/userSlice'
 import { PrimaryButton, SecondaryButton } from '@/ui/buttons'
 import { ContextMenu } from '@/ui/contextMenu'
 import { UserCard } from '@/ui/userCard'
@@ -17,21 +17,19 @@ import { Menu, Nav, Item, Text, ImageLogo, Logo, SideBarContainer, ContextMenuWr
 
 export const NavPanel = memo(() => {
     const currentPath = useLocation().pathname
-    const [isOpen, close, open] = useOpenState()
+    const [isContextMenuOpen, closeContextMenu, openContextMenu] = useOpenState()
 
     const currentUser = useSelector(selectUser)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const log = () => {
-        dispatch(logOut())
+    const handleLogOutClick = useCallback(() => {
+        dispatch(setUser(null))
         navigate('/', { replace: true })
-    }
-
-    const handleViewMoreClick = () => open()
+    }, [])
 
     const contextMenuRef = useRef(null)
-    useOutsideClick(contextMenuRef, close)
+    useOutsideClick(contextMenuRef, closeContextMenu)
 
     return (
         <SideBarContainer>
@@ -46,12 +44,12 @@ export const NavPanel = memo(() => {
                             {title !== 'More' ? (
                                 <NavLink to={`/${path}`}>{title}</NavLink>
                             ) : (
-                                <Text onClick={handleViewMoreClick}>{title}</Text>
+                                <Text onClick={openContextMenu}>{title}</Text>
                             )}
                         </Item>
                     ))}
                 </Menu>
-                <ContextMenuWrapper ref={contextMenuRef} $isOpen={isOpen}>
+                <ContextMenuWrapper ref={contextMenuRef} $isOpen={isContextMenuOpen}>
                     <ContextMenu items={REST_NAV_LINKS} />
                 </ContextMenuWrapper>
             </Nav>
@@ -66,7 +64,7 @@ export const NavPanel = memo(() => {
                         hasFollowButton={false}
                     />
                 )}
-                {currentPath.includes(PROFILE) && <SecondaryButton onClick={log}>LogOut</SecondaryButton>}
+                {currentPath.includes(PROFILE) && <SecondaryButton onClick={handleLogOutClick}>LogOut</SecondaryButton>}
             </ProfileInfo>
         </SideBarContainer>
     )

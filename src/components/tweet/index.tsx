@@ -7,7 +7,6 @@ import { Status } from '@/constants/responseStatus'
 import type { TweetDoc } from '@/customTypes/tweet'
 import { selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
-import { updateTweets } from '@/store/slices/tweetsSlice'
 import { Flex } from '@/styles/flexStyles'
 import { Like } from '@/ui/like'
 import { MoreIcon } from '@/ui/moreIcon'
@@ -48,7 +47,7 @@ export const Tweet = memo(
         const currentUser = useSelector(selectUser)
         const dispatch = useDispatch()
 
-        const [isOpen, close, open] = useOpenState()
+        const [isContextMenuOpen, closeContextMenu, openContextMenu] = useOpenState()
         const [isLiked, setIsLiked] = useState(false)
         const [isSubmitting, setIsSubmiting] = useState(false)
         const [likesCount, setLikesCount] = useState(likes.length)
@@ -58,8 +57,8 @@ export const Tweet = memo(
             setIsLiked(prev => !prev)
             setLikesCount(isLiked ? likesCount - 1 : likesCount + 1)
             if (currentUser) {
-                await updateUserLikedTweetsList(currentUser.uid as string, tweetId)
-                await updateTweetLikes(tweetId, currentUser?.uid as string, isLiked)
+                await updateUserLikedTweetsList({ uid: currentUser.uid as string, tweetId })
+                await updateTweetLikes({ tweetId, uid: currentUser?.uid as string, isLiked })
             }
         }, [likesCount, isLiked, likes])
 
@@ -71,7 +70,7 @@ export const Tweet = memo(
             } catch (error) {
                 dispatch(setNotification({ status: Status.FAIL, message: Messages.COPY_LINK_FAIL }))
             } finally {
-                close()
+                closeContextMenu()
             }
         }, [])
 
@@ -80,20 +79,18 @@ export const Tweet = memo(
             const response = await deleteTweetDoc(tweetId)
             if (response.status === Status.SUCCESS) {
                 dispatch(setNotification({ status: Status.SUCCESS, message: Messages.DELETE_SUCCESS }))
-                dispatch(updateTweets())
             } else {
                 dispatch(setNotification({ status: Status.FAIL, message: Messages.DELETE_FAIL }))
             }
-            close()
+            closeContextMenu()
             setIsSubmiting(false)
         }, [])
 
         const contextMenuRef = useRef(null)
-        useOutsideClick(contextMenuRef, close)
-        const handleViewMoreClick = () => open()
+        useOutsideClick(contextMenuRef, closeContextMenu)
 
         useEffect(() => {
-            if (currentUser) hasLikedByUser(currentUser.uid as string, tweetId).then(res => setIsLiked(res))
+            if (currentUser) hasLikedByUser({ uid: currentUser.uid as string, tweetId }).then(res => setIsLiked(res))
         }, [])
 
         return (
@@ -108,11 +105,11 @@ export const Tweet = memo(
                             <SubTitle>@{userInfo.userName}</SubTitle>
                             <SubTitle>{tweetTime}</SubTitle>
                         </Flex>
-                        <IconWrapper onClick={handleViewMoreClick}>
+                        <IconWrapper onClick={openContextMenu}>
                             <MoreIcon />
                         </IconWrapper>
 
-                        <ContextMenuWrapper ref={contextMenuRef} $isOpen={isOpen}>
+                        <ContextMenuWrapper ref={contextMenuRef} $isOpen={isContextMenuOpen}>
                             <Menu>
                                 <StyledButton onClick={handleCopyLink}>Copy Link</StyledButton>
                                 {currentUser?.uid === userId && (

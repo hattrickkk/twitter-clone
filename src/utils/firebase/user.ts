@@ -16,7 +16,12 @@ export const getUser = async (uid: string) => {
     }
 }
 
-export const updateUserTweetsList = async (uid: string, tweetId: string) => {
+type UpdateUsersTweetsList = {
+    tweetId: string
+    uid: string
+}
+
+export const updateUserTweetsList = async ({ tweetId, uid }: UpdateUsersTweetsList) => {
     try {
         const userData = await getUser(uid)
         if (userData) {
@@ -38,7 +43,7 @@ export const updateUserTweetsList = async (uid: string, tweetId: string) => {
     }
 }
 
-export const updateUserLikedTweetsList = async (uid: string, tweetId: string) => {
+export const updateUserLikedTweetsList = async ({ tweetId, uid }: UpdateUsersTweetsList) => {
     try {
         const userData = await getUser(uid)
         if (userData) {
@@ -60,7 +65,7 @@ export const updateUserLikedTweetsList = async (uid: string, tweetId: string) =>
     }
 }
 
-export const removeTweetFromLikedTweets = async (uid: string, tweetId: string) => {
+export const removeTweetFromLikedTweets = async ({ tweetId, uid }: UpdateUsersTweetsList) => {
     try {
         const userData = await getUser(uid)
         if (userData) {
@@ -79,7 +84,7 @@ export const removeTweetFromLikedTweets = async (uid: string, tweetId: string) =
     }
 }
 
-export const hasLikedByUser = async (uid: string, tweetId: string) => {
+export const hasLikedByUser = async ({ tweetId, uid }: UpdateUsersTweetsList) => {
     try {
         const userData = await getUser(uid)
         return userData?.likedTweets.indexOf(tweetId) !== -1

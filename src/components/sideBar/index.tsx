@@ -12,22 +12,21 @@ import { FooterLinks, ContextMenuWrapper, Copyright } from './styled'
 import { UsersSection } from '../usersSection'
 
 export const SideBar = memo(() => {
-    const [isOpen, close, open] = useOpenState()
+    const [isContextMenuOpen, closeContextMenu, openContextMenu] = useOpenState()
     const contextMenuRef = useRef(null)
-    useOutsideClick(contextMenuRef, close)
-    const handleViewMoreClick = () => open()
+    useOutsideClick(contextMenuRef, closeContextMenu)
 
     return (
         <SideBarContainer>
             <UsersSection />
             <FooterLinks>
                 {SOME_FOOTER_LINKS.map(({ path, title }) => (
-                    <Link to={path as string} key={title}>
+                    <Link to={`${path}`} key={title}>
                         {title}
                     </Link>
                 ))}
-                <Text onClick={handleViewMoreClick}>More...</Text>
-                <ContextMenuWrapper ref={contextMenuRef} $isOpen={isOpen}>
+                <Text onClick={openContextMenu}>More...</Text>
+                <ContextMenuWrapper ref={contextMenuRef} $isOpen={isContextMenuOpen}>
                     <ContextMenu items={REST_FOOTER_LINKS} hasToolBar />
                 </ContextMenuWrapper>
                 <Copyright>{COPYRIGHT}</Copyright>

@@ -13,10 +13,11 @@ export const useTweetInfo = (userId: string, images: string[]) => {
     useEffect(() => {
         getUser(userId).then(res => {
             if (res) {
+                const { displayName, uid, photoURL } = res
                 setUserInfo({
-                    displayName: res.displayName,
-                    userName: res.uid,
-                    photoURL: res.photoURL,
+                    displayName,
+                    userName: uid,
+                    photoURL,
                 })
             }
         })

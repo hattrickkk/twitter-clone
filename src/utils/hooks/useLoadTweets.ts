@@ -1,35 +1,35 @@
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore'
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useSelector } from 'react-redux'
 
 import { OBSERVER_OPTIONS } from '@/constants/magicValues'
 import { TweetDoc } from '@/customTypes/tweet'
-import { selectTweets } from '@/store/selectors'
 
+import { concatTweets } from '../concatTweets'
 import { getTweets } from '../firebase/tweet'
 
 export const useLoadTweets = () => {
     const [tweets, setTweets] = useState<TweetDoc[]>([])
     const [lastTweet, setLastTweet] = useState<QueryDocumentSnapshot<DocumentData, DocumentData> | null>(null)
     const [loading, setLoading] = useState(false)
-    const tweetsUpdating = useSelector(selectTweets).updates
 
     useEffect(() => {
-        setLoading(true)
-        getTweets(null).then(({ tweets, last }) => {
-            setTweets(tweets)
-            setLastTweet(last)
-            setLoading(false)
-        })
-    }, [tweetsUpdating])
+        const unsubscribe = loadTweets()
+        return () => unsubscribe()
+    }, [])
 
     const loadTweets = useCallback(() => {
         setLoading(true)
-        getTweets(lastTweet).then(({ tweets: newTweets, last }) => {
-            setTweets(prevTweets => [...prevTweets, ...newTweets])
-            setLastTweet(last)
-            setLoading(false)
-        })
+        return getTweets(
+            lastTweet,
+            (tweets: TweetDoc[], lastTweet: QueryDocumentSnapshot<DocumentData, DocumentData> | null) => {
+                setTweets(prevTweets => {
+                    const uniqTweets = concatTweets(tweets, prevTweets)
+                    return uniqTweets
+                })
+                setLastTweet(lastTweet)
+                setLoading(false)
+            }
+        )
     }, [lastTweet])
 
     const observer = useRef<IntersectionObserver | null>(null)
@@ -47,10 +47,9 @@ export const useLoadTweets = () => {
             if (loading) return
             if (observer.current) observer.current.disconnect()
             observer.current = new IntersectionObserver(intersectionObserverCallback, OBSERVER_OPTIONS)
-
             if (node) observer.current.observe(node)
         },
-        [loading, lastTweet, tweetsUpdating]
+        [loading, lastTweet]
     )
 
     return { tweets, lastTweetRef, loading }

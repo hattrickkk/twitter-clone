@@ -14,14 +14,11 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUser(state: UserState, action: PayloadAction<StateUser>) {
-            state.currentUser = { ...action.payload }
-        },
-        logOut(state: UserState) {
-            state.currentUser = null
+        setUser(state: UserState, { payload }: PayloadAction<StateUser | null>) {
+            state.currentUser = payload ? { ...payload } : payload
         },
     },
 })
 
-export const { setUser, logOut } = userSlice.actions
+export const { setUser } = userSlice.actions
 export default userSlice.reducer

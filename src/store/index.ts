@@ -4,20 +4,18 @@ import storage from 'redux-persist/lib/storage'
 
 import notificationSlice from './slices/notificationSlice'
 import themeSlice from './slices/themeSlice'
-import tweetsSlice from './slices/tweetsSlice'
 import userSlice from './slices/userSlice'
 
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['notification', 'tweets'],
+    blacklist: ['notification'],
 }
 
 const rootReducer = combineReducers({
     theme: themeSlice,
     user: userSlice,
     notification: notificationSlice,
-    tweets: tweetsSlice,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
