@@ -53,6 +53,11 @@ export default tseslint.config(
                             group: 'unknown',
                             position: 'after',
                         },
+                        {
+                            pattern: '@/**',
+                            group: 'internal',
+                            position: 'before',
+                        },
                     ],
                     'newlines-between': 'always',
                     alphabetize: {

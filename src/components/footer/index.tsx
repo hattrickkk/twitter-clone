@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 
-import { StyledFooter, Text } from './styled'
 import { FOOTER_LINKS } from '@/constants/footerLinks'
 import { Container } from '@/styles/common'
 import { Flex } from '@/styles/flexStyles'
+
+import { StyledFooter, Text } from './styled'
 
 export const Footer = () => {
     return (

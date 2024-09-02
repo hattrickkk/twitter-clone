@@ -1,6 +1,7 @@
-import { PageWrapper } from './styled'
 import { Footer } from '@/components/footer'
 import { LandingContent } from '@/components/landingContent'
+
+import { PageWrapper } from './styled'
 
 const LandingPage = () => {
     return (

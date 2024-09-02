@@ -1,8 +1,9 @@
 import { memo, ReactNode } from 'react'
 
-import { StyledButton } from './styled'
 import { ButtonTypes } from '@/constants/buttonTypes'
 import { withButtonType } from '@/utils/hocs/withButtonType'
+
+import { StyledButton } from './styled'
 
 type Props = {
     children: ReactNode

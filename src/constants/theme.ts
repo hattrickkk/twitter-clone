@@ -11,6 +11,11 @@ const colors = {
     red: '#EF1C5C',
     disableBlue: '#9DCBE6',
     green: 'green',
+    blueGray: '#536471',
+    lightGray: '#F7F9F9',
+    darkGray: '#A0A0A0',
+    blackWithOpacity: 'rgba(0, 0, 0, 0.2)',
+    whiteWithOpacity: 'rgba(255, 255, 255, 0.25)',
 }
 
 export const common = {
@@ -41,6 +46,7 @@ export const common = {
         fs16: '16px',
         fs18: '18px',
         fs20: '20px',
+        fs22: '22px',
         fs24: '24px',
         fs30: '30px',
         fs34: '34px',
@@ -69,7 +75,9 @@ export const common = {
         sp35: '35px',
         sp40: '40px',
         sp45: '45px',
+        sp50: '50px',
         sp55: '55px',
+        sp65: '65px',
         sp70: '70px',
         sp75: '75px',
         sp95: '95px',
@@ -78,14 +86,26 @@ export const common = {
 
     width: {
         w1: '1px',
+        w1d5: '1.5px',
         w3: '3px',
+        w6: '6px',
         w10: '10px',
         w15: '15px',
+        w20: '20px',
+        w25: '25px',
         w28: '28px',
         w32: '32px',
+        w40: '40px',
+        w45: '45px',
+        w50: '50px',
         w130: '130px',
+        w150: '150px',
+        w185: '185px',
         w200: '200px',
+        w230: '230px',
+        w370: '370px',
         w400: '400px',
+        w410: '410px',
         w450: '450px',
         w670: '670px',
         w1000: '1000px',
@@ -100,6 +120,7 @@ export const common = {
         br2: '2px',
         br6: '6px',
         br10: '10px',
+        br20: '20px',
         br42: '42px',
         br76: '76px',
     },
@@ -108,9 +129,11 @@ export const common = {
     opacity: 0.6,
     inputColor: colors.white,
     dropdownItemColor: colors.gray,
+    secondaryButtonColor: colors.backBlue,
+    hoverSecondaryButtonColor: colors.buttonGray,
 }
 
-const enum ThemeMode {
+export const enum ThemeMode {
     light = 'LIGHT',
     dark = 'DARK',
 }
@@ -120,11 +143,14 @@ export const lightTheme = {
     theme: ThemeMode.light,
     backgroundColor: common.color.white,
     textColor: common.color.black,
-    hoverGray: 'rgba(0, 0, 0, 0.2)',
+    hoverGray: common.color.blackWithOpacity,
     borderGray: common.color.gray,
-    secondaryButtonColor: common.color.backBlue,
-    hoverSecondaryButtonColor: common.color.buttonGray,
     dropdownIconColor: '#9D9EA0',
+    boxShadowForContextMenu: `0 0px 8px ${common.color.blackWithOpacity}`,
+    textShadow: `0 4px 4px ${common.color.blackWithOpacity}`,
+    scrollBarThemeColor: common.color.gray,
+    copyrightColor: common.color.backBlue,
+    usersSectionColor: common.color.lightGray,
 }
 
 export const darkTheme = {
@@ -134,7 +160,10 @@ export const darkTheme = {
     textColor: common.color.white,
     hoverGray: common.color.gray,
     borderGray: 'rgba(255, 255, 255, 0.2)',
-    secondaryButtonColor: common.color.buttonGray,
-    hoverSecondaryButtonColor: common.color.buttonDarkGray,
     dropdownIconColor: common.color.buttonDarkGray,
+    boxShadowForContextMenu: '0px 0px 10px rgba(255, 255, 255, 0.1)',
+    textShadow: `0 4px 4px ${common.color.whiteWithOpacity}`,
+    scrollBarThemeColor: common.color.buttonDarkGray,
+    copyrightColor: common.color.gray,
+    usersSectionColor: common.color.buttonDarkGray,
 }

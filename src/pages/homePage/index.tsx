@@ -1,16 +1,21 @@
-import { useState, useEffect } from 'react'
-
-import { NOTIFICATION_KEY } from '@/constants/magicValues'
-import { Status } from '@/constants/responseStatus'
-import { Notification } from '@/ui/notification'
-import { useNotification } from '@/utils/hooks/useNotification'
+import { Header } from '@/components/header'
+import { Tweet } from '@/components/tweet'
+import { WhatsHappening } from '@/components/whatsHappening'
+import { Spinner } from '@/ui/spinner'
+import { useLoadTweets } from '@/utils/hooks/useLoadTweets'
 
 const Home = () => {
-    const { isNotificationOpen, notificationMessage, notificationStatus } = useNotification()
+    const { tweets, loading, lastTweetRef } = useLoadTweets()
     return (
         <div>
-            <Notification message={notificationMessage} status={notificationStatus} visibility={isNotificationOpen} />
-            Home
+            <Header />
+            <WhatsHappening />
+            <>
+                {tweets.map((tweet, i) => (
+                    <Tweet key={tweet.tweetId} tweet={tweet} ref={i === tweets.length - 1 ? lastTweetRef : null} />
+                ))}
+            </>
+            {loading && <Spinner />}
         </div>
     )
 }
