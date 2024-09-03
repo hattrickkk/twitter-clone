@@ -1,10 +1,8 @@
 import { forwardRef, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 
 import defaultAvatar from '@/assets/avatar.svg'
 import { Messages } from '@/constants/messages'
-import { PROFILE } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import { UsersTweetsTypes } from '@/constants/tweets'
 import type { TweetDoc } from '@/customTypes/tweet'
@@ -20,6 +18,7 @@ import { getTweetTime } from '@/utils/getTweetTime'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 import { useTweetInfo } from '@/utils/hooks/useTweetInfo'
+import { useViewProfile } from '@/utils/hooks/useViewProfile'
 
 import {
     AvatarImage,
@@ -51,7 +50,6 @@ export const Tweet = memo(
         const currentUser = useSelector(selectUser)
         const likedTweets = useSelector(selectLikedTweets)
         const dispatch = useDispatch()
-        const navigate = useNavigate()
 
         const [isContextMenuOpen, closeContextMenu, openContextMenu] = useOpenState()
         const [isLiked, setIsLiked] = useState(false)
@@ -59,7 +57,7 @@ export const Tweet = memo(
         const [likesCount, setLikesCount] = useState(likes.length)
         const tweetTime = getTweetTime(created)
 
-        const handleViewProfile = useCallback(() => navigate(`/${PROFILE}/${userId}`), [userId])
+        const handleViewProfile = useViewProfile(userId)
 
         const handleLikeClick = useCallback(async () => {
             setIsSubmiting(true)

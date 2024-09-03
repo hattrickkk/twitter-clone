@@ -55,7 +55,7 @@ export const StyledButton = styled.button<Props>`
         }
     `}
 
-    ${({ $category, theme }) =>
+    ${({ $category, theme, $isProcessing }) =>
         $category === ButtonTypes.SECONDARY &&
         `
             background-color: ${theme.secondaryButtonColor};
@@ -71,6 +71,14 @@ export const StyledButton = styled.button<Props>`
                 background-color: ${theme.hoverSecondaryButtonColor};
                 border: none;
             }
+            ${
+                $isProcessing &&
+                `cursor: wait;
+                &:hover {
+                    cursor: wait;
+                }`
+            }
+        }
     `}
 
     @media ${MEDIA.PHONE} {

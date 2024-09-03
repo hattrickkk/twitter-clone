@@ -75,12 +75,12 @@ export const logIn = async (emailOrPhone: string, password: string) => {
             email = querySnapshot.docs[0].data().email
         }
         const { user } = await signInWithEmailAndPassword(auth, email, password)
-        const { uid, photoURL, displayName } = user
+        const userData = await getUser(user.uid)
         const accessToken = await user.getIdToken()
         return {
             status: Status.SUCCESS,
             accessToken,
-            user: { displayName, photoURL, uid },
+            user: { displayName: userData?.displayName, photoURL: userData?.photoURL, uid: user.uid },
         }
     } catch (error) {
         return { status: Status.FAIL, error: (error as Error).message }

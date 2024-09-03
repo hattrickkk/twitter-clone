@@ -7,6 +7,7 @@ const signUpPage = lazy(() => import('@/pages/signUpPage'))
 const logInPage = lazy(() => import('@/pages/logInPage'))
 const homePage = lazy(() => import('@/pages/homePage'))
 const profilePage = lazy(() => import('@/pages/profilePage'))
+const recomendationsPage = lazy(() => import('@/pages/recomendationsPage'))
 
 export const ROUTES = [
     {
@@ -51,5 +52,9 @@ export const PRIVATE_ROUTES = [
     {
         path: path.PROFILE_WITH_PARAM,
         component: profilePage,
+    },
+    {
+        path: path.RECOMENDATIONS,
+        component: recomendationsPage,
     },
 ]

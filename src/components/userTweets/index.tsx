@@ -73,14 +73,12 @@ export const UserTweets = memo(({ userId }: Props) => {
             </Flex>
 
             <TabContent $visibility={tab === UsersTweetsTypes.OWN}>
-                {ownTweets.map((tweet, i) => (
-                    <Tweet key={tweet.tweetId} tweet={tweet} />
-                ))}
+                {ownTweets.length > 0 && ownTweets.map(tweet => <Tweet key={tweet.tweetId} tweet={tweet} />)}
             </TabContent>
 
             {currentUser && userId === currentUser.uid && (
                 <TabContent $visibility={tab === UsersTweetsTypes.LIKED}>
-                    {likedTweets.map((tweet, i) => (
+                    {likedTweets.map(tweet => (
                         <Tweet key={tweet.tweetId} tweet={tweet} />
                     ))}
                 </TabContent>

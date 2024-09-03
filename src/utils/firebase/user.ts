@@ -1,6 +1,19 @@
-import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import {
+    collection,
+    doc,
+    DocumentData,
+    getDocs,
+    limit,
+    onSnapshot,
+    query,
+    QueryDocumentSnapshot,
+    startAfter,
+    updateDoc,
+    where,
+} from 'firebase/firestore'
 
 import { Collections } from '@/constants/fireStoreCollections'
+import { TWEETS_ON_PAGE } from '@/constants/magicValues'
 import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
 import type { UserInfoDoc } from '@/customTypes/user'
@@ -11,7 +24,7 @@ type UpdateUsersTweetsList = {
     uid: string
 }
 
-type HasFollowedByUserType = {
+export type UsersUids = {
     currentUserUid: string
     anotherUserUid: string
 }
@@ -24,6 +37,35 @@ export const getUser = async (uid: string) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+export const getUserOnSnapshot = (uid: string, callback: (user: UserInfoDoc) => void) => {
+    try {
+        const q = query(collection(db, Collections.USERS), where('uid', '==', uid))
+        return onSnapshot(q, querySnapshot => callback(querySnapshot.docs[0].data() as UserInfoDoc))
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getUsersExceptCurrent = (
+    currentUserUid: string,
+    lastUser: QueryDocumentSnapshot<DocumentData, DocumentData> | null,
+    callback: (users: UserInfoDoc[], lastUser: QueryDocumentSnapshot<DocumentData, DocumentData> | null) => void
+) => {
+    const collectionRef = query(
+        collection(db, Collections.USERS),
+        ...(lastUser ? [startAfter(lastUser)] : []),
+        limit(TWEETS_ON_PAGE)
+    )
+    return onSnapshot(collectionRef, querySnapshot => {
+        const users: UserInfoDoc[] = []
+        querySnapshot.forEach(doc => {
+            doc.data().uid !== currentUserUid && users.push(doc.data() as UserInfoDoc)
+        })
+        const last = querySnapshot.docs[querySnapshot.docs.length - 1]
+        callback(users, last)
+    })
 }
 
 export const updateUserTweetsList = async ({ tweetId, uid }: UpdateUsersTweetsList) => {
@@ -98,7 +140,7 @@ export const hasLikedByUser = async ({ tweetId, uid }: UpdateUsersTweetsList) =>
     }
 }
 
-export const hasFollowedByUser = async ({ currentUserUid, anotherUserUid }: HasFollowedByUserType) => {
+export const hasFollowedByUser = async ({ currentUserUid, anotherUserUid }: UsersUids) => {
     try {
         const userData = await getUser(currentUserUid)
         return userData?.following.indexOf(anotherUserUid) !== -1
@@ -107,7 +149,7 @@ export const hasFollowedByUser = async ({ currentUserUid, anotherUserUid }: HasF
     }
 }
 
-export const updateUserFollowers = async ({ currentUserUid, anotherUserUid }: HasFollowedByUserType) => {
+export const updateUserFollowers = async ({ currentUserUid, anotherUserUid }: UsersUids) => {
     try {
         const currentUserData = await getUser(currentUserUid)
         const anothertUserData = await getUser(anotherUserUid)
@@ -124,10 +166,10 @@ export const updateUserFollowers = async ({ currentUserUid, anotherUserUid }: Ha
             }
 
             await updateDoc(currentUserdocRef, {
-                ...currentUserData,
+                following: currentUserData.following,
             })
             await updateDoc(anotherUserdocRef, {
-                ...anothertUserData,
+                followers: anothertUserData.followers,
             })
             return { status: Status.SUCCESS }
         } else {

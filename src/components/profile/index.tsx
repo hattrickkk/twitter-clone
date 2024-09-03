@@ -9,7 +9,7 @@ import { selectUser } from '@/store/selectors'
 import { Flex } from '@/styles/flexStyles'
 import { Button, SecondaryButton } from '@/ui/buttons'
 import { Spinner } from '@/ui/spinner'
-import { getUser, hasFollowedByUser, updateUserFollowers } from '@/utils/firebase/user'
+import { getUser, getUserOnSnapshot, hasFollowedByUser, updateUserFollowers } from '@/utils/firebase/user'
 
 import {
     AvatarImage,
@@ -37,26 +37,34 @@ export const Profile = () => {
     const [loading, setLoading] = useState(false)
     const [userInfo, setUserInfo] = useState<UserInfoDoc>({} as UserInfoDoc)
     const [isFollowed, setIsFollowed] = useState(false)
+    const [isSubmiting, setIsSubmiting] = useState(false)
 
     useEffect(() => {
-        if (currentUser) {
-            setLoading(true)
-            getUser(uid as string).then(userInfo => {
-                setUserInfo(userInfo as UserInfoDoc)
+        setLoading(true)
+        if (currentUser && uid) {
+            const unsubscribe = getUserOnSnapshot(uid as string, user => {
+                setUserInfo(user)
                 setLoading(false)
             })
-            hasFollowedByUser({ currentUserUid: currentUser.uid as string, anotherUserUid: uid as string }).then(res =>
-                setIsFollowed(res)
+            return () => unsubscribe && unsubscribe()
+        }
+    }, [uid, currentUser])
+
+    useEffect(() => {
+        userInfo.followers && currentUser && setIsFollowed(!!userInfo.followers.find(uid => uid === currentUser.uid))
+    }, [userInfo])
+
+    const handleFollowButtonClick = useCallback(() => {
+        if (uid && currentUser) {
+            setIsSubmiting(true)
+            updateUserFollowers({ currentUserUid: currentUser.uid as string, anotherUserUid: uid }).then(() =>
+                setIsSubmiting(false)
             )
         }
     }, [uid])
 
     const isCurrentUser = currentUser && currentUser.uid === uid
     const { displayName, banner, photoURL, description, followers, following } = userInfo
-
-    const handleFollowButtonClick = useCallback(() => {
-        uid && currentUser && updateUserFollowers({ currentUserUid: currentUser.uid as string, anotherUserUid: uid })
-    }, [uid])
 
     if (loading) return <Spinner />
 
@@ -82,7 +90,7 @@ export const Profile = () => {
                         {isCurrentUser ? (
                             <Button>Edit Profile</Button>
                         ) : (
-                            <SecondaryButton onClick={handleFollowButtonClick}>
+                            <SecondaryButton onClick={handleFollowButtonClick} isProcessing={isSubmiting}>
                                 {isFollowed ? 'Unfollow' : 'Follow'}
                             </SecondaryButton>
                         )}

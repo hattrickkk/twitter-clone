@@ -8,6 +8,24 @@ export const ImageWrapper = styled.div`
     border-radius: 100%;
     overflow: hidden;
     flex: 0 0 ${({ theme }) => theme.width.w50};
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transition: ${({ theme }) => theme.transition.standart};
+        background-color: ${({ theme }) => theme.color.blackWithOpacity};
+        opacity: 0;
+    }
+
+    &:hover {
+        cursor: pointer;
+        &::before {
+            opacity: 1;
+        }
+    }
 `
 
 export const Image = styled.img`
@@ -24,6 +42,11 @@ export const Name = styled.p`
     width: ${({ theme }) => theme.width.w150};
     text-overflow: ellipsis;
     overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `
 
 export const UserName = styled.p`
@@ -32,6 +55,7 @@ export const UserName = styled.p`
     width: ${({ theme }) => theme.width.w150};
     text-overflow: ellipsis;
     overflow: hidden;
+    cursor: pointer;
 `
 
 export const ButtonWrapper = styled.div`

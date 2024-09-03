@@ -52,7 +52,7 @@ export const NavPanel = memo(() => {
                     ))}
                 </Menu>
                 <ContextMenuWrapper ref={contextMenuRef} $isOpen={isContextMenuOpen}>
-                    <ContextMenu items={REST_NAV_LINKS} />
+                    <ContextMenu items={REST_NAV_LINKS} closeContextMenu={closeContextMenu} />
                 </ContextMenuWrapper>
             </Nav>
             <PrimaryButton>Tweet</PrimaryButton>
@@ -60,8 +60,9 @@ export const NavPanel = memo(() => {
             <ProfileInfo>
                 {currentUser && (
                     <UserCard
-                        userName={currentUser.uid as string}
-                        name={currentUser.displayName as string}
+                        uid={currentUser.uid as string}
+                        currentUserUid={currentUser.uid as string}
+                        displayName={currentUser.displayName as string}
                         photoURL={currentUser.photoURL as string}
                         hasFollowButton={false}
                     />
