@@ -42,7 +42,9 @@ export const NavPanel = memo(() => {
                         <Item key={title}>
                             {currentPath === `/${path}` && ActiveIcon ? <ActiveIcon /> : <Icon />}
                             {title !== 'More' ? (
-                                <NavLink to={`/${path}`}>{title}</NavLink>
+                                <NavLink to={path?.includes(PROFILE) ? `/${path}/${currentUser?.uid}` : `/${path}`}>
+                                    {title}
+                                </NavLink>
                             ) : (
                                 <Text onClick={openContextMenu}>{title}</Text>
                             )}

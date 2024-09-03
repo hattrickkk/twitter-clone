@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 import defaultAvatar from '@/assets/avatar.svg'
 import defaultBanner from '@/assets/profile/banner.png'
 import { UserInfoDoc } from '@/customTypes/user'
 import { selectUser } from '@/store/selectors'
 import { Flex } from '@/styles/flexStyles'
-import { Button } from '@/ui/buttons'
+import { Button, SecondaryButton } from '@/ui/buttons'
 import { Spinner } from '@/ui/spinner'
-import { getUser } from '@/utils/firebase/user'
+import { getUser, hasFollowedByUser, updateUserFollowers } from '@/utils/firebase/user'
 
 import {
     AvatarImage,
@@ -31,21 +32,31 @@ import { UserTweets } from '../userTweets'
 import { WhatsHappening } from '../whatsHappening'
 
 export const Profile = () => {
+    const { uid } = useParams()
     const currentUser = useSelector(selectUser)
     const [loading, setLoading] = useState(false)
     const [userInfo, setUserInfo] = useState<UserInfoDoc>({} as UserInfoDoc)
+    const [isFollowed, setIsFollowed] = useState(false)
 
     useEffect(() => {
         if (currentUser) {
             setLoading(true)
-            getUser(currentUser.uid as string).then(userInfo => {
+            getUser(uid as string).then(userInfo => {
                 setUserInfo(userInfo as UserInfoDoc)
                 setLoading(false)
             })
+            hasFollowedByUser({ currentUserUid: currentUser.uid as string, anotherUserUid: uid as string }).then(res =>
+                setIsFollowed(res)
+            )
         }
-    }, [])
+    }, [uid])
 
-    const { displayName, banner, photoURL, description, uid } = userInfo
+    const isCurrentUser = currentUser && currentUser.uid === uid
+    const { displayName, banner, photoURL, description, followers, following } = userInfo
+
+    const handleFollowButtonClick = useCallback(() => {
+        uid && currentUser && updateUserFollowers({ currentUserUid: currentUser.uid as string, anotherUserUid: uid })
+    }, [uid])
 
     if (loading) return <Spinner />
 
@@ -67,23 +78,29 @@ export const Profile = () => {
                         </ProfileDescriptionWrapper>
                     </StyledProfile>
 
-                    <ButtonWrapper>
-                        <Button>Edit Profile</Button>
+                    <ButtonWrapper $isCurrentUser={isCurrentUser as boolean}>
+                        {isCurrentUser ? (
+                            <Button>Edit Profile</Button>
+                        ) : (
+                            <SecondaryButton onClick={handleFollowButtonClick}>
+                                {isFollowed ? 'Unfollow' : 'Follow'}
+                            </SecondaryButton>
+                        )}
                     </ButtonWrapper>
                 </Flex>
                 <ProfileFooter>
                     <FooterItem>
-                        <Text>76</Text>
+                        <Text>{following?.length}</Text>
                         <LightText>Following</LightText>
                     </FooterItem>
                     <FooterItem>
-                        <Text>76</Text>
+                        <Text>{followers?.length}</Text>
                         <LightText>Followers</LightText>
                     </FooterItem>
                 </ProfileFooter>
             </Info>
-            <WhatsHappening />
-            <UserTweets />
+            {isCurrentUser && <WhatsHappening />}
+            <UserTweets userId={uid as string} />
         </ProfileSection>
     )
 }

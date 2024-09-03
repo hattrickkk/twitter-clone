@@ -15,10 +15,29 @@ export const AvatarWrapper = styled.div`
     overflow: hidden;
     flex: 0 0 ${({ theme }) => theme.width.w50};
     align-self: flex-start;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transition: ${({ theme }) => theme.transition.standart};
+        background-color: ${({ theme }) => theme.color.blackWithOpacity};
+        opacity: 0;
+    }
+
+    &:hover {
+        cursor: pointer;
+        &::before {
+            opacity: 1;
+        }
+    }
 `
 
 export const AvatarImage = styled.img`
     width: 100%;
+    cursor: pointer:
 `
 export const TweetContent = styled.div`
     flex: 1 1 auto;
@@ -36,10 +55,20 @@ export const MainTitle = styled.span`
     font-size: ${({ theme }) => theme.fontSize.fs22};
     font-family: ${({ theme }) => theme.fontFamily.robotoSerif};
     margin-right: ${({ theme }) => theme.space.sp15};
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `
 export const SubTitle = styled.span`
     font-size: ${({ theme }) => theme.fontSize.fs18};
     opacity: ${({ theme }) => theme.opacity};
+    transition: ${({ theme }) => theme.transition.standart};
+
+    &:nth-child(2):hover {
+        cursor: pointer;
+    }
 
     &:last-child {
         &::before {

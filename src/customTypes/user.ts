@@ -22,8 +22,8 @@ export type UserInfoDoc = UserInfo & {
     likedTweets: string[]
     phoneNumber: string
     birthDate: string
-    followers: []
-    following: []
+    followers: string[]
+    following: string[]
     banner: string | null
     description: string
 }

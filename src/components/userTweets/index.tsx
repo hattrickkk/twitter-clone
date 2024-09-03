@@ -13,7 +13,10 @@ import { getUsersTweets } from '@/utils/firebase/tweet'
 import { Tab, TabContent, UserstweetsSection } from './styled'
 import { Tweet } from '../tweet'
 
-export const UserTweets = memo(() => {
+type Props = {
+    userId: string
+}
+export const UserTweets = memo(({ userId }: Props) => {
     const [tab, setTab] = useState(UsersTweetsTypes.OWN)
     const [loading, setLoading] = useState(false)
     const currentUser = useSelector(selectUser)
@@ -27,20 +30,28 @@ export const UserTweets = memo(() => {
 
     useEffect(() => {
         setLoading(true)
-        if (currentUser) {
-            getUsersTweets(currentUser.uid as string, UsersTweetsTypes.OWN).then(({ status, tweets }) => {
-                if (status === Status.SUCCESS) {
-                    dispatch(setTweets({ data: (tweets as TweetDoc[]).reverse(), type: UsersTweetsTypes.OWN }))
-                }
-            })
+        getUsersTweets(userId, UsersTweetsTypes.OWN).then(({ status, tweets }) => {
+            if (status === Status.SUCCESS) {
+                dispatch(setTweets({ data: (tweets as TweetDoc[]).reverse(), type: UsersTweetsTypes.OWN }))
+                setLoading(false)
+            }
+        })
+
+        if (currentUser && userId === currentUser.uid) {
             getUsersTweets(currentUser.uid as string, UsersTweetsTypes.LIKED).then(({ status, tweets }) => {
                 if (status === Status.SUCCESS) {
-                    dispatch(setTweets({ data: (tweets as TweetDoc[]).reverse(), type: UsersTweetsTypes.LIKED }))
+                    dispatch(
+                        setTweets({
+                            data: (tweets as TweetDoc[]).reverse(),
+                            type: UsersTweetsTypes.LIKED,
+                        })
+                    )
                 }
                 setLoading(false)
             })
         }
-    }, [currentUser])
+        if (currentUser && userId !== currentUser.uid) setTab(UsersTweetsTypes.OWN)
+    }, [userId])
 
     if (loading) return <Spinner />
 
@@ -50,13 +61,15 @@ export const UserTweets = memo(() => {
                 <Tab data-type={UsersTweetsTypes.OWN} onClick={handleTabClik} $active={tab === UsersTweetsTypes.OWN}>
                     Tweets
                 </Tab>
-                <Tab
-                    data-type={UsersTweetsTypes.LIKED}
-                    onClick={handleTabClik}
-                    $active={tab === UsersTweetsTypes.LIKED}
-                >
-                    Liked Tweets
-                </Tab>
+                {currentUser && userId === currentUser.uid && (
+                    <Tab
+                        data-type={UsersTweetsTypes.LIKED}
+                        onClick={handleTabClik}
+                        $active={tab === UsersTweetsTypes.LIKED}
+                    >
+                        Liked Tweets
+                    </Tab>
+                )}
             </Flex>
 
             <TabContent $visibility={tab === UsersTweetsTypes.OWN}>
@@ -65,11 +78,13 @@ export const UserTweets = memo(() => {
                 ))}
             </TabContent>
 
-            <TabContent $visibility={tab === UsersTweetsTypes.LIKED}>
-                {likedTweets.map((tweet, i) => (
-                    <Tweet key={tweet.tweetId} tweet={tweet} />
-                ))}
-            </TabContent>
+            {currentUser && userId === currentUser.uid && (
+                <TabContent $visibility={tab === UsersTweetsTypes.LIKED}>
+                    {likedTweets.map((tweet, i) => (
+                        <Tweet key={tweet.tweetId} tweet={tweet} />
+                    ))}
+                </TabContent>
+            )}
         </UserstweetsSection>
     )
 })

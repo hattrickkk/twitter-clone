@@ -166,6 +166,6 @@ export const darkTheme = {
     textShadow: `0 4px 4px ${common.color.whiteWithOpacity}`,
     scrollBarThemeColor: common.color.buttonDarkGray,
     copyrightColor: common.color.gray,
-    usersSectionColor: common.color.buttonGray,
+    usersSectionColor: common.color.buttonDarkGray,
     textSecondary: common.color.whiteWithOpacity,
 }

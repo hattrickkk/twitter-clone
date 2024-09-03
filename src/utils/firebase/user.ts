@@ -6,6 +6,16 @@ import { Status } from '@/constants/responseStatus'
 import type { UserInfoDoc } from '@/customTypes/user'
 import { db } from '@/firebase'
 
+type UpdateUsersTweetsList = {
+    tweetId: string
+    uid: string
+}
+
+type HasFollowedByUserType = {
+    currentUserUid: string
+    anotherUserUid: string
+}
+
 export const getUser = async (uid: string) => {
     try {
         const q = query(collection(db, Collections.USERS), where('uid', '==', uid))
@@ -14,11 +24,6 @@ export const getUser = async (uid: string) => {
     } catch (error) {
         console.log(error)
     }
-}
-
-type UpdateUsersTweetsList = {
-    tweetId: string
-    uid: string
 }
 
 export const updateUserTweetsList = async ({ tweetId, uid }: UpdateUsersTweetsList) => {
@@ -90,5 +95,45 @@ export const hasLikedByUser = async ({ tweetId, uid }: UpdateUsersTweetsList) =>
         return userData?.likedTweets.indexOf(tweetId) !== -1
     } catch (error) {
         return false
+    }
+}
+
+export const hasFollowedByUser = async ({ currentUserUid, anotherUserUid }: HasFollowedByUserType) => {
+    try {
+        const userData = await getUser(currentUserUid)
+        return userData?.following.indexOf(anotherUserUid) !== -1
+    } catch (error) {
+        return false
+    }
+}
+
+export const updateUserFollowers = async ({ currentUserUid, anotherUserUid }: HasFollowedByUserType) => {
+    try {
+        const currentUserData = await getUser(currentUserUid)
+        const anothertUserData = await getUser(anotherUserUid)
+        if (currentUserData && anothertUserData) {
+            const currentUserdocRef = doc(db, Collections.USERS, currentUserUid)
+            const anotherUserdocRef = doc(db, Collections.USERS, anotherUserUid)
+
+            if (anothertUserData.followers.indexOf(currentUserUid) !== -1) {
+                anothertUserData.followers = anothertUserData.followers.filter(id => id !== currentUserUid)
+                currentUserData.following = currentUserData.following.filter(id => id !== anotherUserUid)
+            } else {
+                anothertUserData.followers.push(currentUserUid)
+                currentUserData.following.push(anotherUserUid)
+            }
+
+            await updateDoc(currentUserdocRef, {
+                ...currentUserData,
+            })
+            await updateDoc(anotherUserdocRef, {
+                ...anothertUserData,
+            })
+            return { status: Status.SUCCESS }
+        } else {
+            throw new Error()
+        }
+    } catch (error) {
+        return { status: Status.FAIL }
     }
 }

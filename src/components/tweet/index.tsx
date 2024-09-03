@@ -1,8 +1,10 @@
 import { forwardRef, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import defaultAvatar from '@/assets/avatar.svg'
 import { Messages } from '@/constants/messages'
+import { PROFILE } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
 import { UsersTweetsTypes } from '@/constants/tweets'
 import type { TweetDoc } from '@/customTypes/tweet'
@@ -49,12 +51,15 @@ export const Tweet = memo(
         const currentUser = useSelector(selectUser)
         const likedTweets = useSelector(selectLikedTweets)
         const dispatch = useDispatch()
+        const navigate = useNavigate()
 
         const [isContextMenuOpen, closeContextMenu, openContextMenu] = useOpenState()
         const [isLiked, setIsLiked] = useState(false)
         const [isSubmitting, setIsSubmiting] = useState(false)
         const [likesCount, setLikesCount] = useState(likes.length)
         const tweetTime = getTweetTime(created)
+
+        const handleViewProfile = useCallback(() => navigate(`/${PROFILE}/${userId}`), [userId])
 
         const handleLikeClick = useCallback(async () => {
             setIsSubmiting(true)
@@ -122,14 +127,14 @@ export const Tweet = memo(
 
         return (
             <Wrapper ref={ref}>
-                <AvatarWrapper>
+                <AvatarWrapper onClick={handleViewProfile}>
                     <AvatarImage src={userInfo.photoURL ?? defaultAvatar} alt='avatar' />
                 </AvatarWrapper>
                 <TweetContent>
                     <Header>
                         <Flex $justifycontent='flex-start' $alignitems='center'>
-                            <MainTitle>{userInfo.displayName}</MainTitle>
-                            <SubTitle>@{userInfo.userName}</SubTitle>
+                            <MainTitle onClick={handleViewProfile}>{userInfo.displayName}</MainTitle>
+                            <SubTitle onClick={handleViewProfile}>@{userInfo.userName}</SubTitle>
                             <SubTitle>{tweetTime}</SubTitle>
                         </Flex>
                         <IconWrapper onClick={openContextMenu}>

@@ -49,7 +49,7 @@ export const PRIVATE_ROUTES = [
         component: homePage,
     },
     {
-        path: path.PROFILE,
+        path: path.PROFILE_WITH_PARAM,
         component: profilePage,
     },
 ]

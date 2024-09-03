@@ -57,13 +57,14 @@ export const LightText = styled.span`
     opacity: ${({ theme }) => theme.opacity};
 `
 
-export const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div<{ $isCurrentUser: boolean }>`
     flex: 0 0 ${({ theme }) => theme.width.w150};
     margin-top: ${({ theme }) => theme.space.sp95};
 
     button {
         padding: ${({ theme }) => theme.space.sp10};
         font-size: ${({ theme }) => theme.fontSize.fs18};
+        ${({ theme, $isCurrentUser }) => !$isCurrentUser && `background-color: ${theme.color.buttonDarkGray};`};
     }
 `
 
