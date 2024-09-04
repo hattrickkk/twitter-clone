@@ -31,6 +31,7 @@ export const common = {
 
     transition: {
         standart: '0.3s all ease',
+        smooth: 'all ease 0.4s',
     },
 
     fontFamily: {
@@ -98,11 +99,13 @@ export const common = {
         w40: '40px',
         w45: '45px',
         w50: '50px',
+        w100: '100px',
         w130: '130px',
         w150: '150px',
         w185: '185px',
         w200: '200px',
         w230: '230px',
+        w300: '300px',
         w370: '370px',
         w400: '400px',
         w410: '410px',

@@ -53,7 +53,6 @@ export const TweetContentFooter = styled.footer`
     margin-top: ${({ theme }) => theme.space.sp15};
 `
 export const ButtonWrapper = styled.div`
-    max-width: ${({ theme }) => theme.width.w100};
     button {
         line-height: ${({ theme }) => theme.lineHeight.lh20};
     }

@@ -1,5 +1,5 @@
 import { fileTypeFromBuffer } from 'file-type'
-import { ChangeEvent, memo, useCallback, useRef, useState } from 'react'
+import { ChangeEvent, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import avatar from '@/assets/avatar.svg'
@@ -39,7 +39,12 @@ type ImageState = {
     file: File
 }
 
-export const WhatsHappening = memo(() => {
+type Props = {
+    closePopup?: VoidFunction
+    isPopupOpen?: boolean
+}
+
+export const WhatsHappening = memo(({ closePopup, isPopupOpen }: Props) => {
     const [value, setValue] = useState('')
     const [images, setImages] = useState<ImageState[]>([])
     const [isSubmitting, setIsSubmiting] = useState(false)
@@ -47,6 +52,13 @@ export const WhatsHappening = memo(() => {
 
     const currentUser = useSelector(selectUser)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (!isPopupOpen) {
+            setValue('')
+            setImages([])
+        }
+    }, [isPopupOpen])
 
     const onTextAreaChange = useCallback(
         ({ currentTarget }: ChangeEvent<HTMLTextAreaElement>) => {
@@ -78,6 +90,7 @@ export const WhatsHappening = memo(() => {
                 setValue('')
                 setImages([])
                 dispatch(addTweet({ data: tweet, type: UsersTweetsTypes.OWN }))
+                closePopup && closePopup()
             }
         }
         setIsSubmiting(false)
@@ -120,7 +133,7 @@ export const WhatsHappening = memo(() => {
     )
 
     return (
-        <Wrapper>
+        <Wrapper id='whats-happening-section'>
             <Flex $gap={20}>
                 <AvatarWrapper>
                     <AvatarImage src={currentUser?.photoURL ?? avatar} alt='avatar' />
@@ -130,7 +143,7 @@ export const WhatsHappening = memo(() => {
                         <Textarea placeholder='What&#39;s happening' onChange={onTextAreaChange} value={value} />
                     </TextAreaWrapper>
                     {images.length > 0 && (
-                        <Pictures>
+                        <Pictures id='tweet-pictures'>
                             {images.map(({ path }, i) => (
                                 <PictureWrapper key={path}>
                                     <Delete onClick={handleImageDeleteClick(i)} />
