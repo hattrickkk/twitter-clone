@@ -13,14 +13,15 @@ type Item = {
 
 type Props = {
     items: Item[]
+    closeContextMenu: VoidFunction
     hasToolBar?: boolean
 }
-export const ContextMenu = memo(({ items, hasToolBar = false }: Props) => {
+export const ContextMenu = memo(({ items, hasToolBar = false, closeContextMenu }: Props) => {
     return (
         <Menu $hasToolbar={hasToolBar}>
             {items.map(({ title, path, Icon }) => (
                 <Item key={path}>
-                    <Link to={path ?? paths.HOME}>
+                    <Link to={path ?? paths.HOME} onClick={closeContextMenu}>
                         {Icon && <Icon />}
                         <Text>{title}</Text>
                     </Link>

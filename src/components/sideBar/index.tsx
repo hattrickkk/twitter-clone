@@ -27,7 +27,7 @@ export const SideBar = memo(() => {
                 ))}
                 <Text onClick={openContextMenu}>More...</Text>
                 <ContextMenuWrapper ref={contextMenuRef} $isOpen={isContextMenuOpen}>
-                    <ContextMenu items={REST_FOOTER_LINKS} hasToolBar />
+                    <ContextMenu items={REST_FOOTER_LINKS} hasToolBar closeContextMenu={closeContextMenu} />
                 </ContextMenuWrapper>
                 <Copyright>{COPYRIGHT}</Copyright>
             </FooterLinks>

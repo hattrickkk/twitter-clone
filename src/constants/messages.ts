@@ -14,4 +14,5 @@ export const enum Messages {
     DELETE_CONFIRMATION = 'This action cannot be undone and the post will be permanently removed from your profile, all your followers feeds, and search results.',
     DELETE_SUCCESS = 'The tweet was deleted',
     DELETE_FAIL = 'Something went wrong, the tweet was not deleted',
+    DEFAULT_FAIL = 'Something went wrong, try again later',
 }

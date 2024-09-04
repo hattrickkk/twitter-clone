@@ -7,7 +7,7 @@ import { useLoadTweets } from '@/utils/hooks/useLoadTweets'
 const Home = () => {
     const { tweets, loading, lastTweetRef } = useLoadTweets()
     return (
-        <div>
+        <>
             <Header />
             <WhatsHappening />
             <>
@@ -16,7 +16,7 @@ const Home = () => {
                 ))}
             </>
             {loading && <Spinner />}
-        </div>
+        </>
     )
 }
 

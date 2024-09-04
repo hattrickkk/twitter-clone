@@ -4,18 +4,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import defaultAvatar from '@/assets/avatar.svg'
 import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
+import { UsersTweetsTypes } from '@/constants/tweets'
 import type { TweetDoc } from '@/customTypes/tweet'
-import { selectUser } from '@/store/selectors'
+import { selectLikedTweets, selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
+import { deleteTweet, handleTweetLiking } from '@/store/slices/tweetsSlice'
 import { Flex } from '@/styles/flexStyles'
 import { Like } from '@/ui/like'
 import { MoreIcon } from '@/ui/moreIcon'
-import { deleteTweetDoc, updateTweetLikes } from '@/utils/firebase/tweet'
+import { deleteTweetDoc, getTweet, updateTweetLikes } from '@/utils/firebase/tweet'
 import { hasLikedByUser, updateUserLikedTweetsList } from '@/utils/firebase/user'
 import { getTweetTime } from '@/utils/getTweetTime'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 import { useTweetInfo } from '@/utils/hooks/useTweetInfo'
+import { useViewProfile } from '@/utils/hooks/useViewProfile'
 
 import {
     AvatarImage,
@@ -45,6 +48,7 @@ export const Tweet = memo(
     forwardRef<HTMLDivElement, Props>(({ tweet: { images, userId, text, likes, tweetId, created } }, ref) => {
         const { userInfo, tweetPictures } = useTweetInfo(userId, images)
         const currentUser = useSelector(selectUser)
+        const likedTweets = useSelector(selectLikedTweets)
         const dispatch = useDispatch()
 
         const [isContextMenuOpen, closeContextMenu, openContextMenu] = useOpenState()
@@ -53,14 +57,37 @@ export const Tweet = memo(
         const [likesCount, setLikesCount] = useState(likes.length)
         const tweetTime = getTweetTime(created)
 
+        const handleViewProfile = useViewProfile(userId)
+
         const handleLikeClick = useCallback(async () => {
-            setIsLiked(prev => !prev)
-            setLikesCount(isLiked ? likesCount - 1 : likesCount + 1)
-            if (currentUser) {
-                await updateUserLikedTweetsList({ uid: currentUser.uid as string, tweetId })
+            setIsSubmiting(true)
+            try {
+                await updateUserLikedTweetsList({ uid: currentUser?.uid as string, tweetId })
                 await updateTweetLikes({ tweetId, uid: currentUser?.uid as string, isLiked })
+                setIsLiked(prev => !prev)
+                setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1))
+                const newLikes = isLiked
+                    ? likes.filter(userId => userId !== currentUser?.uid)
+                    : [...likes, currentUser?.uid as string]
+                dispatch(
+                    handleTweetLiking({
+                        tweet: {
+                            tweetId,
+                            userId,
+                            likes: newLikes,
+                            text,
+                            images,
+                            created,
+                        },
+                        isLiked,
+                    })
+                )
+
+                setIsSubmiting(false)
+            } catch (error) {
+                console.log(error)
             }
-        }, [likesCount, isLiked, likes])
+        }, [isLiked, likes])
 
         const handleCopyLink = useCallback(async () => {
             try {
@@ -82,6 +109,8 @@ export const Tweet = memo(
             } else {
                 dispatch(setNotification({ status: Status.FAIL, message: Messages.DELETE_FAIL }))
             }
+            dispatch(deleteTweet({ data: tweetId, type: UsersTweetsTypes.OWN }))
+            dispatch(deleteTweet({ data: tweetId, type: UsersTweetsTypes.LIKED }))
             closeContextMenu()
             setIsSubmiting(false)
         }, [])
@@ -91,18 +120,21 @@ export const Tweet = memo(
 
         useEffect(() => {
             if (currentUser) hasLikedByUser({ uid: currentUser.uid as string, tweetId }).then(res => setIsLiked(res))
-        }, [])
+            getTweet(tweetId)
+                .then(res => setLikesCount((res as TweetDoc).likes.length))
+                .catch(err => console.error(err))
+        }, [likedTweets])
 
         return (
             <Wrapper ref={ref}>
-                <AvatarWrapper>
+                <AvatarWrapper onClick={handleViewProfile}>
                     <AvatarImage src={userInfo.photoURL ?? defaultAvatar} alt='avatar' />
                 </AvatarWrapper>
                 <TweetContent>
                     <Header>
                         <Flex $justifycontent='flex-start' $alignitems='center'>
-                            <MainTitle>{userInfo.displayName}</MainTitle>
-                            <SubTitle>@{userInfo.userName}</SubTitle>
+                            <MainTitle onClick={handleViewProfile}>{userInfo.displayName}</MainTitle>
+                            <SubTitle onClick={handleViewProfile}>@{userInfo.userName}</SubTitle>
                             <SubTitle>{tweetTime}</SubTitle>
                         </Flex>
                         <IconWrapper onClick={openContextMenu}>
@@ -132,7 +164,7 @@ export const Tweet = memo(
                     )}
                     <Footer>
                         <Flex $justifycontent='flex-start' $alignitems='center' $gap={10}>
-                            <Like isLiked={isLiked} onClick={handleLikeClick} />
+                            <Like isLiked={isLiked} onClick={handleLikeClick} isSubmiting={isSubmitting} />
                             <LikesCount>{likesCount}</LikesCount>
                         </Flex>
                     </Footer>

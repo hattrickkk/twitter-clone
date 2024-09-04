@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-export const StyledLike = styled.div`
+export const Wrapper = styled.div<{ $isSubmiting: boolean }>`
+    ${({ $isSubmiting }) => $isSubmiting && `cursor: wait;`};
+`
+
+export const StyledLike = styled.div<{ $isSubmiting: boolean }>`
     cursor: pointer;
     border-radius: 100%;
     padding: ${({ theme }) => theme.space.sp5};
@@ -20,4 +24,6 @@ export const StyledLike = styled.div`
             fill: ${({ theme }) => theme.color.red};
         }
     }
+
+    ${({ $isSubmiting }) => $isSubmiting && `pointer-events: none;`};
 `

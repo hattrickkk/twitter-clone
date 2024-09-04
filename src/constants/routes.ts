@@ -6,6 +6,8 @@ const landingPage = lazy(() => import('@/pages/landinPage'))
 const signUpPage = lazy(() => import('@/pages/signUpPage'))
 const logInPage = lazy(() => import('@/pages/logInPage'))
 const homePage = lazy(() => import('@/pages/homePage'))
+const profilePage = lazy(() => import('@/pages/profilePage'))
+const recomendationsPage = lazy(() => import('@/pages/recomendationsPage'))
 
 export const ROUTES = [
     {
@@ -23,10 +25,6 @@ export const ROUTES = [
 ]
 
 export const PRIVATE_ROUTES = [
-    {
-        path: '/',
-        component: homePage,
-    },
     {
         path: path.HOME,
         component: homePage,
@@ -52,7 +50,11 @@ export const PRIVATE_ROUTES = [
         component: homePage,
     },
     {
-        path: path.PROFILE,
-        component: homePage,
+        path: path.PROFILE_WITH_PARAM,
+        component: profilePage,
+    },
+    {
+        path: path.RECOMENDATIONS,
+        component: recomendationsPage,
     },
 ]

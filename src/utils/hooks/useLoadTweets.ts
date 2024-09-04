@@ -13,20 +13,20 @@ export const useLoadTweets = () => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        const unsubscribe = loadTweets()
-        return () => unsubscribe()
+        return loadTweets()
     }, [])
 
     const loadTweets = useCallback(() => {
         setLoading(true)
         return getTweets(
             lastTweet,
-            (tweets: TweetDoc[], lastTweet: QueryDocumentSnapshot<DocumentData, DocumentData> | null) => {
+            (tweets: TweetDoc[], last: QueryDocumentSnapshot<DocumentData, DocumentData> | null) => {
                 setTweets(prevTweets => {
+                    if (!lastTweet) return tweets
                     const uniqTweets = concatTweets(tweets, prevTweets)
                     return uniqTweets
                 })
-                setLastTweet(lastTweet)
+                setLastTweet(last)
                 setLoading(false)
             }
         )

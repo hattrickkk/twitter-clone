@@ -16,8 +16,10 @@ import {
 } from 'firebase/firestore'
 
 import { Collections } from '@/constants/fireStoreCollections'
+import { TWEETS_ON_PAGE } from '@/constants/magicValues'
 import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
+import { UsersTweetsTypes } from '@/constants/tweets'
 import type { Tweet, TweetDoc } from '@/customTypes/tweet'
 import { db } from '@/firebase'
 import { generateHash } from '@/utils/generateHash'
@@ -28,8 +30,9 @@ export const setTweetToFireStore = async (tweet: Tweet) => {
     const created = new Date().toISOString()
     const tweetId = await generateHash(created.toString())
     const docRef = doc(db, Collections.TWEETS, tweetId)
-    await setDoc(docRef, { ...tweet, created, tweetId, likes: [] })
-    return tweetId
+    const tweetDoc = { ...tweet, created, tweetId, likes: [] }
+    await setDoc(docRef, tweetDoc)
+    return tweetDoc
 }
 
 export const getTweet = async (tweetId: string) => {
@@ -50,10 +53,10 @@ export const getTweets = (
         collection(db, Collections.TWEETS),
         orderBy('created', 'desc'),
         ...(lastTweet ? [startAfter(lastTweet)] : []),
-        limit(5)
+        limit(TWEETS_ON_PAGE)
     )
 
-    const unsubscribe = onSnapshot(collectionRef, querySnapshot => {
+    return onSnapshot(collectionRef, querySnapshot => {
         const tweets: TweetDoc[] = []
         querySnapshot.forEach(doc => {
             tweets.push(doc.data() as TweetDoc)
@@ -61,8 +64,6 @@ export const getTweets = (
         const last = querySnapshot.docs[querySnapshot.docs.length - 1]
         callback(tweets, last)
     })
-
-    return unsubscribe
 }
 
 type UpdateTweetsData = {
@@ -82,10 +83,10 @@ export const updateTweetLikes = async ({ tweetId, uid, isLiked }: UpdateTweetsDa
             })
             return { status: Status.SUCCESS }
         } else {
-            throw new Error()
+            throw new Error(Messages.DEFAULT_FAIL)
         }
     } catch (error) {
-        return { status: Status.FAIL, message: error }
+        return { status: Status.FAIL, message: error as Messages }
     }
 }
 
@@ -104,25 +105,21 @@ export const deleteTweetDoc = async (tweetId: string) => {
     }
 }
 
-export const getUsersTweets = async (uid: string) => {
+export const getUsersTweets = async (uid: string, prop: UsersTweetsTypes) => {
     try {
         const user = await getUser(uid)
         if (user) {
-            const likedTweets = user.likedTweets
-            const ownTweets = user.tweets
-            const likedPromises = likedTweets.map(tweetId => getTweet(tweetId))
-            const ownPromises = ownTweets.map(tweetId => getTweet(tweetId))
-            const liked = await Promise.all(likedPromises)
-            const own = await Promise.all(ownPromises)
-            const tweets = {
-                liked: liked.filter(Boolean),
-                own: own.filter(Boolean),
+            const userTweets = user[prop]
+            const tweetsPromises = userTweets.map(tweetId => getTweet(tweetId))
+            const tweets = await Promise.all(tweetsPromises)
+            return {
+                status: Status.SUCCESS,
+                tweets,
             }
-            return { status: Status.SUCCESS, tweets }
         } else {
-            throw new Error()
+            throw new Error(Messages.DEFAULT_FAIL)
         }
     } catch (error) {
-        return { status: Status.FAIL }
+        return { status: Status.FAIL, message: error as Messages }
     }
 }
