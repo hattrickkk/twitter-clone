@@ -83,10 +83,10 @@ export const updateUserTweetsList = async ({ tweetId, uid }: UpdateUsersTweetsLi
             })
             return { status: Status.SUCCESS, message: Messages.TWEET_CREATION_SUCCESS }
         } else {
-            throw new Error()
+            throw new Error(Messages.TWEET_CREATION_FAIL)
         }
     } catch (error) {
-        return { status: Status.FAIL, message: Messages.TWEET_CREATION_FAIL }
+        return { status: Status.FAIL, message: error as Messages }
     }
 }
 
@@ -105,10 +105,10 @@ export const updateUserLikedTweetsList = async ({ tweetId, uid }: UpdateUsersTwe
             })
             return { status: Status.SUCCESS }
         } else {
-            throw new Error()
+            throw new Error(Messages.DEFAULT_FAIL)
         }
     } catch (error) {
-        return { status: Status.FAIL }
+        return { status: Status.FAIL, message: error as Messages }
     }
 }
 
@@ -124,10 +124,10 @@ export const removeTweetFromLikedTweets = async ({ tweetId, uid }: UpdateUsersTw
             })
             return { status: Status.SUCCESS }
         } else {
-            throw new Error()
+            throw new Error(Messages.DEFAULT_FAIL)
         }
     } catch (error) {
-        return { status: Status.FAIL }
+        return { status: Status.FAIL, message: error as Messages }
     }
 }
 
@@ -173,9 +173,9 @@ export const updateUserFollowers = async ({ currentUserUid, anotherUserUid }: Us
             })
             return { status: Status.SUCCESS }
         } else {
-            throw new Error()
+            throw new Error(Messages.DEFAULT_FAIL)
         }
     } catch (error) {
-        return { status: Status.FAIL }
+        return { status: Status.FAIL, message: error as Messages }
     }
 }

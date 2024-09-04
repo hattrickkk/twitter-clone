@@ -53,7 +53,7 @@ export const getTweets = (
         collection(db, Collections.TWEETS),
         orderBy('created', 'desc'),
         ...(lastTweet ? [startAfter(lastTweet)] : []),
-        limit(5)
+        limit(TWEETS_ON_PAGE)
     )
 
     return onSnapshot(collectionRef, querySnapshot => {
@@ -83,10 +83,10 @@ export const updateTweetLikes = async ({ tweetId, uid, isLiked }: UpdateTweetsDa
             })
             return { status: Status.SUCCESS }
         } else {
-            throw new Error()
+            throw new Error(Messages.DEFAULT_FAIL)
         }
     } catch (error) {
-        return { status: Status.FAIL, message: error }
+        return { status: Status.FAIL, message: error as Messages }
     }
 }
 
@@ -117,9 +117,9 @@ export const getUsersTweets = async (uid: string, prop: UsersTweetsTypes) => {
                 tweets,
             }
         } else {
-            throw new Error()
+            throw new Error(Messages.DEFAULT_FAIL)
         }
     } catch (error) {
-        return { status: Status.FAIL }
+        return { status: Status.FAIL, message: error as Messages }
     }
 }

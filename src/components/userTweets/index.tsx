@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
 import { UsersTweetsTypes } from '@/constants/tweets'
 import { TweetDoc } from '@/customTypes/tweet'
@@ -30,25 +31,34 @@ export const UserTweets = memo(({ userId }: Props) => {
 
     useEffect(() => {
         setLoading(true)
-        getUsersTweets(userId, UsersTweetsTypes.OWN).then(({ status, tweets }) => {
-            if (status === Status.SUCCESS) {
-                dispatch(setTweets({ data: (tweets as TweetDoc[]).reverse(), type: UsersTweetsTypes.OWN }))
-                setLoading(false)
-            }
-        })
+        getUsersTweets(userId, UsersTweetsTypes.OWN)
+            .then(({ status, tweets }) => {
+                if (status === Status.SUCCESS) {
+                    const reverserTweets = (tweets as TweetDoc[]).reverse()
+                    dispatch(setTweets({ data: reverserTweets, type: UsersTweetsTypes.OWN }))
+                    setLoading(false)
+                } else {
+                    throw new Error(Messages.DEFAULT_FAIL)
+                }
+            })
+            .catch(err => console.error(err))
 
         if (currentUser && userId === currentUser.uid) {
-            getUsersTweets(currentUser.uid as string, UsersTweetsTypes.LIKED).then(({ status, tweets }) => {
-                if (status === Status.SUCCESS) {
-                    dispatch(
-                        setTweets({
-                            data: (tweets as TweetDoc[]).reverse(),
-                            type: UsersTweetsTypes.LIKED,
-                        })
-                    )
-                }
-                setLoading(false)
-            })
+            getUsersTweets(currentUser.uid as string, UsersTweetsTypes.LIKED)
+                .then(({ status, tweets }) => {
+                    if (status === Status.SUCCESS) {
+                        dispatch(
+                            setTweets({
+                                data: (tweets as TweetDoc[]).reverse(),
+                                type: UsersTweetsTypes.LIKED,
+                            })
+                        )
+                    } else {
+                        throw new Error(Messages.DEFAULT_FAIL)
+                    }
+                    setLoading(false)
+                })
+                .catch(err => console.error(err))
         }
         if (currentUser && userId !== currentUser.uid) setTab(UsersTweetsTypes.OWN)
     }, [userId])

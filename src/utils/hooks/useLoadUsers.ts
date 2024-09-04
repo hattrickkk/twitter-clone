@@ -13,8 +13,7 @@ export const useLoadUsers = (currentUserUid: string) => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        const unsubscribe = loadUsers()
-        return () => unsubscribe()
+        return loadUsers()
     }, [])
 
     const loadUsers = useCallback(() => {

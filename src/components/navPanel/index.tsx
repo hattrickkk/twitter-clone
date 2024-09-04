@@ -67,7 +67,7 @@ export const NavPanel = memo(() => {
                         hasFollowButton={false}
                     />
                 )}
-                {currentPath.includes(PROFILE) && <SecondaryButton onClick={handleLogOutClick}>LogOut</SecondaryButton>}
+                <SecondaryButton onClick={handleLogOutClick}>LogOut</SecondaryButton>
             </ProfileInfo>
         </SideBarContainer>
     )

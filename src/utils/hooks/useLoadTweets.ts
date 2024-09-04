@@ -13,8 +13,7 @@ export const useLoadTweets = () => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        const unsubscribe = loadTweets()
-        return () => unsubscribe()
+        return loadTweets()
     }, [])
 
     const loadTweets = useCallback(() => {

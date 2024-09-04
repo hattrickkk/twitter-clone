@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+export const Wrapper = styled.div<{ $isSubmiting: boolean }>`
+    ${({ $isSubmiting }) => $isSubmiting && `cursor: wait;`};
+`
+
 export const StyledLike = styled.div<{ $isSubmiting: boolean }>`
     cursor: pointer;
     border-radius: 100%;

@@ -8,6 +8,11 @@ type Payload<T> = {
     data: T
 }
 
+type LikePayload = {
+    isLiked: boolean
+    tweet: TweetDoc
+}
+
 type TweetsState = {
     [UsersTweetsTypes.OWN]: TweetDoc[]
     [UsersTweetsTypes.LIKED]: TweetDoc[]
@@ -42,16 +47,14 @@ const tweetsSlice = createSlice({
         deleteTweet(state: TweetsState, { payload }: PayloadAction<Payload<string>>) {
             removeTweetFromState(state, payload)
         },
-        likeTweet(state: TweetsState, { payload }: PayloadAction<TweetDoc>) {
-            addTweetToState(state, { data: payload, type: UsersTweetsTypes.LIKED })
-            updateLikesInOwnTweet(state, payload)
-        },
-        unLikeTweet(state: TweetsState, { payload }: PayloadAction<TweetDoc>) {
-            removeTweetFromState(state, { data: payload.tweetId, type: UsersTweetsTypes.LIKED })
-            updateLikesInOwnTweet(state, payload)
+        handleTweetLiking(state: TweetsState, { payload: { tweet, isLiked } }: PayloadAction<LikePayload>) {
+            isLiked
+                ? removeTweetFromState(state, { data: tweet.tweetId, type: UsersTweetsTypes.LIKED })
+                : addTweetToState(state, { data: tweet, type: UsersTweetsTypes.LIKED })
+            updateLikesInOwnTweet(state, tweet)
         },
     },
 })
 
-export const { setTweets, addTweet, likeTweet, unLikeTweet, deleteTweet } = tweetsSlice.actions
+export const { setTweets, addTweet, handleTweetLiking, deleteTweet } = tweetsSlice.actions
 export default tweetsSlice.reducer

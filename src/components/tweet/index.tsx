@@ -8,7 +8,7 @@ import { UsersTweetsTypes } from '@/constants/tweets'
 import type { TweetDoc } from '@/customTypes/tweet'
 import { selectLikedTweets, selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
-import { deleteTweet, likeTweet, unLikeTweet } from '@/store/slices/tweetsSlice'
+import { deleteTweet, handleTweetLiking } from '@/store/slices/tweetsSlice'
 import { Flex } from '@/styles/flexStyles'
 import { Like } from '@/ui/like'
 import { MoreIcon } from '@/ui/moreIcon'
@@ -61,33 +61,33 @@ export const Tweet = memo(
 
         const handleLikeClick = useCallback(async () => {
             setIsSubmiting(true)
-            setIsLiked(prev => !prev)
-            setLikesCount(isLiked ? likesCount - 1 : likesCount + 1)
-            if (currentUser) {
-                await updateUserLikedTweetsList({ uid: currentUser.uid as string, tweetId })
+            try {
+                await updateUserLikedTweetsList({ uid: currentUser?.uid as string, tweetId })
                 await updateTweetLikes({ tweetId, uid: currentUser?.uid as string, isLiked })
+                setIsLiked(prev => !prev)
+                setLikesCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1))
+                const newLikes = isLiked
+                    ? likes.filter(userId => userId !== currentUser?.uid)
+                    : [...likes, currentUser?.uid as string]
                 dispatch(
-                    isLiked
-                        ? unLikeTweet({
-                              tweetId,
-                              userId,
-                              likes: likes.filter(userId => userId !== currentUser.uid),
-                              text,
-                              images,
-                              created,
-                          })
-                        : likeTweet({
-                              tweetId,
-                              userId,
-                              likes: [...likes, currentUser.uid as string],
-                              text,
-                              images,
-                              created,
-                          })
+                    handleTweetLiking({
+                        tweet: {
+                            tweetId,
+                            userId,
+                            likes: newLikes,
+                            text,
+                            images,
+                            created,
+                        },
+                        isLiked,
+                    })
                 )
+
                 setIsSubmiting(false)
+            } catch (error) {
+                console.log(error)
             }
-        }, [likesCount, isLiked, likes])
+        }, [isLiked, likes])
 
         const handleCopyLink = useCallback(async () => {
             try {
@@ -120,7 +120,9 @@ export const Tweet = memo(
 
         useEffect(() => {
             if (currentUser) hasLikedByUser({ uid: currentUser.uid as string, tweetId }).then(res => setIsLiked(res))
-            getTweet(tweetId).then(res => setLikesCount((res as TweetDoc).likes.length))
+            getTweet(tweetId)
+                .then(res => setLikesCount((res as TweetDoc).likes.length))
+                .catch(err => console.error(err))
         }, [likedTweets])
 
         return (
@@ -162,7 +164,7 @@ export const Tweet = memo(
                     )}
                     <Footer>
                         <Flex $justifycontent='flex-start' $alignitems='center' $gap={10}>
-                            <Like isLiked={isLiked} isSubmiting={isSubmitting} onClick={handleLikeClick} />
+                            <Like isLiked={isLiked} onClick={handleLikeClick} isSubmiting={isSubmitting} />
                             <LikesCount>{likesCount}</LikesCount>
                         </Flex>
                     </Footer>

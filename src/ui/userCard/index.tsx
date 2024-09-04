@@ -29,7 +29,9 @@ export const UserCard = memo(
 
             const handleFollowButtonClick = useCallback(() => {
                 setIsSubmiting(true)
-                updateUserFollowers({ currentUserUid, anotherUserUid: uid }).then(() => setIsSubmiting(false))
+                updateUserFollowers({ currentUserUid, anotherUserUid: uid })
+                    .then(() => setIsSubmiting(false))
+                    .catch(err => console.error(err))
             }, [uid, currentUserUid])
 
             const handleViewProfile = useViewProfile(uid)

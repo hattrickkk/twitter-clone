@@ -9,7 +9,7 @@ import { selectUser } from '@/store/selectors'
 import { Flex } from '@/styles/flexStyles'
 import { Button, SecondaryButton } from '@/ui/buttons'
 import { Spinner } from '@/ui/spinner'
-import { getUser, getUserOnSnapshot, hasFollowedByUser, updateUserFollowers } from '@/utils/firebase/user'
+import { getUserOnSnapshot, updateUserFollowers } from '@/utils/firebase/user'
 
 import {
     AvatarImage,
@@ -42,11 +42,10 @@ export const Profile = () => {
     useEffect(() => {
         setLoading(true)
         if (currentUser && uid) {
-            const unsubscribe = getUserOnSnapshot(uid as string, user => {
+            return getUserOnSnapshot(uid as string, user => {
                 setUserInfo(user)
                 setLoading(false)
             })
-            return () => unsubscribe && unsubscribe()
         }
     }, [uid, currentUser])
 
@@ -55,11 +54,16 @@ export const Profile = () => {
     }, [userInfo])
 
     const handleFollowButtonClick = useCallback(() => {
-        if (uid && currentUser) {
+        try {
             setIsSubmiting(true)
-            updateUserFollowers({ currentUserUid: currentUser.uid as string, anotherUserUid: uid }).then(() =>
-                setIsSubmiting(false)
-            )
+            updateUserFollowers({
+                currentUserUid: currentUser?.uid as string,
+                anotherUserUid: uid as string,
+            })
+                .then(() => setIsSubmiting(false))
+                .catch(err => console.error(err))
+        } catch (error) {
+            console.error(error)
         }
     }, [uid])
 
