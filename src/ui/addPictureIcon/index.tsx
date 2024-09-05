@@ -1,6 +1,8 @@
 import { ChangeEvent, forwardRef, memo } from 'react'
 
-import { FileInput, Wrapper } from './styled'
+import { FileInput } from '@/styles/common'
+
+import { Wrapper } from './styled'
 
 type Props = {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void

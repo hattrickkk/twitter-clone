@@ -30,6 +30,7 @@ export const ImageWrapper = styled.div`
 
 export const Image = styled.img`
     width: 100%;
+    height: 100%;
 `
 export const Info = styled.div`
     margin: 0 ${({ theme }) => theme.space.sp15};

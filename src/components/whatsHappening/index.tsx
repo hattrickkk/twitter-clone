@@ -2,12 +2,13 @@ import { fileTypeFromBuffer } from 'file-type'
 import { ChangeEvent, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import avatar from '@/assets/avatar.svg'
+import defaultAvatar from '@/assets/avatar.svg'
 import { Folders } from '@/constants/fireStoreCollections'
 import { MAX_TWEET_TEXT_LENGTH } from '@/constants/magicValues'
 import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
 import { UsersTweetsTypes } from '@/constants/tweets'
+import { ImageState } from '@/customTypes/tweet'
 import { selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
 import { addTweet } from '@/store/slices/tweetsSlice'
@@ -17,6 +18,7 @@ import { PrimaryButton } from '@/ui/buttons'
 import { uploadPicture } from '@/utils/firebase/pictures'
 import { setTweetToFireStore } from '@/utils/firebase/tweet'
 import { updateUserTweetsList } from '@/utils/firebase/user'
+import { usePictureURL } from '@/utils/hooks/usePictureURL'
 
 import {
     TweetContent,
@@ -34,11 +36,6 @@ import {
     Delete,
 } from './styled'
 
-type ImageState = {
-    path: string
-    file: File
-}
-
 type Props = {
     closePopup?: VoidFunction
     isPopupOpen?: boolean
@@ -52,6 +49,8 @@ export const WhatsHappening = memo(({ closePopup, isPopupOpen }: Props) => {
 
     const currentUser = useSelector(selectUser)
     const dispatch = useDispatch()
+
+    const avatar = usePictureURL(currentUser?.photoURL as string)
 
     useEffect(() => {
         if (!isPopupOpen) {
@@ -81,7 +80,7 @@ export const WhatsHappening = memo(({ closePopup, isPopupOpen }: Props) => {
             const { uid } = currentUser
             const tweet = await setTweetToFireStore({
                 text: value,
-                images: tweetPictures,
+                images: tweetPictures as string[],
                 userId: uid as string,
             })
             const { message, status } = await updateUserTweetsList({ uid: uid as string, tweetId: tweet.tweetId })
@@ -136,7 +135,7 @@ export const WhatsHappening = memo(({ closePopup, isPopupOpen }: Props) => {
         <Wrapper id='whats-happening-section'>
             <Flex $gap={20}>
                 <AvatarWrapper>
-                    <AvatarImage src={currentUser?.photoURL ?? avatar} alt='avatar' />
+                    <AvatarImage src={avatar ?? defaultAvatar} alt='avatar' />
                 </AvatarWrapper>
                 <TweetContent>
                     <TextAreaWrapper>

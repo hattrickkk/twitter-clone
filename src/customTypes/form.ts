@@ -12,4 +12,11 @@ export type LogInFormData = {
     emailOrPhone: string
 }
 
+export type EditProfileFormData = {
+    description?: string
+    userName: string
+    displayName: string
+    phoneNumber: string
+}
+
 export type DropdownsValues = Record<Lowercase<DropdownTypes>, { isSelected: boolean; value: string | number }>

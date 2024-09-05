@@ -4,7 +4,10 @@ import { MEDIA } from '@/constants/media'
 
 export const ProfileSection = styled.section``
 
-export const BannerWrapper = styled.div``
+export const BannerWrapper = styled.div`
+    height: ${({ theme }) => theme.width.w185};
+    overflow: hidden;
+`
 export const StyledProfile = styled.div``
 
 export const Info = styled.div`
@@ -14,8 +17,8 @@ export const Info = styled.div`
 `
 
 export const BannerImage = styled.img`
+    height: 100%;
     width: 100%;
-    max-height: ${({ theme }) => theme.width.w280};
     object-fit: cover;
     object-position: center;
 `
@@ -23,12 +26,16 @@ export const BannerImage = styled.img`
 export const AvatarWrapper = styled.div`
     border-radius: 100%;
     overflow: hidden;
-    max-width: ${({ theme }) => theme.width.w150};
+    width: ${({ theme }) => theme.width.w150};
+    height: ${({ theme }) => theme.width.w150};
     margin-bottom: ${({ theme }) => theme.space.sp10};
 `
 
 export const AvatarImage = styled.img`
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 `
 
 export const ProfileDescriptionWrapper = styled.div`

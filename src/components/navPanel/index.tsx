@@ -14,7 +14,8 @@ import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 
 import { Menu, Nav, Item, Text, ImageLogo, Logo, SideBarContainer, ContextMenuWrapper, ProfileInfo } from './styled'
-import { CreateTweetPopup } from '../createTweetPopup'
+import { Popup } from '../popup'
+import { WhatsHappening } from '../whatsHappening'
 
 export const NavPanel = memo(() => {
     const currentPath = useLocation().pathname
@@ -35,7 +36,9 @@ export const NavPanel = memo(() => {
 
     return (
         <>
-            <CreateTweetPopup isPopupOpen={isPopupOpen} closePopup={closePopup} />
+            <Popup closePopup={closePopup} isPopupOpen={isPopupOpen} isExpand>
+                <WhatsHappening closePopup={closePopup} isPopupOpen={isPopupOpen} />
+            </Popup>
             <SideBarContainer>
                 <Logo>
                     <ImageLogo src={twitterLogo} alt='twitter-logo' />
@@ -69,6 +72,7 @@ export const NavPanel = memo(() => {
                             displayName={currentUser.displayName as string}
                             photoURL={currentUser.photoURL as string}
                             hasFollowButton={false}
+                            userName={currentUser.userName as string}
                         />
                     )}
                     <SecondaryButton onClick={handleLogOutClick}>LogOut</SecondaryButton>

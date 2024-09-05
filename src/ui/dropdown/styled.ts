@@ -7,7 +7,8 @@ export const StyledDropdown = styled.div`
 `
 
 export const Field = styled.div<{ $isOpen: boolean }>`
-    background-color: ${({ theme }) => theme.inputColor};
+    background-color: ${({ theme }) => theme.inputColor};\
+    text-align: left;
     padding: ${({ theme }) => `${theme.space.sp25} ${theme.space.sp70} ${theme.space.sp25} ${theme.space.sp25}`};
     color: ${({ theme }) => theme.color.blackText};
     font-size: ${({ theme }) => theme.fontSize.fs18};

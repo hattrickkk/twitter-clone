@@ -17,7 +17,7 @@ export const uploadPicture = async (files: File[], folderName: Folders) => {
             await uploadBytes(storageRef, file, metadata)
         })
         await Promise.all(promises)
-        return hashFileNames
+        return hashFileNames.length === 1 ? hashFileNames[0] : hashFileNames
     } catch (error) {
         console.error(error)
     }

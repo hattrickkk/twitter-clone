@@ -8,3 +8,8 @@ export type TweetDoc = Tweet & {
     likes: string[]
     tweetId: string
 }
+
+export type ImageState = {
+    path: string
+    file: File
+}

@@ -15,16 +15,13 @@ export const UsersSection = memo(() => {
     const currentUser = useSelector(selectUser)
 
     useEffect(() => {
-        const unsubscribe = getUsersExceptCurrent(currentUser?.uid as string, null, users =>
-            setUsers(users.slice(0, 2))
-        )
-        return () => unsubscribe()
+        return getUsersExceptCurrent(currentUser?.uid as string, null, users => setUsers(users.slice(0, 2)))
     }, [])
 
     return (
         <StyledSection>
             <Title>You might like</Title>
-            {users.map(({ displayName, uid, photoURL, followers }) => (
+            {users.map(({ displayName, uid, userName, photoURL, followers }) => (
                 <UserCard
                     key={uid}
                     uid={uid}
@@ -32,6 +29,7 @@ export const UsersSection = memo(() => {
                     photoURL={photoURL}
                     followers={followers}
                     currentUserUid={currentUser?.uid as string}
+                    userName={userName}
                 />
             ))}
             <Link to={RECOMENDATIONS}>Show more</Link>

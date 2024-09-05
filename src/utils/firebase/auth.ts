@@ -19,6 +19,7 @@ import { getUser } from './user'
 export const setUserToFireStore = async (uid: string, userData: UserProfile) => {
     const docRef = doc(db, Collections.USERS, uid)
     await setDoc(docRef, {
+        birthdayDate: null,
         ...userData,
         tweets: [],
         likedTweets: [],
@@ -37,7 +38,7 @@ export const signInWithGoogle = async () => {
         const userInDB = await getUser(uid)
         if (!userInDB) await setUserToFireStore(uid, { phoneNumber, displayName, email, photoURL })
         const accessToken = await user.getIdToken()
-        return { status: Status.SUCCESS, accessToken, user: { displayName, photoURL, uid } }
+        return { status: Status.SUCCESS, accessToken, user: { displayName, photoURL, uid, userName: uid } }
     } catch (error) {
         return { status: Status.FAIL, error: (error as Error).message }
     }
@@ -51,12 +52,12 @@ export const signUp = async ({ email, password, phoneNumber, displayName, ...oth
 
         const { user } = await createUserWithEmailAndPassword(auth, email as string, password as string)
         const { uid } = user
-        await setUserToFireStore(uid, { email, phoneNumber, displayName, ...otherData })
+        await setUserToFireStore(uid, { email, userName: uid, phoneNumber, displayName, ...otherData })
         const accessToken = await user.getIdToken()
         return {
             status: Status.SUCCESS,
             accessToken,
-            user: { displayName, photoURL: null, uid },
+            user: { displayName, photoURL: null, uid, userName: uid },
         }
     } catch (error) {
         return { status: Status.FAIL, error: (error as Error).message }
@@ -80,7 +81,12 @@ export const logIn = async (emailOrPhone: string, password: string) => {
         return {
             status: Status.SUCCESS,
             accessToken,
-            user: { displayName: userData?.displayName, photoURL: userData?.photoURL, uid: user.uid },
+            user: {
+                displayName: userData?.displayName,
+                photoURL: userData?.photoURL,
+                uid: user.uid,
+                userName: userData?.userName ?? user.uid,
+            },
         }
     } catch (error) {
         return { status: Status.FAIL, error: (error as Error).message }

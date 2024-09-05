@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import { DropdownTypes } from '@/constants/dropdownTypes'
-import type { DropdownsValues } from '@/customTypes/auth'
+import { MONTHS } from '@/constants/month'
+import type { DropdownsValues } from '@/customTypes/form'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 
@@ -9,11 +10,12 @@ import { Content, ContentWrapper, Field, Item, StyledDropdown } from './styled'
 
 type Props = {
     placeholder: string
+    selectedValue?: string | null
     items: (string | number)[]
     setDropdownValues: React.Dispatch<React.SetStateAction<DropdownsValues>>
 }
 
-export const Dropdown = memo(({ placeholder, items, setDropdownValues }: Props) => {
+export const Dropdown = memo(({ placeholder, items, setDropdownValues, selectedValue = null }: Props) => {
     const [value, setValue] = useState(placeholder)
     const [isOpen, close, open] = useOpenState()
 
@@ -33,6 +35,10 @@ export const Dropdown = memo(({ placeholder, items, setDropdownValues }: Props) 
             }
         })
     }, [])
+
+    useEffect(() => {
+        if (selectedValue) setValue(placeholder === 'Month' ? MONTHS[+selectedValue - 1] : selectedValue)
+    }, [selectedValue])
 
     useEffect(() => {
         if (placeholder === DropdownTypes.DAY && value > items[items.length - 1]) {
@@ -55,7 +61,7 @@ export const Dropdown = memo(({ placeholder, items, setDropdownValues }: Props) 
                 </Content>
             </ContentWrapper>
 
-            <Field $isOpen={isOpen} onClick={handleClickField}>
+            <Field $isOpen={isOpen} onClick={handleClickField} id='dropdown-field'>
                 {value}
             </Field>
         </StyledDropdown>

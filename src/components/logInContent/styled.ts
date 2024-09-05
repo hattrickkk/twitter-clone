@@ -40,7 +40,7 @@ export const Title = styled.h2`
     }
 `
 export const InputsWrapper = styled.div`
-    & > input:not(:first-child) {
+    & > *:not(:first-child) {
         margin-top: ${({ theme }) => theme.space.sp25};
     }
     margin-bottom: ${({ theme }) => theme.space.sp25};

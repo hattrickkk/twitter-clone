@@ -13,7 +13,7 @@ import { Messages } from '@/constants/messages'
 import { MONTHS } from '@/constants/month'
 import { HOME, LOG_IN } from '@/constants/paths'
 import { Status } from '@/constants/responseStatus'
-import type { SignUpFormData } from '@/customTypes/auth'
+import type { SignUpFormData } from '@/customTypes/form'
 import type { RequiredUser } from '@/customTypes/user'
 import { setNotification } from '@/store/slices/notificationSlice'
 import { setUser } from '@/store/slices/userSlice'
@@ -25,9 +25,10 @@ import { signUp } from '@/utils/firebase/auth'
 import { getDays } from '@/utils/getDays'
 import { getYears } from '@/utils/getYears'
 import { useValidateInput } from '@/utils/hooks/useValidateInput'
-import { signUpSchema } from '@/utils/validationAuthSchemas'
+import { signUpSchema } from '@/utils/validationSchemas/validationAuthSchemas'
 
-import { ButtonWrapper, DropdownsWrapper, InputsWrapper, Logo, LogoImg, SignUp, Subtitle, Text, Title } from './styled'
+import { ButtonWrapper, InputsWrapper, Logo, LogoImg, SignUp, Subtitle, Text, Title } from './styled'
+import { DropdownsGroup } from '../dropdownsGroup'
 
 export const SignUpContent = () => {
     const [dropdownsValues, setDropdownValues] = useState(INIT_DROPDOWNS_VALUES)
@@ -35,12 +36,6 @@ export const SignUpContent = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
-    const years: number[] = useMemo(() => getYears(), [])
-    const days: number[] = useMemo(
-        () => getDays(dropdownsValues.month.value as string, dropdownsValues.year.value as number),
-        [dropdownsValues]
-    )
 
     const {
         control,
@@ -136,19 +131,7 @@ export const SignUpContent = () => {
                         phasellus metus, magna lacinia sed augue. Odio enim nascetur leo mauris vel eget. Pretium id
                         ullamcorper blandit viverra dignissim eget tellus. Nibh mi massa in molestie a sit. Elit congue.
                     </Text>
-                    <DropdownsWrapper>
-                        <Dropdown
-                            placeholder={DropdownTypes.MONTH}
-                            items={MONTHS}
-                            setDropdownValues={setDropdownValues}
-                        />
-                        <Dropdown placeholder={DropdownTypes.DAY} items={days} setDropdownValues={setDropdownValues} />
-                        <Dropdown
-                            placeholder={DropdownTypes.YEAR}
-                            items={years}
-                            setDropdownValues={setDropdownValues}
-                        />
-                    </DropdownsWrapper>
+                    <DropdownsGroup setDropdownValues={setDropdownValues} dropdownsValues={dropdownsValues} />
                     {dropdownError && <ErrorMessage>{dropdownError}</ErrorMessage>}
                     <ButtonWrapper>
                         <PrimaryButton type='submit' disable={!isValid || !!dropdownError} isProcessing={isSubmitting}>

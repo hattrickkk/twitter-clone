@@ -8,12 +8,16 @@ export const Wrapper = styled.div`
 export const AvatarWrapper = styled.div`
     border-radius: 100%;
     overflow: hidden;
+    height: ${({ theme }) => theme.width.w50};
     flex: 0 0 ${({ theme }) => theme.width.w50};
     align-self: flex-start;
 `
 
 export const AvatarImage = styled.img`
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 `
 export const TweetContent = styled.div`
     flex: 1 1 auto;

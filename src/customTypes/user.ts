@@ -6,13 +6,15 @@ export type UserProfile = {
     phoneNumber?: string | null
     photoURL?: string | null
     uid?: string | null
+    userName?: string | null
 }
 
-export type RequiredUser = Required<Pick<UserProfile, 'uid' | 'photoURL' | 'displayName'>>
+export type RequiredUser = Required<Pick<UserProfile, 'uid' | 'photoURL' | 'displayName' | 'userName'>>
 
 export type UserInfo = {
     displayName: string
     userName: string
+    uid: string
     photoURL: string | null
 }
 
