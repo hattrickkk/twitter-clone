@@ -107,8 +107,9 @@ export const IconWrapper = styled.button`
 
 export const Text = styled.p`
     font-size: ${({ theme }) => theme.fontSize.fs18};
-    max-width: ${({ theme }) => theme.width.w627};
+    max-width: ${({ theme }) => theme.width.w620};
     overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 export const Pictures = styled.div<{ $PicturesCount: number }>`

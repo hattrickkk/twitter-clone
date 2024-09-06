@@ -75,7 +75,6 @@ export const Profile = () => {
 
     const isCurrentUser = currentUser && currentUser.uid === uid
     const { displayName, userName, banner, photoURL, description, followers, following, tweets } = userInfo
-
     const avatarImage = usePictureURL(photoURL)
     const bannerImage = usePictureURL(banner)
 

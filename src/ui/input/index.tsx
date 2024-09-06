@@ -16,7 +16,7 @@ export const Input = memo(
     forwardRef<HTMLInputElement, ControllerRenderProps & Props>(
         ({ value, onChange, placeholder, type, userValue, name, disable, handleInputChange }, ref) => {
             const handleCombinedChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-                handleInputChange && handleInputChange(e)
+                handleInputChange?.(e)
                 onChange(e)
             }, [])
 

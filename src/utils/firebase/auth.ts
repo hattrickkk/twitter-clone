@@ -36,7 +36,7 @@ export const signInWithGoogle = async () => {
         const { user }: UserCredential = await signInWithPopup(auth, provider)
         const { phoneNumber, displayName, email, photoURL, uid } = user
         const userInDB = await getUser(uid)
-        if (!userInDB) await setUserToFireStore(uid, { phoneNumber, displayName, email, photoURL })
+        if (!userInDB) await setUserToFireStore(uid, { phoneNumber, displayName, userName: uid, email, photoURL })
         const accessToken = await user.getIdToken()
         return { status: Status.SUCCESS, accessToken, user: { displayName, photoURL, uid, userName: uid } }
     } catch (error) {

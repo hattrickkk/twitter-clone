@@ -168,7 +168,8 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                 }
 
                 if (`${day.value}/${month.value}/${year.value}` !== initUserInfo.birthDate) {
-                    updatedUserInfo.birthDate = `${day.value}/${MONTHS.indexOf(month.value as string) + 1}/${year.value}`
+                    const monthValue = isNaN(+month.value) ? MONTHS.indexOf(month.value as string) + 1 : month.value
+                    updatedUserInfo.birthDate = `${day.value}/${monthValue}/${year.value}`
                 }
 
                 const isUserNameValidResult = await isFieldVauleValid({

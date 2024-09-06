@@ -17,9 +17,7 @@ export const Header = ({ children }: Props) => {
     return (
         <StyledHeader>
             <Flex $alignitems='center' $gap={20}>
-                {children ? (
-                    children
-                ) : (
+                {children ?? (
                     <Link to={`/${HOME}`}>
                         <Flex $justifycontent='flex-start' $alignitems='center' $gap={10}>
                             {currentPath !== `/${HOME}` && <Arrow />}
