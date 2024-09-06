@@ -8,6 +8,7 @@ const logInPage = lazy(() => import('@/pages/logInPage'))
 const homePage = lazy(() => import('@/pages/homePage'))
 const profilePage = lazy(() => import('@/pages/profilePage'))
 const recomendationsPage = lazy(() => import('@/pages/recomendationsPage'))
+const notFoundPage = lazy(() => import('@/pages/notFoundPage'))
 
 export const ROUTES = [
     {
@@ -21,6 +22,10 @@ export const ROUTES = [
     {
         path: path.LOG_IN,
         component: logInPage,
+    },
+    {
+        path: path.NOT_FOUND,
+        component: notFoundPage,
     },
 ]
 

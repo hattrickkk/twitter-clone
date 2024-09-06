@@ -8,6 +8,8 @@ import { PRIVATE_ROUTES, ROUTES } from '@/constants/routes'
 import { selectUser } from '@/store/selectors'
 import { Spinner } from '@/ui/spinner'
 
+import ErrorBoundary from '../errorBoundary'
+
 export const AppRoutes = () => {
     const currentUser = useSelector(selectUser)
     return (
@@ -21,7 +23,9 @@ export const AppRoutes = () => {
                         path={path}
                         element={
                             <Suspense fallback={<Spinner />}>
-                                <Component />
+                                <ErrorBoundary>
+                                    <Component />
+                                </ErrorBoundary>
                             </Suspense>
                         }
                     />

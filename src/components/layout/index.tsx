@@ -8,20 +8,23 @@ import { Flex } from '@/styles/flexStyles'
 import { Spinner } from '@/ui/spinner'
 
 import { Main, Wrapper } from './styled'
+import ErrorBoundary from '../errorBoundary'
 
 export const Layout = () => {
     return (
         <Wrapper>
             <Suspense fallback={<Spinner />}>
-                <Container>
-                    <Flex>
-                        <NavPanel />
-                        <Main>
-                            <Outlet />
-                        </Main>
-                        <SideBar />
-                    </Flex>
-                </Container>
+                <ErrorBoundary>
+                    <Container>
+                        <Flex>
+                            <NavPanel />
+                            <Main>
+                                <Outlet />
+                            </Main>
+                            <SideBar />
+                        </Flex>
+                    </Container>
+                </ErrorBoundary>
             </Suspense>
         </Wrapper>
     )

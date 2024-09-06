@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import type { RequiredUser } from '@/customTypes/user'
 
-type StateUser = RequiredUser & { accessToken: string }
+export type StateUser = RequiredUser & { accessToken: string }
 
 type UserState = {
     currentUser: StateUser | null

@@ -54,6 +54,7 @@ export const common = {
         fs42: '42px',
         fs56: '56px',
         fs84: '84px',
+        fs200: '200px',
     },
 
     fontWeight: {
