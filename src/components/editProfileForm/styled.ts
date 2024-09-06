@@ -133,7 +133,7 @@ export const AvatarImage = styled.img`
 
 export const InputsWrapper = styled.div`
     & > *:not(:first-child) {
-        margin-top: ${({ theme }) => theme.space.sp20};
+        margin-top: ${({ theme }) => theme.space.sp35};
     }
     margin-bottom: ${({ theme }) => theme.space.sp25};
 `
@@ -143,6 +143,7 @@ export const Wrapper = styled.div`
     overflow-y: scroll;
     margin-bottom: ${({ theme }) => theme.space.sp25};
     padding-right: ${({ theme }) => theme.space.sp15};
+    position: relative;
 
     &::-webkit-scrollbar {
         width: ${({ theme }) => theme.width.w10};

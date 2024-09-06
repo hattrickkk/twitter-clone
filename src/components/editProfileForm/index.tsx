@@ -282,7 +282,7 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                         birthDate={userInfo.birthDate}
                         disable={!isEditing}
                     />
-                    {dropdownError && <ErrorMessage>{dropdownError}</ErrorMessage>}
+                    <ErrorMessage $visibility={!!dropdownError}>{dropdownError}</ErrorMessage>
                 </Wrapper>
                 {isEditing && (
                     <PrimaryButton type='submit' disable={!isValid} isProcessing={isSubmitting}>
