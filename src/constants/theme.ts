@@ -113,6 +113,7 @@ export const common = {
         w450: '450px',
         w580: '580px',
         w670: '670px',
+        w627: '627px',
         w1000: '1000px',
     },
 

@@ -157,8 +157,8 @@ export const Tweet = memo(
                     <Text>{text}</Text>
                     {tweetPictures.length > 0 && (
                         <Pictures $PicturesCount={images.length}>
-                            {tweetPictures.map(url => (
-                                <PictureWrapper key={url}>
+                            {tweetPictures.map((url, i) => (
+                                <PictureWrapper key={url + i}>
                                     <Picture src={url} alt={'tweet-photo'} $PicturesCount={tweetPictures.length} />
                                 </PictureWrapper>
                             ))}

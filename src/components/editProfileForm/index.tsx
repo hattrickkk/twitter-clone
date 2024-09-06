@@ -146,11 +146,11 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                 const updatedUserInfo: UpdateUserInfoParams = { ...formData, uid: userInfo.uid }
                 if (avatarImage.file) {
                     const avatar = await uploadPicture([avatarImage.file], Folders.USERS)
-                    updatedUserInfo.photoURL = avatar as string
+                    updatedUserInfo.photoURL = (avatar as string[])[0]
                 }
                 if (bannerImage.file) {
                     const banner = await uploadPicture([bannerImage.file], Folders.USERS)
-                    updatedUserInfo.banner = banner as string
+                    updatedUserInfo.banner = (banner as string[])[0]
                 }
 
                 if (!day.isSelected || !month.isSelected || !year.isSelected) {
