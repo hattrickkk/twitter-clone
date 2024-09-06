@@ -14,10 +14,13 @@ import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 
 import { Menu, Nav, Item, Text, ImageLogo, Logo, SideBarContainer, ContextMenuWrapper, ProfileInfo } from './styled'
+import { Popup } from '../popup'
+import { WhatsHappening } from '../whatsHappening'
 
 export const NavPanel = memo(() => {
     const currentPath = useLocation().pathname
     const [isContextMenuOpen, closeContextMenu, openContextMenu] = useOpenState()
+    const [isPopupOpen, closePopup, openPopup] = useOpenState()
 
     const currentUser = useSelector(selectUser)
     const dispatch = useDispatch()
@@ -32,43 +35,49 @@ export const NavPanel = memo(() => {
     useOutsideClick(contextMenuRef, closeContextMenu)
 
     return (
-        <SideBarContainer>
-            <Logo>
-                <ImageLogo src={twitterLogo} alt='twitter-logo' />
-            </Logo>
-            <Nav>
-                <Menu>
-                    {NAV_LINKS.map(({ title, path, Icon, ActiveIcon }) => (
-                        <Item key={title}>
-                            {currentPath === `/${path}` && ActiveIcon ? <ActiveIcon /> : <Icon />}
-                            {title !== 'More' ? (
-                                <NavLink to={path?.includes(PROFILE) ? `/${path}/${currentUser?.uid}` : `/${path}`}>
-                                    {title}
-                                </NavLink>
-                            ) : (
-                                <Text onClick={openContextMenu}>{title}</Text>
-                            )}
-                        </Item>
-                    ))}
-                </Menu>
-                <ContextMenuWrapper ref={contextMenuRef} $isOpen={isContextMenuOpen}>
-                    <ContextMenu items={REST_NAV_LINKS} closeContextMenu={closeContextMenu} />
-                </ContextMenuWrapper>
-            </Nav>
-            <PrimaryButton>Tweet</PrimaryButton>
+        <>
+            <Popup closePopup={closePopup} isPopupOpen={isPopupOpen} isExpand>
+                <WhatsHappening closePopup={closePopup} isPopupOpen={isPopupOpen} />
+            </Popup>
+            <SideBarContainer>
+                <Logo>
+                    <ImageLogo src={twitterLogo} alt='twitter-logo' />
+                </Logo>
+                <Nav>
+                    <Menu>
+                        {NAV_LINKS.map(({ title, path, Icon, ActiveIcon }) => (
+                            <Item key={title}>
+                                {currentPath === `/${path}` && ActiveIcon ? <ActiveIcon /> : <Icon />}
+                                {title !== 'More' ? (
+                                    <NavLink to={path?.includes(PROFILE) ? `/${path}/${currentUser?.uid}` : `/${path}`}>
+                                        {title}
+                                    </NavLink>
+                                ) : (
+                                    <Text onClick={openContextMenu}>{title}</Text>
+                                )}
+                            </Item>
+                        ))}
+                    </Menu>
+                    <ContextMenuWrapper ref={contextMenuRef} $isOpen={isContextMenuOpen}>
+                        <ContextMenu items={REST_NAV_LINKS} closeContextMenu={closeContextMenu} />
+                    </ContextMenuWrapper>
+                </Nav>
+                <PrimaryButton onClick={openPopup}>Tweet</PrimaryButton>
 
-            <ProfileInfo>
-                {currentUser && (
-                    <UserCard
-                        uid={currentUser.uid as string}
-                        currentUserUid={currentUser.uid as string}
-                        displayName={currentUser.displayName as string}
-                        photoURL={currentUser.photoURL as string}
-                        hasFollowButton={false}
-                    />
-                )}
-                <SecondaryButton onClick={handleLogOutClick}>LogOut</SecondaryButton>
-            </ProfileInfo>
-        </SideBarContainer>
+                <ProfileInfo>
+                    {currentUser && (
+                        <UserCard
+                            uid={currentUser.uid as string}
+                            currentUserUid={currentUser.uid as string}
+                            displayName={currentUser.displayName as string}
+                            photoURL={currentUser.photoURL as string}
+                            hasFollowButton={false}
+                            userName={currentUser.userName as string}
+                        />
+                    )}
+                    <SecondaryButton onClick={handleLogOutClick}>LogOut</SecondaryButton>
+                </ProfileInfo>
+            </SideBarContainer>
+        </>
     )
 })

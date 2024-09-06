@@ -4,4 +4,6 @@ export const enum InputsNames {
     PHONE_NUMBER = 'phoneNumber',
     PASSWORD = 'password',
     EMAIL_OR_PHONE = 'emailOrPhone',
+    DESCRIPTION = 'description',
+    USER_NAME = 'userName',
 }

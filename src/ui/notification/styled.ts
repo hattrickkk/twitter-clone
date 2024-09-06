@@ -24,6 +24,7 @@ export const StyledNotification = styled.div`
     border-radius: ${({ theme }) => theme.borderRadius.br6};
     max-width: ${({ theme }) => theme.width.w400};
     position: fixed;
+    z-index: 150;
     top: ${({ theme }) => theme.space.sp20};
     right: 50%;
     transform: translateX(50%);

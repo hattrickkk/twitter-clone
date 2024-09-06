@@ -5,7 +5,7 @@ import { InputsNames } from '@/constants/inputsNames'
 const passwordSchema = yup.object().shape({
     [InputsNames.PASSWORD]: yup
         .string()
-        .min(8, 'Password must be at much 8 characters')
+        .min(8, 'Password must be at least 8 characters')
         .max(30, 'Pasword must be at much 30 characters')
         .required('Password is required'),
 })
@@ -31,7 +31,7 @@ export const signUpSchema = yup
     .shape({
         [InputsNames.DISPLAY_NAME]: yup
             .string()
-            .min(2, 'Name must be at much 2 characters')
+            .min(2, 'Name must be at least 2 characters')
             .max(30, 'Name must be at much 30 characters')
             .required('Name is required'),
         [InputsNames.PHONE_NUMBER]: yup

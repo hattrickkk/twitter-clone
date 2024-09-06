@@ -15,10 +15,11 @@ const RecomendationsPage = () => {
         <>
             <Header />
             <UsersWrapper>
-                {users.map(({ displayName, uid, photoURL, followers }, i) => (
+                {users.map(({ displayName, userName, uid, photoURL, followers }, i) => (
                     <UserCard
                         key={uid}
                         uid={uid}
+                        userName={userName}
                         displayName={displayName}
                         photoURL={photoURL}
                         followers={followers}

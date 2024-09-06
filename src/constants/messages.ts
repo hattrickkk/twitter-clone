@@ -15,4 +15,5 @@ export const enum Messages {
     DELETE_SUCCESS = 'The tweet was deleted',
     DELETE_FAIL = 'Something went wrong, the tweet was not deleted',
     DEFAULT_FAIL = 'Something went wrong, try again later',
+    USER_EXISTS = 'A user with the same user name already exists, try another user name',
 }

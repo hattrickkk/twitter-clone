@@ -22,7 +22,3 @@ export const Wrapper = styled.div<{ $disable: boolean }>`
         }
     `}
 `
-
-export const FileInput = styled.input`
-    display: none;
-`

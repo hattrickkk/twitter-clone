@@ -17,6 +17,7 @@ import { hasLikedByUser, updateUserLikedTweetsList } from '@/utils/firebase/user
 import { getTweetTime } from '@/utils/getTweetTime'
 import { useOpenState } from '@/utils/hooks/useOpenState'
 import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
+import { usePictureURL } from '@/utils/hooks/usePictureURL'
 import { useTweetInfo } from '@/utils/hooks/useTweetInfo'
 import { useViewProfile } from '@/utils/hooks/useViewProfile'
 
@@ -56,6 +57,7 @@ export const Tweet = memo(
         const [isSubmitting, setIsSubmiting] = useState(false)
         const [likesCount, setLikesCount] = useState(likes.length)
         const tweetTime = getTweetTime(created)
+        const avatarImage = usePictureURL(userInfo.photoURL)
 
         const handleViewProfile = useViewProfile(userId)
 
@@ -128,7 +130,7 @@ export const Tweet = memo(
         return (
             <Wrapper ref={ref}>
                 <AvatarWrapper onClick={handleViewProfile}>
-                    <AvatarImage src={userInfo.photoURL ?? defaultAvatar} alt='avatar' />
+                    <AvatarImage src={avatarImage ?? defaultAvatar} alt='avatar' />
                 </AvatarWrapper>
                 <TweetContent>
                     <Header>
@@ -155,8 +157,8 @@ export const Tweet = memo(
                     <Text>{text}</Text>
                     {tweetPictures.length > 0 && (
                         <Pictures $PicturesCount={images.length}>
-                            {tweetPictures.map(url => (
-                                <PictureWrapper key={url}>
+                            {tweetPictures.map((url, i) => (
+                                <PictureWrapper key={url + i}>
                                     <Picture src={url} alt={'tweet-photo'} $PicturesCount={tweetPictures.length} />
                                 </PictureWrapper>
                             ))}

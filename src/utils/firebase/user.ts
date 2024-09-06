@@ -29,6 +29,17 @@ export type UsersUids = {
     anotherUserUid: string
 }
 
+export type UpdateUserInfoParams = {
+    description?: string
+    userName: string
+    displayName: string
+    phoneNumber: string
+    photoURL?: string
+    banner?: string
+    uid: string
+    birthDate?: string
+}
+
 export const getUser = async (uid: string) => {
     try {
         const q = query(collection(db, Collections.USERS), where('uid', '==', uid))
@@ -177,5 +188,55 @@ export const updateUserFollowers = async ({ currentUserUid, anotherUserUid }: Us
         }
     } catch (error) {
         return { status: Status.FAIL, message: error as Messages }
+    }
+}
+
+export const updateUserInfo = async ({ uid, banner, photoURL, ...restData }: UpdateUserInfoParams) => {
+    try {
+        const userData = await getUser(uid)
+        if (userData) {
+            const docRef = doc(db, Collections.USERS, uid)
+            await updateDoc(docRef, {
+                ...userData,
+                ...restData,
+                banner: banner || userData.banner,
+                photoURL: photoURL || userData.photoURL || null,
+            })
+            return { status: Status.SUCCESS, message: Messages.TWEET_CREATION_SUCCESS }
+        } else {
+            throw new Error(Messages.TWEET_CREATION_FAIL)
+        }
+    } catch (error) {
+        return { status: Status.FAIL, message: error as Messages }
+    }
+}
+
+export const isUserNameValid = async (userName: string, uid: string) => {
+    try {
+        const q = query(collection(db, Collections.USERS), where('userName', '==', userName))
+        const querySnapshot = await getDocs(q)
+        if (querySnapshot.docs.length) {
+            return querySnapshot.docs[0].data().userName === userName && querySnapshot.docs[0].data().uid === uid
+        } else return true
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+type IsFieldVauleValidParams = {
+    value: string
+    fieldName: keyof UserInfoDoc
+    uid: string
+}
+
+export const isFieldVauleValid = async ({ value, fieldName, uid }: IsFieldVauleValidParams) => {
+    try {
+        const q = query(collection(db, Collections.USERS), where(fieldName, '==', value))
+        const querySnapshot = await getDocs(q)
+        if (querySnapshot.docs.length) {
+            return querySnapshot.docs[0].data()[fieldName] === value && querySnapshot.docs[0].data().uid === uid
+        } else return true
+    } catch (error) {
+        console.log(error)
     }
 }

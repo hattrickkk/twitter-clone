@@ -1,13 +1,14 @@
 import { fileTypeFromBuffer } from 'file-type'
-import { ChangeEvent, memo, useCallback, useRef, useState } from 'react'
+import { ChangeEvent, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import avatar from '@/assets/avatar.svg'
+import defaultAvatar from '@/assets/avatar.svg'
 import { Folders } from '@/constants/fireStoreCollections'
 import { MAX_TWEET_TEXT_LENGTH } from '@/constants/magicValues'
 import { Messages } from '@/constants/messages'
 import { Status } from '@/constants/responseStatus'
 import { UsersTweetsTypes } from '@/constants/tweets'
+import { ImageState } from '@/customTypes/tweet'
 import { selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
 import { addTweet } from '@/store/slices/tweetsSlice'
@@ -17,6 +18,7 @@ import { PrimaryButton } from '@/ui/buttons'
 import { uploadPicture } from '@/utils/firebase/pictures'
 import { setTweetToFireStore } from '@/utils/firebase/tweet'
 import { updateUserTweetsList } from '@/utils/firebase/user'
+import { usePictureURL } from '@/utils/hooks/usePictureURL'
 
 import {
     TweetContent,
@@ -34,12 +36,12 @@ import {
     Delete,
 } from './styled'
 
-type ImageState = {
-    path: string
-    file: File
+type Props = {
+    closePopup?: VoidFunction
+    isPopupOpen?: boolean
 }
 
-export const WhatsHappening = memo(() => {
+export const WhatsHappening = memo(({ closePopup, isPopupOpen }: Props) => {
     const [value, setValue] = useState('')
     const [images, setImages] = useState<ImageState[]>([])
     const [isSubmitting, setIsSubmiting] = useState(false)
@@ -47,6 +49,15 @@ export const WhatsHappening = memo(() => {
 
     const currentUser = useSelector(selectUser)
     const dispatch = useDispatch()
+
+    const avatar = usePictureURL(currentUser?.photoURL as string)
+
+    useEffect(() => {
+        if (!isPopupOpen) {
+            setValue('')
+            setImages([])
+        }
+    }, [isPopupOpen])
 
     const onTextAreaChange = useCallback(
         ({ currentTarget }: ChangeEvent<HTMLTextAreaElement>) => {
@@ -69,7 +80,7 @@ export const WhatsHappening = memo(() => {
             const { uid } = currentUser
             const tweet = await setTweetToFireStore({
                 text: value,
-                images: tweetPictures,
+                images: tweetPictures as string[],
                 userId: uid as string,
             })
             const { message, status } = await updateUserTweetsList({ uid: uid as string, tweetId: tweet.tweetId })
@@ -78,6 +89,7 @@ export const WhatsHappening = memo(() => {
                 setValue('')
                 setImages([])
                 dispatch(addTweet({ data: tweet, type: UsersTweetsTypes.OWN }))
+                closePopup && closePopup()
             }
         }
         setIsSubmiting(false)
@@ -120,17 +132,17 @@ export const WhatsHappening = memo(() => {
     )
 
     return (
-        <Wrapper>
+        <Wrapper id='whats-happening-section'>
             <Flex $gap={20}>
                 <AvatarWrapper>
-                    <AvatarImage src={currentUser?.photoURL ?? avatar} alt='avatar' />
+                    <AvatarImage src={avatar ?? defaultAvatar} alt='avatar' />
                 </AvatarWrapper>
                 <TweetContent>
                     <TextAreaWrapper>
                         <Textarea placeholder='What&#39;s happening' onChange={onTextAreaChange} value={value} />
                     </TextAreaWrapper>
                     {images.length > 0 && (
-                        <Pictures>
+                        <Pictures id='tweet-pictures'>
                             {images.map(({ path }, i) => (
                                 <PictureWrapper key={path}>
                                     <Delete onClick={handleImageDeleteClick(i)} />

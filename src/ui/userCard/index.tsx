@@ -3,6 +3,7 @@ import { forwardRef, memo, useCallback, useEffect, useState } from 'react'
 import avatar from '@/assets/avatar.svg'
 import { Flex } from '@/styles/flexStyles'
 import { updateUserFollowers } from '@/utils/firebase/user'
+import { usePictureURL } from '@/utils/hooks/usePictureURL'
 import { useViewProfile } from '@/utils/hooks/useViewProfile'
 
 import { Image, ImageWrapper, UserName, Name, Wrapper, Info, ButtonWrapper } from './styled'
@@ -11,6 +12,7 @@ import { SecondaryButton } from '../buttons'
 type Props = {
     photoURL: string | null
     uid: string
+    userName: string
     displayName: string
     followers?: string[]
     currentUserUid: string
@@ -19,9 +21,10 @@ type Props = {
 
 export const UserCard = memo(
     forwardRef<HTMLDivElement, Props>(
-        ({ photoURL, uid, displayName, currentUserUid, followers = [], hasFollowButton = true }, ref) => {
+        ({ photoURL, uid, displayName, userName, currentUserUid, followers = [], hasFollowButton = true }, ref) => {
             const [isFollowed, setIsFollowed] = useState(false)
             const [isSubmiting, setIsSubmiting] = useState(false)
+            const avatarImage = usePictureURL(photoURL)
 
             useEffect(() => {
                 followers && setIsFollowed(!!followers.find(uid => uid == currentUserUid))
@@ -40,12 +43,12 @@ export const UserCard = memo(
                 <Wrapper ref={ref}>
                     <Flex>
                         <ImageWrapper onClick={handleViewProfile}>
-                            <Image src={photoURL ?? avatar} alt='avatar' />
+                            <Image src={avatarImage ?? avatar} alt='avatar' />
                         </ImageWrapper>
                         <Info>
                             <Flex $flexdirection='column' $gap={5} $justifycontent='center'>
                                 <Name onClick={handleViewProfile}>{displayName}</Name>
-                                <UserName onClick={handleViewProfile}>{`@${uid}`}</UserName>
+                                <UserName onClick={handleViewProfile}>{`@${userName}`}</UserName>
                             </Flex>
                         </Info>
                         {hasFollowButton && (

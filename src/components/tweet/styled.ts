@@ -14,6 +14,7 @@ export const AvatarWrapper = styled.div`
     border-radius: 100%;
     overflow: hidden;
     flex: 0 0 ${({ theme }) => theme.width.w50};
+    height: ${({ theme }) => theme.width.w50};
     align-self: flex-start;
     position: relative;
 
@@ -37,7 +38,7 @@ export const AvatarWrapper = styled.div`
 
 export const AvatarImage = styled.img`
     width: 100%;
-    cursor: pointer:
+    height: 100%;
 `
 export const TweetContent = styled.div`
     flex: 1 1 auto;
@@ -106,6 +107,9 @@ export const IconWrapper = styled.button`
 
 export const Text = styled.p`
     font-size: ${({ theme }) => theme.fontSize.fs18};
+    max-width: ${({ theme }) => theme.width.w620};
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 export const Pictures = styled.div<{ $PicturesCount: number }>`

@@ -10,3 +10,7 @@ export const ErrorMessage = styled.p`
     padding-top: ${({ theme }) => theme.space.sp10};
 `
 export const Form = styled.form``
+
+export const FileInput = styled.input`
+    display: none;
+`

@@ -31,7 +31,7 @@ export const Title = styled.h2`
 `
 
 export const InputsWrapper = styled.div`
-    & > input:not(:first-child) {
+    & > *:not(:first-child) {
         margin-top: ${({ theme }) => theme.space.sp25};
     }
     margin-bottom: ${({ theme }) => theme.space.sp25};
@@ -48,29 +48,6 @@ export const Text = styled.p`
     line-height: ${({ theme }) => theme.lineHeight.lh24};
     opacity: ${({ theme }) => theme.opacity};
     margin-bottom: ${({ theme }) => theme.space.sp30};
-`
-
-export const DropdownsWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: ${({ theme }) => theme.space.sp20};
-
-    & > *:nth-child(1) {
-        flex: 4 4 auto;
-    }
-    & > *:nth-child(2),
-    & > *:nth-child(3) {
-        flex: 1 1 ${({ theme }) => theme.width.w130};
-    }
-
-    @media ${MEDIA.PHONE} {
-        flex-direction: column;
-
-        & > *:nth-child(2),
-        & > *:nth-child(3) {
-            flex: 1 1 auto;
-        }
-    }
 `
 
 export const ButtonWrapper = styled.div`
