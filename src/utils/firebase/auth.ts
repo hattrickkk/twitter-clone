@@ -28,6 +28,8 @@ export const setUserToFireStore = async (uid: string, userData: UserProfile) => 
         banner: null,
         description: '',
         uid,
+        displayName_lowercase: userData.displayName?.toLowerCase() || '',
+        userName_lowercase: userData.userName?.toLowerCase() || '',
     })
 }
 

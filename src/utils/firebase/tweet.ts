@@ -30,7 +30,7 @@ export const setTweetToFireStore = async (tweet: Tweet) => {
     const created = new Date().toISOString()
     const tweetId = await generateHash(created.toString())
     const docRef = doc(db, Collections.TWEETS, tweetId)
-    const tweetDoc = { ...tweet, created, tweetId, likes: [] }
+    const tweetDoc = { ...tweet, text_lowercase: tweet.text.toLowerCase(), created, tweetId, likes: [] }
     await setDoc(docRef, tweetDoc)
     return tweetDoc
 }

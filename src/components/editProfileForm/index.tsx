@@ -143,7 +143,13 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                 closePopup()
                 setIsEditing(false)
             } else {
-                const updatedUserInfo: UpdateUserInfoParams = { ...formData, uid: userInfo.uid }
+                const updatedUserInfo: UpdateUserInfoParams = {
+                    ...formData,
+                    uid: userInfo.uid,
+                    userName_lowercase: formData.displayName.toLowerCase(),
+                    displayName_lowercase: formData.userName.toLowerCase(),
+                }
+
                 if (avatarImage.file) {
                     const avatar = await uploadPicture([avatarImage.file], Folders.USERS)
                     updatedUserInfo.photoURL = (avatar as string[])[0]

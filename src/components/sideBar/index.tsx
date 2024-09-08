@@ -9,6 +9,7 @@ import { useOutsideClick } from '@/utils/hooks/useOutsideClick'
 
 import { SideBarContainer, Text } from './styled'
 import { FooterLinks, ContextMenuWrapper, Copyright } from './styled'
+import { Search } from '../search'
 import { UsersSection } from '../usersSection'
 
 export const SideBar = memo(() => {
@@ -18,6 +19,7 @@ export const SideBar = memo(() => {
 
     return (
         <SideBarContainer>
+            <Search />
             <UsersSection />
             <FooterLinks>
                 {SOME_FOOTER_LINKS.map(({ path, title }) => (
