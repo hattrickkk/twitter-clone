@@ -32,7 +32,7 @@ export const UsersSection = memo(() => {
                     userName={userName}
                 />
             ))}
-            <Link to={RECOMENDATIONS}>Show more</Link>
+            <Link to={`/${RECOMENDATIONS}`}>Show more</Link>
         </StyledSection>
     )
 })

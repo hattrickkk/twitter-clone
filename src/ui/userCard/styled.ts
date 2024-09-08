@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { MEDIA } from '@/constants/media'
+
 export const Wrapper = styled.div`
     width: 100%;
 `
@@ -44,6 +46,7 @@ export const Name = styled.p`
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
+    max-height: ${({ theme }) => theme.width.w23};
 
     &:hover {
         text-decoration: underline;
@@ -62,4 +65,8 @@ export const UserName = styled.p`
 export const ButtonWrapper = styled.div`
     align-self: center;
     width: ${({ theme }) => theme.width.w150};
+
+    @media ${MEDIA.LARGE_PHONE} {
+        display: none;
+    }
 `

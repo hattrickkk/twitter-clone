@@ -1,9 +1,23 @@
 import styled from 'styled-components'
 
+import { MEDIA } from '@/constants/media'
+
 export const SideBarContainer = styled.aside`
     max-width: ${({ theme }) => theme.width.w370};
     width: 100%;
     margin-top: ${({ theme }) => theme.space.sp30};
+
+    @media ${MEDIA.NORMAL_DESKTOP} {
+        max-width: ${({ theme }) => theme.width.w250};
+
+        #follow-button-wrapper {
+            display: none;
+        }
+    }
+
+    @media ${MEDIA.EXTRA_LARGE_DESKTOP} {
+        display: none;
+    }
 `
 
 export const FooterLinks = styled.footer`

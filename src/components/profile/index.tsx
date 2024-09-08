@@ -96,7 +96,7 @@ export const Profile = () => {
                     <BannerImage src={bannerImage ?? defaultBanner} alt='profile-banner' />
                 </BannerWrapper>
                 <Info>
-                    <Flex>
+                    <Flex $flexwrap='wrap'>
                         <StyledProfile>
                             <AvatarWrapper>
                                 <AvatarImage src={avatarImage ?? defaultAvatar} alt='avatar' />

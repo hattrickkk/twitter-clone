@@ -7,7 +7,7 @@ import { Container } from '@/styles/common'
 import { Flex } from '@/styles/flexStyles'
 import { Spinner } from '@/ui/spinner'
 
-import { Main, Wrapper } from './styled'
+import { Main, NavWrapper, Wrapper } from './styled'
 import ErrorBoundary from '../errorBoundary'
 
 type Props = {
@@ -21,7 +21,9 @@ export const Layout = ({ children = null }: Props) => {
                 <ErrorBoundary>
                     <Container>
                         <Flex>
-                            <NavPanel />
+                            <NavWrapper>
+                                <NavPanel />
+                            </NavWrapper>
                             <Main>
                                 {children}
                                 <Outlet />

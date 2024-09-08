@@ -54,7 +54,7 @@ export const UserCard = memo(
                             </Flex>
                         </Info>
                         {hasFollowButton && (
-                            <ButtonWrapper>
+                            <ButtonWrapper id='follow-button-wrapper'>
                                 <SecondaryButton onClick={handleFollowButtonClick} isProcessing={isSubmiting}>
                                     {isFollowed ? 'Unfollow' : 'Follow'}
                                 </SecondaryButton>

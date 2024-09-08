@@ -3,7 +3,7 @@ import * as path from '@/constants/paths'
 export const REST_NAV_LINKS = [
     {
         title: 'Search',
-        path: path.SEARCH,
+        path: path.SEARCH_RESULTS_TWEETS,
         Icon: () => (
             <svg width='20' height='21' viewBox='0 0 20 21' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <path

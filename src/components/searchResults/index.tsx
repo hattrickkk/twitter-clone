@@ -35,7 +35,7 @@ export const SearchResult = memo(({ items, isSearchOpen, closeSearch, query }: P
                 ))
             )}
             <Link
-                to={`${currentPath.includes(SEARCH_USERS) || currentPath.includes(RECOMENDATIONS) ? SEARCH_USERS : SEARCH_TWEETS}/${query}`}
+                to={`/${currentPath.includes(SEARCH_USERS) || currentPath.includes(RECOMENDATIONS) ? SEARCH_USERS : SEARCH_TWEETS}/${query}`}
                 onClick={closeSearch}
             >
                 Show more
