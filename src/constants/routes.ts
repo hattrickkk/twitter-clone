@@ -1,4 +1,4 @@
-import { lazy } from 'react'
+import { Component, lazy } from 'react'
 
 import * as path from './paths'
 
@@ -10,6 +10,7 @@ const profilePage = lazy(() => import('@/pages/profilePage'))
 const recomendationsPage = lazy(() => import('@/pages/recomendationsPage'))
 const searchPage = lazy(() => import('@/pages/searchPage'))
 const notFoundPage = lazy(() => import('@/pages/notFoundPage'))
+const singleTweetPage = lazy(() => import('@/pages/singleTweetPage'))
 
 export const ROUTES = [
     {
@@ -27,6 +28,10 @@ export const ROUTES = [
     {
         path: path.NOT_FOUND,
         component: notFoundPage,
+    },
+    {
+        path: path.SINGLE_TWEET,
+        component: singleTweetPage,
     },
 ]
 

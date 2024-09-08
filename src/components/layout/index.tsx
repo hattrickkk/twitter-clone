@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { ReactElement, Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import { NavPanel } from '@/components/navPanel'
@@ -10,7 +10,11 @@ import { Spinner } from '@/ui/spinner'
 import { Main, Wrapper } from './styled'
 import ErrorBoundary from '../errorBoundary'
 
-export const Layout = () => {
+type Props = {
+    children?: ReactElement | null
+}
+
+export const Layout = ({ children = null }: Props) => {
     return (
         <Wrapper>
             <Suspense fallback={<Spinner />}>
@@ -19,6 +23,7 @@ export const Layout = () => {
                         <Flex>
                             <NavPanel />
                             <Main>
+                                {children}
                                 <Outlet />
                             </Main>
                             <SideBar />
