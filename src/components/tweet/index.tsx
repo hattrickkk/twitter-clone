@@ -39,6 +39,7 @@ import {
     Text,
     TweetContent,
     Wrapper,
+    Time,
 } from './styled'
 
 type Props = {
@@ -137,7 +138,7 @@ export const Tweet = memo(
                         <Flex $justifycontent='flex-start' $alignitems='center'>
                             <MainTitle onClick={handleViewProfile}>{userInfo.displayName}</MainTitle>
                             <SubTitle onClick={handleViewProfile}>@{userInfo.userName}</SubTitle>
-                            <SubTitle>{tweetTime}</SubTitle>
+                            <Time>{tweetTime}</Time>
                         </Flex>
                         <IconWrapper onClick={openContextMenu}>
                             <MoreIcon />

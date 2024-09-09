@@ -49,7 +49,7 @@ export const InputWithError = <T extends FieldValues>({
                 userValue={value}
                 handleInputChange={handleInputChange}
             />
-            {error && <ErrorMessage>{error.message}</ErrorMessage>}
+            <ErrorMessage $visibility={!!error}>{error?.message}</ErrorMessage>
         </InputWrapper>
     )
 }

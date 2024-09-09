@@ -5,9 +5,13 @@ export const Container = styled.div`
     margin: 0 auto;
     padding: 0 ${({ theme }) => theme.space.sp15};
 `
-export const ErrorMessage = styled.p`
+export const ErrorMessage = styled.p<{ $visibility: boolean }>`
     color: ${({ theme }) => theme.color.red};
-    padding-top: ${({ theme }) => theme.space.sp10};
+    padding-top: ${({ theme }) => theme.space.sp5};
+    position: absolute;
+    opacity: 0;
+
+    ${({ $visibility }) => $visibility && `opacity: 1;`};
 `
 export const Form = styled.form``
 

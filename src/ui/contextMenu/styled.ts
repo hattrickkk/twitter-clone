@@ -40,7 +40,7 @@ export const Item = styled.li`
     }
 
     svg {
-        max-width: 15px;
+        ${({ theme }) => theme.width.w15};
 
         path {
             fill: ${({ theme }) => theme.textColor};

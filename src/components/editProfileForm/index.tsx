@@ -143,7 +143,13 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                 closePopup()
                 setIsEditing(false)
             } else {
-                const updatedUserInfo: UpdateUserInfoParams = { ...formData, uid: userInfo.uid }
+                const updatedUserInfo: UpdateUserInfoParams = {
+                    ...formData,
+                    uid: userInfo.uid,
+                    userName_lowercase: formData.displayName.toLowerCase(),
+                    displayName_lowercase: formData.userName.toLowerCase(),
+                }
+
                 if (avatarImage.file) {
                     const avatar = await uploadPicture([avatarImage.file], Folders.USERS)
                     updatedUserInfo.photoURL = (avatar as string[])[0]
@@ -282,7 +288,7 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                         birthDate={userInfo.birthDate}
                         disable={!isEditing}
                     />
-                    {dropdownError && <ErrorMessage>{dropdownError}</ErrorMessage>}
+                    <ErrorMessage $visibility={!!dropdownError}>{dropdownError}</ErrorMessage>
                 </Wrapper>
                 {isEditing && (
                     <PrimaryButton type='submit' disable={!isValid} isProcessing={isSubmitting}>

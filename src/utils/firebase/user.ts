@@ -38,6 +38,8 @@ export type UpdateUserInfoParams = {
     banner?: string
     uid: string
     birthDate?: string
+    displayName_lowercase: string
+    userName_lowercase: string
 }
 
 export const getUser = async (uid: string) => {

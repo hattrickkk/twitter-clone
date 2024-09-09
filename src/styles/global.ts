@@ -12,3 +12,8 @@ export const GlobalStyles = createGlobalStyle`
 		background-color: ${({ theme }) => theme.backgroundColor};
 	}
 `
+export const LockBody = createGlobalStyle<{ $isOverflowHidden: boolean }>`
+  body {
+    overflow: ${({ $isOverflowHidden }) => ($isOverflowHidden ? 'hidden' : 'auto')};
+  }
+`

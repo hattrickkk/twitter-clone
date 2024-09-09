@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { MEDIA } from '@/constants/media'
+
 export const Wrapper = styled.div`
     display: flex;
     gap: ${({ theme }) => theme.space.sp20};
@@ -7,6 +9,10 @@ export const Wrapper = styled.div`
 
     &:not(:last-child) {
         border-bottom: 2px solid ${({ theme }) => theme.usersSectionColor};
+    }
+
+    @media ${MEDIA.LARGE_PHONE} {
+        padding: ${({ theme }) => theme.space.sp20} 0;
     }
 `
 
@@ -34,6 +40,11 @@ export const AvatarWrapper = styled.div`
             opacity: 1;
         }
     }
+
+    @media ${MEDIA.LARGE_PHONE} {
+        flex: 0 0 ${({ theme }) => theme.width.w32};
+        height: ${({ theme }) => theme.width.w32};
+    }
 `
 
 export const AvatarImage = styled.img`
@@ -57,25 +68,62 @@ export const MainTitle = styled.span`
     font-family: ${({ theme }) => theme.fontFamily.robotoSerif};
     margin-right: ${({ theme }) => theme.space.sp15};
     cursor: pointer;
+    max-width: ${({ theme }) => theme.width.w200};
+    max-height: ${({ theme }) => theme.width.w23};
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
 
     &:hover {
         text-decoration: underline;
     }
+
+    @media ${MEDIA.LARGE_TABLET} {
+        max-width: ${({ theme }) => theme.width.w150};
+        font-size: ${({ theme }) => theme.fontSize.fs18};
+    }
+    @media ${MEDIA.TABLET} {
+        max-width: ${({ theme }) => theme.width.w100};
+    }
 `
 export const SubTitle = styled.span`
-    font-size: ${({ theme }) => theme.fontSize.fs18};
+    font-size: ${({ theme }) => theme.fontSize.fs22};
     opacity: ${({ theme }) => theme.opacity};
     transition: ${({ theme }) => theme.transition.standart};
+    max-width: ${({ theme }) => theme.width.w200};
+    max-height: ${({ theme }) => theme.width.w28};
+    margin-right: ${({ theme }) => theme.space.sp15};
+    text-overflow: ellipsis;
+    cursor: pointer;
+    overflow: hidden;
+    display: inline-block;
 
-    &:nth-child(2):hover {
-        cursor: pointer;
+    @media ${MEDIA.LARGE_TABLET} {
+        max-width: ${({ theme }) => theme.width.w150};
+        font-size: ${({ theme }) => theme.fontSize.fs18};
     }
 
-    &:last-child {
-        &::before {
-            content: ' · ';
-        }
-        padding-left: ${({ theme }) => theme.space.sp10};
+    @media ${MEDIA.TABLET} {
+        max-width: ${({ theme }) => theme.width.w100};
+    }
+`
+
+export const Time = styled.span`
+    font-size: ${({ theme }) => theme.fontSize.fs18};
+    opacity: ${({ theme }) => theme.opacity};
+    padding-left: ${({ theme }) => theme.space.sp20};
+    display: inline-block;
+    position: relative;
+
+    &::before {
+        content: ' . ';
+        position: absolute;
+        left: 0;
+        top: -30%;
+    }
+
+    @media ${MEDIA.LARGE_PHONE} {
+        display: none;
     }
 `
 
@@ -110,6 +158,10 @@ export const Text = styled.p`
     max-width: ${({ theme }) => theme.width.w620};
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @media ${MEDIA.EXTRA_LARGE_DESKTOP} {
+        max-width: ${({ theme }) => theme.width.w1000};
+    }
 `
 
 export const Pictures = styled.div<{ $PicturesCount: number }>`
@@ -121,6 +173,14 @@ export const Pictures = styled.div<{ $PicturesCount: number }>`
     max-width: 100%;
     max-height: ${({ $PicturesCount, theme }) => ($PicturesCount === 1 ? 'auto' : theme.width.w410)};
     margin-top: ${({ theme }) => theme.space.sp15};
+
+    @media ${MEDIA.NORMAL_DESKTOP} {
+        max-height: ${({ $PicturesCount, theme }) => ($PicturesCount === 1 ? 'auto' : theme.width.w200)};
+    }
+
+    @media ${MEDIA.EXTRA_LARGE_DESKTOP} {
+        max-width: ${({ theme }) => theme.width.w1000};
+    }
 `
 export const PictureWrapper = styled.div`
     flex: 1 1 45%;
@@ -128,10 +188,14 @@ export const PictureWrapper = styled.div`
     position: relative;
 `
 export const Picture = styled.img<{ $PicturesCount: number }>`
-    height: ${({ theme, $PicturesCount }) => ($PicturesCount === 1 ? 'auto' : theme.width.w200)};
+    height: ${({ theme, $PicturesCount }) => ($PicturesCount === 1 ? theme.width.w580 : theme.width.w200)};
     width: 100%;
     object-fit: cover;
     object-position: center;
+
+    @media ${MEDIA.NORMAL_DESKTOP} {
+        height: ${({ theme, $PicturesCount }) => ($PicturesCount === 1 ? 'auto' : theme.width.w100)};
+    }
 `
 
 export const Footer = styled.footer`

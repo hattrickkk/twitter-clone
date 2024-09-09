@@ -1,4 +1,4 @@
-import { lazy } from 'react'
+import { Component, lazy } from 'react'
 
 import * as path from './paths'
 
@@ -8,6 +8,9 @@ const logInPage = lazy(() => import('@/pages/logInPage'))
 const homePage = lazy(() => import('@/pages/homePage'))
 const profilePage = lazy(() => import('@/pages/profilePage'))
 const recomendationsPage = lazy(() => import('@/pages/recomendationsPage'))
+const searchPage = lazy(() => import('@/pages/searchPage'))
+const notFoundPage = lazy(() => import('@/pages/notFoundPage'))
+const singleTweetPage = lazy(() => import('@/pages/singleTweetPage'))
 
 export const ROUTES = [
     {
@@ -22,6 +25,14 @@ export const ROUTES = [
         path: path.LOG_IN,
         component: logInPage,
     },
+    {
+        path: path.NOT_FOUND,
+        component: notFoundPage,
+    },
+    {
+        path: path.SINGLE_TWEET,
+        component: singleTweetPage,
+    },
 ]
 
 export const PRIVATE_ROUTES = [
@@ -30,23 +41,23 @@ export const PRIVATE_ROUTES = [
         component: homePage,
     },
     {
-        path: path.EXPLORE,
+        path: path.NOT_FOUND,
         component: homePage,
     },
     {
-        path: path.NOTIFICATIONS,
+        path: path.NOT_FOUND,
         component: homePage,
     },
     {
-        path: path.MESSAGES,
+        path: path.NOT_FOUND,
         component: homePage,
     },
     {
-        path: path.BOOKMARKS,
+        path: path.NOT_FOUND,
         component: homePage,
     },
     {
-        path: path.LISTS,
+        path: path.NOT_FOUND,
         component: homePage,
     },
     {
@@ -56,5 +67,13 @@ export const PRIVATE_ROUTES = [
     {
         path: path.RECOMENDATIONS,
         component: recomendationsPage,
+    },
+    {
+        path: path.SEARCH_RESULTS_TWEETS,
+        component: searchPage,
+    },
+    {
+        path: path.SEARCH_RESULTS_USERS,
+        component: searchPage,
     },
 ]

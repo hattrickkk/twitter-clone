@@ -2,11 +2,6 @@ import styled from 'styled-components'
 
 import { MEDIA } from '@/constants/media'
 
-export const Wrapper = styled.div`
-    & > input {
-        margin-top: ${({ theme }) => theme.space.sp25};
-    }
-`
 export const InputWrapper = styled.div`
     position: relative;
 `

@@ -6,7 +6,8 @@ import { Flex } from '@/styles/flexStyles'
 import { Arrow } from '@/ui/arrow'
 import { ThemeSwitcher } from '@/ui/themeSwitcher'
 
-import { StyledHeader, Title } from './styled'
+import { NavWrapper, StyledHeader, Title } from './styled'
+import { NavPanel } from '../navPanel'
 
 type Props = {
     children?: ReactElement
@@ -17,6 +18,9 @@ export const Header = ({ children }: Props) => {
     return (
         <StyledHeader>
             <Flex $alignitems='center' $gap={20}>
+                <NavWrapper>
+                    <NavPanel />
+                </NavWrapper>
                 {children ?? (
                     <Link to={`/${HOME}`}>
                         <Flex $justifycontent='flex-start' $alignitems='center' $gap={10}>

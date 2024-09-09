@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { MEDIA } from '@/constants/media'
+
 export const StyledPopup = styled.div<{ $active: boolean; $isExpand: boolean }>`
     overflow: hidden;
     position: fixed;
@@ -20,6 +22,10 @@ export const StyledPopup = styled.div<{ $active: boolean; $isExpand: boolean }>`
         background-color: ${theme.color.blackWithOpacity};`}
 
     ${({ $isExpand }) => $isExpand && `transform: scale(1.5);`}
+
+    @media ${MEDIA.LARGE_PHONE} {
+        transform: scale(1);
+    }
 `
 
 export const Wrapper = styled.div<{ $active: boolean }>`
@@ -50,6 +56,11 @@ export const ContentWrapper = styled.div<{ $isExpand: boolean }>`
             max-width: ${({ theme }) => theme.width.w300};
             max-height: ${({ theme }) => theme.width.w100};
         }
+    }
+
+    @media ${MEDIA.PHONE} {
+        padding: ${({ theme }) => theme.space.sp10};
+        padding-top: ${({ theme }) => theme.space.sp50};
     }
 `
 

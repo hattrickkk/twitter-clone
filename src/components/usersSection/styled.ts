@@ -11,7 +11,7 @@ export const StyledSection = styled.section`
     }
 
     a {
-        font-size: 18px;
+        font-size: ${({ theme }) => theme.fontSize.fs18};
         color: ${({ theme }) => theme.color.blue};
         transition: ${({ theme }) => theme.transition.standart};
 

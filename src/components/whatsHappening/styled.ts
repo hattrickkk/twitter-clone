@@ -1,8 +1,14 @@
 import styled from 'styled-components'
 
+import { MEDIA } from '@/constants/media'
+
 export const Wrapper = styled.div`
     padding: ${({ theme }) => theme.space.sp25};
     border-bottom: 2px solid ${({ theme }) => theme.usersSectionColor};
+
+    @media ${MEDIA.LARGE_PHONE} {
+        padding: ${({ theme }) => theme.space.sp25} 0;
+    }
 `
 
 export const AvatarWrapper = styled.div`
@@ -11,6 +17,11 @@ export const AvatarWrapper = styled.div`
     height: ${({ theme }) => theme.width.w50};
     flex: 0 0 ${({ theme }) => theme.width.w50};
     align-self: flex-start;
+
+    @media ${MEDIA.LARGE_PHONE} {
+        flex: 0 0 ${({ theme }) => theme.width.w32};
+        height: ${({ theme }) => theme.width.w32};
+    }
 `
 
 export const AvatarImage = styled.img`

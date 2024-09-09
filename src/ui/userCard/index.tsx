@@ -47,12 +47,14 @@ export const UserCard = memo(
                         </ImageWrapper>
                         <Info>
                             <Flex $flexdirection='column' $gap={5} $justifycontent='center'>
-                                <Name onClick={handleViewProfile}>{displayName}</Name>
-                                <UserName onClick={handleViewProfile}>{`@${userName}`}</UserName>
+                                <Name onClick={handleViewProfile} id='display-name'>
+                                    {displayName}
+                                </Name>
+                                <UserName onClick={handleViewProfile} id='user-name'>{`@${userName}`}</UserName>
                             </Flex>
                         </Info>
                         {hasFollowButton && (
-                            <ButtonWrapper>
+                            <ButtonWrapper id='follow-button-wrapper'>
                                 <SecondaryButton onClick={handleFollowButtonClick} isProcessing={isSubmiting}>
                                     {isFollowed ? 'Unfollow' : 'Follow'}
                                 </SecondaryButton>

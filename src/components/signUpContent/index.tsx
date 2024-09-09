@@ -132,7 +132,7 @@ export const SignUpContent = () => {
                         ullamcorper blandit viverra dignissim eget tellus. Nibh mi massa in molestie a sit. Elit congue.
                     </Text>
                     <DropdownsGroup setDropdownValues={setDropdownValues} dropdownsValues={dropdownsValues} />
-                    {dropdownError && <ErrorMessage>{dropdownError}</ErrorMessage>}
+                    <ErrorMessage $visibility={!!dropdownError}>{dropdownError}</ErrorMessage>
                     <ButtonWrapper>
                         <PrimaryButton type='submit' disable={!isValid || !!dropdownError} isProcessing={isSubmitting}>
                             Next

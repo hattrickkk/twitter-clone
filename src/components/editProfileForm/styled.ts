@@ -1,11 +1,27 @@
 import styled from 'styled-components'
 
+import { MEDIA } from '@/constants/media'
+
 export const EditingProfileSection = styled.section`
     width: ${({ theme }) => theme.width.w580};
     padding: ${({ theme }) => theme.space.sp10};
+
     input,
     #dropdown-field {
         padding: ${({ theme }) => theme.space.sp15};
+    }
+
+    @media ${MEDIA.TABLET} {
+        width: ${({ theme }) => theme.width.w400};
+    }
+
+    @media ${MEDIA.LARGE_PHONE} {
+        width: ${({ theme }) => theme.width.w370};
+        padding: 0;
+    }
+
+    @media ${MEDIA.PHONE} {
+        width: ${({ theme }) => theme.width.w300};
     }
 `
 export const Title = styled.h2`
@@ -52,6 +68,10 @@ export const BannerWrapper = styled.div<{ $disable: boolean }>`
                 opacity: ${theme.opacity};
             }
         }`};
+
+    @media ${MEDIA.PHONE} {
+        height: ${({ theme }) => theme.width.w130};
+    }
 `
 
 export const BannerBack = styled.div`
@@ -133,7 +153,7 @@ export const AvatarImage = styled.img`
 
 export const InputsWrapper = styled.div`
     & > *:not(:first-child) {
-        margin-top: ${({ theme }) => theme.space.sp20};
+        margin-top: ${({ theme }) => theme.space.sp35};
     }
     margin-bottom: ${({ theme }) => theme.space.sp25};
 `
@@ -143,6 +163,7 @@ export const Wrapper = styled.div`
     overflow-y: scroll;
     margin-bottom: ${({ theme }) => theme.space.sp25};
     padding-right: ${({ theme }) => theme.space.sp15};
+    position: relative;
 
     &::-webkit-scrollbar {
         width: ${({ theme }) => theme.width.w10};
