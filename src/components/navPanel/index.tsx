@@ -51,9 +51,7 @@ export const NavPanel = memo(() => {
         navigate('/', { replace: true })
     }, [])
 
-    const handleToogleMenu = useCallback(() => {
-        isMenuOpen ? closeMenu() : openMenu()
-    }, [isMenuOpen])
+    const handleToogleMenu = isMenuOpen ? closeMenu : openMenu
 
     const contextMenuRef = useRef(null)
     useOutsideClick(contextMenuRef, closeContextMenu)

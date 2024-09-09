@@ -22,7 +22,7 @@ export const SmallTweet = memo(({ userId, text, tweetId }: Props) => {
             .catch(err => console.error(err))
     }, [])
 
-    const handleTweetClick = useCallback(() => navigate(`/tweet/${tweetId}`), [])
+    const handleTweetClick = useCallback(() => navigate(`/tweet/${tweetId}`), [tweetId])
 
     return (
         <Wrapper onClick={handleTweetClick}>
