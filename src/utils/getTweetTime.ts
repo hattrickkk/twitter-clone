@@ -7,7 +7,7 @@ export const getTweetTime = (created: string) => {
 
     const month = createdDate.getMonth()
     const year = createdDate.getFullYear()
-    const day = createdDate.getDay()
+    const day = createdDate.getDate()
 
     if (diff < 60000) return 'now'
     else if (diff < 3600000) return `${Math.trunc(diff / 60000)}m`
