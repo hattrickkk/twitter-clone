@@ -2,7 +2,7 @@ export class SignUpPage {
     visit() {
         cy.visit('/sign-up')
     }
-    get Button() {
+    get button() {
         return cy.get('button').contains('Next')
     }
     getInput(placeholder: string) {

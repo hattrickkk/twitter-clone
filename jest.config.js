@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 export default {
     preset: 'ts-jest/presets/default-esm',
     testEnvironment: 'jsdom',
@@ -8,4 +6,6 @@ export default {
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     setupFilesAfterEnv: ['@testing-library/jest-dom/jest-globals'],
+    transformIgnorePatterns: ['/node_modules/'],
+    testMatch: ['**/src/__tests__/**/*.test.ts', '**/src/__tests__/**/*.test.tsx'],
 }

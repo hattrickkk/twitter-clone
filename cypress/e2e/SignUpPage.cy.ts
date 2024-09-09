@@ -33,7 +33,6 @@ describe('SignUp page testing', () => {
         signUpPage.type('Email', 'test@test.test')
         signUpPage.type('Password', '12121212')
 
-        const dropdowns = cy.getByDataCy('dropdown')
         cy.getByDataCy('dropdown').should('have.length', 3)
 
         cy.contains('Month').click()
@@ -44,7 +43,7 @@ describe('SignUp page testing', () => {
         cy.contains('Year').click()
         cy.contains('2020').click()
 
-        signUpPage.Button.click()
+        signUpPage.button.click()
         cy.contains('Firebase: Error (auth/email-already-in-use).')
     })
 })

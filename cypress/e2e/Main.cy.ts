@@ -1,6 +1,8 @@
 import { Auth } from '../page_objects/Auth'
 import { HomePage } from '../page_objects/HomePage'
 
+const UID = 'zE2nToRtKZaqPMDp18Wj3o1yVBD2'
+
 describe('Home page testing', () => {
     const homePage = new HomePage()
     const auth = new Auth()
@@ -16,11 +18,11 @@ describe('Home page testing', () => {
     })
 
     it('profile', () => {
-        cy.visit('http://localhost:5173/profile/zE2nToRtKZaqPMDp18Wj3o1yVBD2')
+        cy.visit(`http://localhost:5173/profile/${UID}`)
         cy.wait(3000)
-        cy.contains('zE2nToRtKZaqPMDp18Wj3o1yVBD2')
+        cy.contains(UID)
         cy.contains('Edit Profile').click()
-        cy.contains('zE2nToRtKZaqPMDp18Wj3o1yVBD2')
+        cy.contains(UID)
         cy.contains('Edit Profile')
     })
 
