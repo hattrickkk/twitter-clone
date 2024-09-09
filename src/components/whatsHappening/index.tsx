@@ -167,6 +167,7 @@ export const WhatsHappening = memo(({ closePopup, isPopupOpen }: Props) => {
                                     onClick={handleTwitClick}
                                     disable={value.trim().length === 0 && images.length === 0}
                                     isProcessing={isSubmitting}
+                                    data-cy='tweet-button'
                                 >
                                     Tweet
                                 </PrimaryButton>
