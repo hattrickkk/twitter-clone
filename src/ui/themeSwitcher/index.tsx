@@ -18,7 +18,7 @@ export const ThemeSwitcher = memo(() => {
     }, [theme])
 
     return (
-        <Label htmlFor='themeSwitcher' id='themeLabel'>
+        <Label htmlFor='themeSwitcher' id='themeLabel' data-testid='themeLabel'>
             <Input
                 onClick={switcherClickHandler}
                 type='checkbox'

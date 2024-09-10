@@ -16,7 +16,7 @@ export const SearchResult = memo(
             <StyledSection ref={ref} $visibility={isSearchOpen}>
                 <Title>Search Results</Title>
                 {children}
-                <Link to={linkTo} onClick={closeSearch}>
+                <Link to={linkTo} onClick={closeSearch} data-cy='show-more-search'>
                     Show more
                 </Link>
             </StyledSection>

@@ -50,7 +50,7 @@ export const Dropdown = memo(({ placeholder, items, setDropdownValues, selectedV
     useOutsideClick(dropdownRef, close)
 
     return (
-        <StyledDropdown ref={dropdownRef}>
+        <StyledDropdown ref={dropdownRef} data-cy='dropdown'>
             <ContentWrapper $isOpen={isOpen}>
                 <Content>
                     {items.map(item => (

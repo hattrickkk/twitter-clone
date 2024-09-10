@@ -38,7 +38,9 @@ export const InputWithError = <T extends FieldValues>({
     return (
         <InputWrapper>
             {placeholder === 'Password' && (
-                <Icon onClick={handleHidePasswordClick}>{hidePassword ? <OpenEyeIcon /> : <CloseEyeIcon />}</Icon>
+                <Icon onClick={handleHidePasswordClick} data-cy='eye'>
+                    {hidePassword ? <OpenEyeIcon /> : <CloseEyeIcon />}
+                </Icon>
             )}
             <Input
                 {...controllerProps}
