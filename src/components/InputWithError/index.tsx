@@ -18,6 +18,16 @@ type Props<T extends FieldValues> = {
     disable?: boolean
 }
 
+const enum InputTypes {
+    TEXT = 'text',
+    PASSWORD = 'password',
+}
+
+const visibilityMap: Record<InputTypes, InputTypes> = {
+    [InputTypes.PASSWORD]: InputTypes.TEXT,
+    [InputTypes.TEXT]: InputTypes.PASSWORD,
+}
+
 export const InputWithError = <T extends FieldValues>({
     controllerProps,
     error,
@@ -27,24 +37,19 @@ export const InputWithError = <T extends FieldValues>({
     disable = false,
     handleInputChange,
 }: Props<T>) => {
-    const [hidePassword, setHidePassword] = useState(true)
-    const handleHidePasswordClick = useCallback(() => setHidePassword(prev => !prev), [])
-
-    let inputType: 'text' | 'password' = 'text'
-    if (placeholder === 'Password') {
-        inputType = hidePassword ? 'password' : 'text'
-    }
+    const [type, setType] = useState<keyof typeof visibilityMap>(InputTypes.PASSWORD)
+    const handleHidePasswordClick = useCallback(() => setType(prevType => visibilityMap[prevType]), [])
 
     return (
         <InputWrapper>
             {placeholder === 'Password' && (
                 <Icon onClick={handleHidePasswordClick} data-cy='eye'>
-                    {hidePassword ? <OpenEyeIcon /> : <CloseEyeIcon />}
+                    {type === InputTypes.PASSWORD ? <OpenEyeIcon /> : <CloseEyeIcon />}
                 </Icon>
             )}
             <Input
                 {...controllerProps}
-                type={inputType}
+                type={placeholder === 'Password' ? type : InputTypes.TEXT}
                 name={name}
                 disable={disable}
                 placeholder={placeholder}

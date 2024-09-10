@@ -177,7 +177,6 @@ export const updateUserFollowers = async ({ currentUserUid, anotherUserUid }: Us
                 anothertUserData.followers.push(currentUserUid)
                 currentUserData.following.push(anotherUserUid)
             }
-
             await updateDoc(currentUserdocRef, {
                 following: currentUserData.following,
             })

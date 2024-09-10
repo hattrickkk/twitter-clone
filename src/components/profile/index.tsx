@@ -59,18 +59,17 @@ export const Profile = () => {
         userInfo.followers && currentUser && setIsFollowed(!!userInfo.followers.find(uid => uid === currentUser.uid))
     }, [userInfo])
 
-    const handleFollowButtonClick = useCallback(() => {
+    const handleFollowButtonClick = useCallback(async () => {
+        setIsSubmiting(true)
         try {
-            setIsSubmiting(true)
-            updateUserFollowers({
+            await updateUserFollowers({
                 currentUserUid: currentUser?.uid as string,
                 anotherUserUid: uid as string,
             })
-                .then(() => setIsSubmiting(false))
-                .catch(err => console.error(err))
         } catch (error) {
             console.error(error)
         }
+        setIsSubmiting(false)
     }, [uid])
 
     const isCurrentUser = currentUser && currentUser.uid === uid

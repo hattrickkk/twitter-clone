@@ -39,7 +39,7 @@ export const Search = memo(
             }
         }, [currentPath])
 
-        const searchBlockRef = useRef(null)
+        const searchBlockRef = useRef<HTMLDivElement>(null)
         useOutsideClick(searchBlockRef, closeSearch)
 
         return (

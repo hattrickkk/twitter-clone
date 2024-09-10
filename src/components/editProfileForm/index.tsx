@@ -133,12 +133,19 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
     const onSubmitHandler = useCallback(
         async (formData: EditProfileFormData) => {
             const { day, month, year } = dropdownsValues
+
+            const stingDate = dateHelper.getStringDate({
+                day: +day.value,
+                month: +month.value,
+                year: +year.value,
+            })
+
             setDropdownError('')
             if (
                 compareUserData(initUserInfo, userInfo) &&
                 !avatarImage.path &&
                 !bannerImage.path &&
-                `${day.value}/${month.value}/${year.value}` === initUserInfo.birthDate
+                stingDate === initUserInfo.birthDate
             ) {
                 closePopup()
                 setIsEditing(false)
@@ -173,9 +180,14 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                     return
                 }
 
-                if (`${day.value}/${month.value}/${year.value}` !== initUserInfo.birthDate) {
+                if (stingDate !== initUserInfo.birthDate) {
                     const monthValue = isNaN(+month.value) ? MONTHS.indexOf(month.value as string) + 1 : month.value
-                    updatedUserInfo.birthDate = `${day.value}/${monthValue}/${year.value}`
+                    const updatedDate = dateHelper.getStringDate({
+                        day: +day.value,
+                        month: +monthValue,
+                        year: +year.value,
+                    })
+                    updatedUserInfo.birthDate = updatedDate
                 }
 
                 const isUserNameValidResult = await isFieldVauleValid({
@@ -228,7 +240,7 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                 <Wrapper>
                     <Photos>
                         <BannerWrapper onClick={handleChangeBannerClick} $disable={!isEditing}>
-                            <BannerImage src={banner ?? bannerImage.path ?? defaultBanner} alt='user-banner' />
+                            <BannerImage src={bannerImage.path ?? banner ?? defaultBanner} alt='user-banner' />
                             <BannerBack>
                                 <ChangePhotoIcon />
                             </BannerBack>

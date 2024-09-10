@@ -56,7 +56,11 @@ export const SignUpContent = () => {
                 displayName,
                 phoneNumber,
                 password,
-                birthDate: `${day.value}/${MONTHS.indexOf(month.value as string) + 1}/${year.value}`,
+                birthDate: dateHelper.getStringDate({
+                    day: +day.value,
+                    month: MONTHS.indexOf(month.value as string) + 1,
+                    year: +year.value,
+                }),
             })
             if (status === Status.SUCCESS) {
                 navigate(`/${HOME}`, { replace: true })

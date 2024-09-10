@@ -30,11 +30,14 @@ export const UserCard = memo(
                 followers && setIsFollowed(!!followers.find(uid => uid == currentUserUid))
             }, [followers])
 
-            const handleFollowButtonClick = useCallback(() => {
+            const handleFollowButtonClick = useCallback(async () => {
                 setIsSubmiting(true)
-                updateUserFollowers({ currentUserUid, anotherUserUid: uid })
-                    .then(() => setIsSubmiting(false))
-                    .catch(err => console.error(err))
+                try {
+                    await updateUserFollowers({ currentUserUid, anotherUserUid: uid })
+                } catch (error) {
+                    console.error(error)
+                }
+                setIsSubmiting(false)
             }, [uid, currentUserUid])
 
             const handleViewProfile = useViewProfile(uid)

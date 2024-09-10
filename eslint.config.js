@@ -7,7 +7,7 @@ import eslintPluginPrettier from 'eslint-plugin-prettier'
 import eslintSimpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginReact from 'eslint-plugin-react'
 import eslintPluginImport from 'eslint-plugin-import'
-import airnb from 'eslint-config-airbnb'
+import airbnb from 'eslint-config-airbnb'
 import { fixupPluginRules } from '@eslint/compat'
 
 export default tseslint.config(
@@ -17,7 +17,7 @@ export default tseslint.config(
             js.configs.recommended,
             ...tseslint.configs.recommended,
             eslintPluginReact.recommended,
-            airnb.recommended,
+            airbnb.recommended,
             eslintPluginImport.recommended,
             eslintSimpleImportSort.recommended,
             eslintPluginPrettier.recommended,
@@ -32,7 +32,7 @@ export default tseslint.config(
             'react-refresh': reactRefresh,
             react: eslintPluginReact,
             import: eslintPluginImport,
-            airnb: airnb,
+            airbnb,
             'simple-import-sort': eslintSimpleImportSort,
             prettier: eslintPluginPrettier,
         },

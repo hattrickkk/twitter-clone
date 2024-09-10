@@ -1,19 +1,13 @@
 import { render, screen } from '@testing-library/react'
-import { ThemeProvider } from 'styled-components'
 
-import { darkTheme } from '@/constants/theme'
 import { Button } from '@/ui/buttons'
 
 import '@testing-library/jest-dom'
+import { AllProviders } from './test-utils'
 
 describe('Button', () => {
     test('button component renders correctly', () => {
-        render(
-            <ThemeProvider theme={darkTheme}>
-                <Button>Value</Button>
-            </ThemeProvider>
-        )
-
+        render(<Button>Value</Button>, { wrapper: AllProviders })
         expect(screen.getByText('Value')).toBeInTheDocument()
     })
 })

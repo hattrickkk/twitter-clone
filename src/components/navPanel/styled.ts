@@ -7,6 +7,11 @@ export const SideBarContainer = styled.aside`
     width: 100%;
     margin-top: ${({ theme }) => theme.space.sp30};
 
+    #user-name,
+    #display-name {
+        max-width: ${({ theme }) => theme.space.sp95};
+    }
+
     @media ${MEDIA.EXTRA_LARGE_DESKTOP} {
         max-width: ${({ theme }) => theme.width.w40};
     }

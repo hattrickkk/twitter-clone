@@ -16,7 +16,7 @@ import { UsersSection } from '../usersSection'
 
 export const SideBar = memo(() => {
     const [isContextMenuOpen, closeContextMenu, openContextMenu] = useOpenState()
-    const contextMenuRef = useRef(null)
+    const contextMenuRef = useRef<HTMLDivElement>(null)
     useOutsideClick(contextMenuRef, closeContextMenu)
     const currentPath = useLocation().pathname
 

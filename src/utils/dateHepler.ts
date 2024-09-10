@@ -28,6 +28,10 @@ class DateHelper {
     getDateByString(date: string) {
         return new Date(date)
     }
+
+    getStringDate({ day, month, year }: DateType) {
+        return `${day}/${month}/${year}`
+    }
 }
 
 export const dateHelper = new DateHelper()

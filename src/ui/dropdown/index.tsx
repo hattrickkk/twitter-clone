@@ -19,8 +19,6 @@ export const Dropdown = memo(({ placeholder, items, setDropdownValues, selectedV
     const [value, setValue] = useState(placeholder)
     const [isOpen, close, open] = useOpenState()
 
-    const handleClickField = useCallback(() => (isOpen ? close() : open()), [isOpen])
-
     const handleItemClick = useCallback((e: React.MouseEvent<HTMLLIElement>) => {
         const text = e.currentTarget.textContent as string
         setValue(text)
@@ -46,7 +44,7 @@ export const Dropdown = memo(({ placeholder, items, setDropdownValues, selectedV
         }
     }, [items])
 
-    const dropdownRef = useRef(null)
+    const dropdownRef = useRef<HTMLDivElement>(null)
     useOutsideClick(dropdownRef, close)
 
     return (
@@ -61,7 +59,7 @@ export const Dropdown = memo(({ placeholder, items, setDropdownValues, selectedV
                 </Content>
             </ContentWrapper>
 
-            <Field $isOpen={isOpen} onClick={handleClickField} id='dropdown-field'>
+            <Field $isOpen={isOpen} onClick={isOpen ? close : open} id='dropdown-field'>
                 {value}
             </Field>
         </StyledDropdown>

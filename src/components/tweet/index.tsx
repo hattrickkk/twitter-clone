@@ -85,10 +85,10 @@ export const Tweet = memo(
                         isLiked,
                     })
                 )
-
-                setIsSubmiting(false)
             } catch (error) {
                 console.log(error)
+            } finally {
+                setIsSubmiting(false)
             }
         }, [isLiked, likes])
 
@@ -118,7 +118,7 @@ export const Tweet = memo(
             setIsSubmiting(false)
         }, [])
 
-        const contextMenuRef = useRef(null)
+        const contextMenuRef = useRef<HTMLDivElement>(null)
         useOutsideClick(contextMenuRef, closeContextMenu)
 
         useEffect(() => {

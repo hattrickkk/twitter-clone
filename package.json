@@ -12,7 +12,8 @@
         "prepare": "husky install",
         "cypress": "cypress open",
         "test:cypress": "start-server-and-test dev http://localhost:5173 cypress",
-        "test:jest": "jest"
+        "test:jest": "jest",
+        "test:coverage": "jest --coverage"
     },
     "dependencies": {
         "firebase": "^10.13.0",

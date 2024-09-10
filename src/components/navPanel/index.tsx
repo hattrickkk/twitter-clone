@@ -53,10 +53,10 @@ export const NavPanel = memo(() => {
 
     const handleToogleMenu = isMenuOpen ? closeMenu : openMenu
 
-    const contextMenuRef = useRef(null)
+    const contextMenuRef = useRef<HTMLDivElement>(null)
     useOutsideClick(contextMenuRef, closeContextMenu)
 
-    const headerMenuRef = useRef(null)
+    const headerMenuRef = useRef<HTMLDivElement>(null)
     useOutsideClick(headerMenuRef, closeMenu, 'twitter-logo')
 
     return (
