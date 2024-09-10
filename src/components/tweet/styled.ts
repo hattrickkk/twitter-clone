@@ -47,10 +47,6 @@ export const AvatarWrapper = styled.div`
     }
 `
 
-export const AvatarImage = styled.img`
-    width: 100%;
-    height: 100%;
-`
 export const TweetContent = styled.div`
     flex: 1 1 auto;
 `

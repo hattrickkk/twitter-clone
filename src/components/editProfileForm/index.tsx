@@ -18,6 +18,7 @@ import { selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
 import { setUser } from '@/store/slices/userSlice'
 import { ErrorMessage, FileInput, Form } from '@/styles/common'
+import { Image } from '@/styles/common'
 import { PrimaryButton } from '@/ui/buttons'
 import { ChangePhotoIcon } from '@/ui/changePhotoIcon'
 import { compareUserData } from '@/utils/compareUserData'
@@ -32,10 +33,8 @@ import { EditProfileSchema } from '@/utils/validationSchemas/validationEditProfi
 import {
     Avatar,
     AvatarBack,
-    AvatarImage,
     AvatarWrapper,
     BannerBack,
-    BannerImage,
     BannerWrapper,
     EditingProfileSection,
     InputsWrapper,
@@ -240,7 +239,7 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                 <Wrapper>
                     <Photos>
                         <BannerWrapper onClick={handleChangeBannerClick} $disable={!isEditing}>
-                            <BannerImage src={bannerImage.path ?? banner ?? defaultBanner} alt='user-banner' />
+                            <Image src={bannerImage.path ?? banner ?? defaultBanner} alt='user-banner' />
                             <BannerBack>
                                 <ChangePhotoIcon />
                             </BannerBack>
@@ -248,7 +247,7 @@ export const EditProfileForm = memo(({ isPopupOpen, closePopup }: Props) => {
                         </BannerWrapper>
                         <Avatar>
                             <AvatarWrapper onClick={handleChangeAvatarClick} $disable={!isEditing}>
-                                <AvatarImage src={avatarImage.path ?? avatar ?? defaultAvatar} alt='user-avatar' />
+                                <Image src={avatarImage.path ?? avatar ?? defaultAvatar} alt='user-avatar' />
                                 <AvatarBack>
                                     <ChangePhotoIcon />
                                 </AvatarBack>

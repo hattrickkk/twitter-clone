@@ -1,12 +1,13 @@
 import { forwardRef, memo, useCallback, useEffect, useState } from 'react'
 
 import avatar from '@/assets/avatar.svg'
+import { Image } from '@/styles/common'
 import { Flex } from '@/styles/flexStyles'
 import { updateUserFollowers } from '@/utils/firebase/user'
 import { usePictureURL } from '@/utils/hooks/usePictureURL'
 import { useViewProfile } from '@/utils/hooks/useViewProfile'
 
-import { Image, ImageWrapper, UserName, Name, Wrapper, Info, ButtonWrapper } from './styled'
+import { ImageWrapper, UserName, Name, Wrapper, Info, ButtonWrapper } from './styled'
 import { SecondaryButton } from '../buttons'
 
 type Props = {

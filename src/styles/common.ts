@@ -18,3 +18,9 @@ export const Form = styled.form``
 export const FileInput = styled.input`
     display: none;
 `
+export const Image = styled.img`
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+`

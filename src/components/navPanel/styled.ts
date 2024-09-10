@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import { MEDIA } from '@/constants/media'
 
 export const SideBarContainer = styled.aside`
-    max-width: ${({ theme }) => theme.width.w230};
-    width: 100%;
+    width: ${({ theme }) => theme.width.w230};
     margin-top: ${({ theme }) => theme.space.sp30};
 
     #user-name,

@@ -6,6 +6,7 @@ import defaultAvatar from '@/assets/avatar.svg'
 import defaultBanner from '@/assets/profile/banner.png'
 import { UserInfoDoc } from '@/customTypes/user'
 import { selectUser } from '@/store/selectors'
+import { Image } from '@/styles/common'
 import { Flex } from '@/styles/flexStyles'
 import { Button, SecondaryButton } from '@/ui/buttons'
 import { Spinner } from '@/ui/spinner'
@@ -14,9 +15,7 @@ import { useOpenState } from '@/utils/hooks/useOpenState'
 import { usePictureURL } from '@/utils/hooks/usePictureURL'
 
 import {
-    AvatarImage,
     AvatarWrapper,
-    BannerImage,
     BannerWrapper,
     ButtonWrapper,
     Description,
@@ -92,13 +91,13 @@ export const Profile = () => {
                     </Flex>
                 </Header>
                 <BannerWrapper>
-                    <BannerImage src={bannerImage ?? defaultBanner} alt='profile-banner' />
+                    <Image src={bannerImage ?? defaultBanner} alt='profile-banner' />
                 </BannerWrapper>
                 <Info>
                     <Flex $flexwrap='wrap'>
                         <StyledProfile>
                             <AvatarWrapper>
-                                <AvatarImage src={avatarImage ?? defaultAvatar} alt='avatar' />
+                                <Image src={avatarImage ?? defaultAvatar} alt='avatar' />
                             </AvatarWrapper>
                             <ProfileDescriptionWrapper>
                                 <DisplayName>{displayName}</DisplayName>
