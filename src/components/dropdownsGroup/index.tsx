@@ -30,7 +30,7 @@ export const DropdownsGroup = memo(
             [dropdownsValues]
         )
 
-        const [day, month, year] = birthDate?.split('/') || Array(3).fill(null)
+        const [day, month, year] = birthDate?.split('/') || []
 
         return (
             <DropdownsWrapper $disable={disable}>

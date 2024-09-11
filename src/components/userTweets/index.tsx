@@ -34,8 +34,7 @@ export const UserTweets = memo(({ userId }: Props) => {
         getUsersTweets(userId, UsersTweetsTypes.OWN)
             .then(({ status, tweets }) => {
                 if (status === Status.SUCCESS) {
-                    const reverserTweets = (tweets as TweetDoc[]).reverse()
-                    dispatch(setTweets({ data: reverserTweets, type: UsersTweetsTypes.OWN }))
+                    dispatch(setTweets({ data: [...(tweets as TweetDoc[])].reverse(), type: UsersTweetsTypes.OWN }))
                     setLoading(false)
                 } else {
                     throw new Error(Messages.DEFAULT_FAIL)
@@ -49,7 +48,7 @@ export const UserTweets = memo(({ userId }: Props) => {
                     if (status === Status.SUCCESS) {
                         dispatch(
                             setTweets({
-                                data: (tweets as TweetDoc[]).reverse(),
+                                data: [...(tweets as TweetDoc[])].reverse(),
                                 type: UsersTweetsTypes.LIKED,
                             })
                         )

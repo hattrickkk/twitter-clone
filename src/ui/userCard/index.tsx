@@ -1,12 +1,13 @@
 import { forwardRef, memo, useCallback, useEffect, useState } from 'react'
 
 import avatar from '@/assets/avatar.svg'
+import { Image } from '@/styles/common'
 import { Flex } from '@/styles/flexStyles'
 import { updateUserFollowers } from '@/utils/firebase/user'
 import { usePictureURL } from '@/utils/hooks/usePictureURL'
 import { useViewProfile } from '@/utils/hooks/useViewProfile'
 
-import { Image, ImageWrapper, UserName, Name, Wrapper, Info, ButtonWrapper } from './styled'
+import { ImageWrapper, UserName, Name, Wrapper, Info, ButtonWrapper } from './styled'
 import { SecondaryButton } from '../buttons'
 
 type Props = {
@@ -30,11 +31,14 @@ export const UserCard = memo(
                 followers && setIsFollowed(!!followers.find(uid => uid == currentUserUid))
             }, [followers])
 
-            const handleFollowButtonClick = useCallback(() => {
+            const handleFollowButtonClick = useCallback(async () => {
                 setIsSubmiting(true)
-                updateUserFollowers({ currentUserUid, anotherUserUid: uid })
-                    .then(() => setIsSubmiting(false))
-                    .catch(err => console.error(err))
+                try {
+                    await updateUserFollowers({ currentUserUid, anotherUserUid: uid })
+                } catch (error) {
+                    console.error(error)
+                }
+                setIsSubmiting(false)
             }, [uid, currentUserUid])
 
             const handleViewProfile = useViewProfile(uid)

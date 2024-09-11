@@ -26,7 +26,7 @@ describe('getDays', () => {
 
     it('should return empty array for zero days count', () => {
         jest.spyOn(dateHelper, 'getCountOfDaysInMonth').mockReturnValueOnce(0)
-        const result = getDays('January', 2021)
+        const result = getDays(MONTHS[0], 2021)
         expect(result).toHaveLength(0)
         expect(result).toEqual([])
     })

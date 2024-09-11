@@ -47,10 +47,6 @@ export const AvatarWrapper = styled.div`
     }
 `
 
-export const AvatarImage = styled.img`
-    width: 100%;
-    height: 100%;
-`
 export const TweetContent = styled.div`
     flex: 1 1 auto;
 `
@@ -82,12 +78,13 @@ export const MainTitle = styled.span`
         max-width: ${({ theme }) => theme.width.w150};
         font-size: ${({ theme }) => theme.fontSize.fs18};
     }
+
     @media ${MEDIA.TABLET} {
         max-width: ${({ theme }) => theme.width.w100};
     }
 `
 export const SubTitle = styled.span`
-    font-size: ${({ theme }) => theme.fontSize.fs22};
+    font-size: ${({ theme }) => theme.fontSize.fs18};
     opacity: ${({ theme }) => theme.opacity};
     transition: ${({ theme }) => theme.transition.standart};
     max-width: ${({ theme }) => theme.width.w200};
@@ -100,7 +97,7 @@ export const SubTitle = styled.span`
 
     @media ${MEDIA.LARGE_TABLET} {
         max-width: ${({ theme }) => theme.width.w150};
-        font-size: ${({ theme }) => theme.fontSize.fs18};
+        font-size: ${({ theme }) => theme.fontSize.fs16};
     }
 
     @media ${MEDIA.TABLET} {
@@ -120,6 +117,10 @@ export const Time = styled.span`
         position: absolute;
         left: 0;
         top: -30%;
+    }
+
+    @media ${MEDIA.LARGE_TABLET} {
+        font-size: ${({ theme }) => theme.fontSize.fs16};
     }
 
     @media ${MEDIA.LARGE_PHONE} {

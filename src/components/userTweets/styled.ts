@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-import { MEDIA } from '@/constants/media'
-
 export const UserstweetsSection = styled.section``
 
 export const Tab = styled.button<{ $active: boolean }>`

@@ -20,13 +20,6 @@ export const Info = styled.div`
     }
 `
 
-export const BannerImage = styled.img`
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-`
-
 export const AvatarWrapper = styled.div`
     border-radius: 100%;
     overflow: hidden;
@@ -38,13 +31,6 @@ export const AvatarWrapper = styled.div`
         width: ${({ theme }) => theme.width.w100};
         height: ${({ theme }) => theme.width.w100};
     }
-`
-
-export const AvatarImage = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
 `
 
 export const ProfileDescriptionWrapper = styled.div`

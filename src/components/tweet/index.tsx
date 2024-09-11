@@ -9,6 +9,7 @@ import type { TweetDoc } from '@/customTypes/tweet'
 import { selectLikedTweets, selectUser } from '@/store/selectors'
 import { setNotification } from '@/store/slices/notificationSlice'
 import { deleteTweet, handleTweetLiking } from '@/store/slices/tweetsSlice'
+import { Image } from '@/styles/common'
 import { Flex } from '@/styles/flexStyles'
 import { Like } from '@/ui/like'
 import { MoreIcon } from '@/ui/moreIcon'
@@ -22,7 +23,6 @@ import { useTweetInfo } from '@/utils/hooks/useTweetInfo'
 import { useViewProfile } from '@/utils/hooks/useViewProfile'
 
 import {
-    AvatarImage,
     AvatarWrapper,
     ContextMenuWrapper,
     Footer,
@@ -85,10 +85,10 @@ export const Tweet = memo(
                         isLiked,
                     })
                 )
-
-                setIsSubmiting(false)
             } catch (error) {
                 console.log(error)
+            } finally {
+                setIsSubmiting(false)
             }
         }, [isLiked, likes])
 
@@ -118,7 +118,7 @@ export const Tweet = memo(
             setIsSubmiting(false)
         }, [])
 
-        const contextMenuRef = useRef(null)
+        const contextMenuRef = useRef<HTMLDivElement>(null)
         useOutsideClick(contextMenuRef, closeContextMenu)
 
         useEffect(() => {
@@ -131,7 +131,7 @@ export const Tweet = memo(
         return (
             <Wrapper ref={ref}>
                 <AvatarWrapper onClick={handleViewProfile}>
-                    <AvatarImage src={avatarImage ?? defaultAvatar} alt='avatar' />
+                    <Image src={avatarImage ?? defaultAvatar} alt='avatar' />
                 </AvatarWrapper>
                 <TweetContent>
                     <Header>
