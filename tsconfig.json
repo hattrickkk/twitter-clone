@@ -1,12 +1,13 @@
 {
     "compilerOptions": {
+        "types": ["jest", "node"],
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"]
         },
-        "target": "es6",
+        "target": "esnext",
+        "module": "esnext",
         "outDir": "build",
-        "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
@@ -14,14 +15,13 @@
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
-        "module": "ES2020",
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "react-jsx",
         "sourceMap": true,
-        "rootDir": "src",
+        "rootDir": "src"
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "src/__mocks__", "src/__mocks__", "src/__tests__"],
     "exclude": ["node_modules", "build"]
 }
